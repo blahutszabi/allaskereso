@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.allaskereso.domain.*;
-import com.allaskereso.services.Test;
+import com.allaskereso.services.DAO;
 
 @Controller
 public class HomeController {
@@ -25,9 +25,6 @@ public class HomeController {
 	
 	@RequestMapping("/")
 	public String print(Model model) {
-		Test test=new Test();
-		List<Ceg> cegek = test.listCegek(manager);
-		model.addAttribute("cegek", cegek );
 		return "index";
 	
 		
