@@ -4381,21 +4381,21 @@ INSERT INTO ALLASERT(id,allaskereso_id,allas_id,szoveg,ertek,datum) VALUES (107,
 INSERT INTO ALLASERT(id,allaskereso_id,allas_id,szoveg,ertek,datum) VALUES (108,12,28,'In eleifend quam a odio. In hac habitasse platea dictumst.',4,TO_TIMESTAMP('2018.03.19 1:20','YYYY.MM.DD HH24:MI'));
 INSERT INTO ALLASERT(id,allaskereso_id,allas_id,szoveg,ertek,datum) VALUES (109,13,29,'Aenean fermentum.',4,TO_TIMESTAMP('2018.09.19 13:58','YYYY.MM.DD HH24:MI'));
 
-DROP PROCEDURE LISTVAROSOK;
+
 CREATE OR REPLACE PROCEDURE listVarosok(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
     OPEN ret FOR SELECT * FROM VAROS;
 END;
 
-DROP PROCEDURE LISTSZAKMAK;
+
 CREATE OR REPLACE PROCEDURE listSzakmak(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
     OPEN ret FOR SELECT * FROM SZAKMA;
 END;
 
-DROP PROCEDURE LISTCEGEK;
+
 CREATE OR REPLACE PROCEDURE listCegek(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
