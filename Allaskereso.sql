@@ -4479,3 +4479,75 @@ BEGIN
 	OPEN ret FOR SELECT * FROM STATUSZ;
 END;
 /
+
+CREATE OR REPLACE PROCEDURE allaskeresoLogin(username IN ALLASKERESO.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT ALLASKERESO.id,ALLASKERESO.felh_nev,ALLASKERESO.jelszo FROM ALLASKERESO WHERE ALLASKERESO.felh_nev=username;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE cegLogin(username IN CEG.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT CEG.id,CEG.felh_nev,CEG.jelszo FROM CEG WHERE CEG.felh_nev=username;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE moderatorLogin(username IN MODERATOR.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT MODERATOR.id,MODERATOR.felh_nev,MODERATOR.jelszo FROM MODERATOR WHERE MODERATOR.felh_nev=username;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE varosIdByNev(vnev IN Varos.nev%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT VAROS.id,VAROS.nev FROM VAROS WHERE VAROS.nev=vnev;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE szakmaIdByNev(sznev IN SZAKMA.MEGNEVEZES%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT SZAKMA.id,SZAKMA.MEGNEVEZES FROM SZAKMA WHERE SZAKMA.MEGNEVEZES=sznev;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE ujSzakma(sznev IN SZAKMA.MEGNEVEZES%TYPE)
+IS
+    new_id NUMBER;
+BEGIN
+    SELECT MAX(SZAKMA.id) INTO new_id FROM SZAKMA;
+    new_id:=new_id+1;
+    INSERT INTO SZAKMA(id,megnevezes) VALUES (new_id,sznev);
+END;
+/
+
+
+CREATE OR REPLACE TYPE szakmak AS VARRAY(20) OF NUMBER;
+/
+CREATE OR REPLACE TYPE oneletrajzok AS VARRAY(5) OF BLOB;
+/
+CREATE OR REPLACE PROCEDURE ujAllaskereso(anev IN ALLASKERESO.nev%TYPE,szul IN allaskereso.szul_ido%TYPE,emailc IN allaskereso.email%TYPE,varosid IN VAROS.id%TYPE,
+utcap IN allaskereso.utca%TYPE, hazszamp IN allaskereso.hazszam%TYPE,felh_nevp IN allaskereso.felh_nev%TYPE, jelszop IN allaskereso.jelszo%TYPE, utolso_belepesp IN allaskereso.utolso_belepes%TYPE,
+szakmap szakmak, oneletrajzp oneletrajzok)
+IS
+    new_id_oneletrajz NUMBER;
+    new_id NUMBER;
+BEGIN
+    SELECT MAX(ALLASKERESo.id) INTO new_id FROM ALLASKERESO;
+    new_id:=new_id+1;
+    FOR i IN 1..szakmap.count LOOP
+            INSERT INTO ALLASKERESOSZAKMA(szakma_id,allaskereso_id) VALUES (szakmap(i),new_id);
+    END LOOP;
+    FOR i IN 1..oneletrajzp.count LOOP
+        SELECT MAX(oneletrajz.id) INTO new_id_oneletrajz FROM ONELETRAJZ;
+        new_id_oneletrajz:=new_id_oneletrajz+1;
+        INSERT INTO ONELETRAJZ(id,allaskereso_id,oneletrajz) VALUES (new_id_oneletrajz,new_id,oneletrajzp(i));
+    END LOOP;
+    INSERT INTO ALLASKERESO(id,nev,szul_ido,email,varos_id,utca,hazszam,statusz_id,felh_nev,jelszo,utolso_belepes) 
+    VALUES (new_id,anev,szul,emailc,varosid,utcap,hazszamp,1,felh_nevp,jelszop,utolso_belepesp);
+END;
+/
