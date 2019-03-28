@@ -1,20 +1,20 @@
 package com.allaskereso.services;
 
-import java.sql.Array;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
-import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 
 import com.allaskereso.domain.*;
 
-import oracle.sql.TIMESTAMP;
+
 
 
 public class DAO {
@@ -196,14 +196,38 @@ public class DAO {
 			
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		
 		return true;
 	}
 	
-	public boolean insertAllaskereso(EntityManager manager, String anev, Date szul, String emailc, int varosid, String utcap, String hazszamp,
-			String felh_nevp, String jelszop, Timestamp utolso_belepesp, List<Integer> szakmap, List<Blob> oneletrajzp ) {
+	//file to BLOB
+	public static byte[] convertFileContentToBlob(String filePath) throws IOException {
+		// create file object
+		File file = new File(filePath);
+		// initialize a byte array of size of the file
+		byte[] fileContent = new byte[(int) file.length()];
+		FileInputStream inputStream = null;
+		try {
+			// create an input stream pointing to the file
+			inputStream = new FileInputStream(file);
+			// read the contents of file into byte array
+			inputStream.read(fileContent);
+		} catch (IOException e) {
+			throw new IOException("Unable to convert file to byte array. " + e.getMessage());
+		} finally {
+			// close input stream
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		}
+		return fileContent;
+	}
+	
+	public boolean insertAllaskereso(EntityManager manager, String anev, Date szul, String emailc, Integer varosid, String utcap, String hazszamp,
+			String felh_nevp, String jelszop, Timestamp utolso_belepesp,Long id, byte[] asd ) {
 		
 		try {
 			
@@ -224,7 +248,7 @@ public class DAO {
 			
 			procedureQuery.registerStoredProcedureParameter("utcap", String.class, ParameterMode.IN);
 			procedureQuery.setParameter("utcap", utcap);
-			
+
 			procedureQuery.registerStoredProcedureParameter("hazszamp", String.class, ParameterMode.IN);
 			procedureQuery.setParameter("hazszamp", hazszamp);
 			
@@ -237,17 +261,18 @@ public class DAO {
 			procedureQuery.registerStoredProcedureParameter("utolso_belepesp", Timestamp.class, ParameterMode.IN);
 			procedureQuery.setParameter("utolso_belepesp", utolso_belepesp);
 			
-			procedureQuery.registerStoredProcedureParameter("szakmap", List.class, ParameterMode.IN);
-			procedureQuery.setParameter("szakmap", szakmap);
+			procedureQuery.registerStoredProcedureParameter("szakmap", Long.class, ParameterMode.IN);
+			procedureQuery.setParameter("szakmap", id);
 			
-			procedureQuery.registerStoredProcedureParameter("oneletrajzp", List.class, ParameterMode.IN);
-			procedureQuery.setParameter("oneletrajzp", oneletrajzp);
+			procedureQuery.registerStoredProcedureParameter("oneletrajzp", byte[].class, ParameterMode.IN);
+			procedureQuery.setParameter("oneletrajzp", asd);
 			
 			procedureQuery.execute();
 			
 			
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		
