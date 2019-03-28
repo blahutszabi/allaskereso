@@ -2,11 +2,10 @@ package com.allaskereso.controller;
 
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.allaskereso.domain.*;
 import com.allaskereso.services.DAO;
 
-
 @Controller
 public class HomeController {
 
@@ -27,22 +25,29 @@ public class HomeController {
     private EntityManager manager;
 	
 	
-
+	
 	@RequestMapping("/")
-	public String print(Model model) throws IOException {
+	public String print(Model model) {
 		
 		
 		DAO dao = new DAO();
-		String ret="index";
+		String ret;
 		
-		
+		/*
 		boolean succ;
-		Date x = new Date(System.currentTimeMillis());
-		byte[] blob=dao.convertFileContentToBlob("C:\\Users\\CK\\Desktop\\asd.rtf");
+		Date x = new Date(1998,10,1);
+		
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
-		Long asdx=(long) 2;
-		succ=dao.insertAllaskereso(manager,"alma",x,"alfa@alfac.hu",2,"Strret","2","asdfggxx","asdfghjkl",ts,asdx, blob );
-		System.out.println(succ);
+		
+		List<Integer> ls = new ArrayList<>();
+		ls.add(2);
+		ls.add(3);
+		
+		List<Blob> bls = new ArrayList();
+		
+		
+		succ = dao.insertAllaskereso(manager,"alma",x,"alfa@alfa.hu",2,"Strret","2","asdfgg","asdfghjkl",ts,ls, bls );
+		*/
 		
 		try {
 			List<Allaskereso> allaskereso = dao.listAllaskeresok(manager);
@@ -51,7 +56,7 @@ public class HomeController {
 			if(allaskereso == null) {
 				throw new Exception();
 			}else {
-				ret = "index1";
+				ret = "index";
 			}
 			
 			

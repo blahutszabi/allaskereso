@@ -1,93 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
+    
 <head>
-<meta charset="UTF-8">
-
-<title>HomePage</title>
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
-	
-<link th:href="@{css/mdb.min.css}" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"> 
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
+<link th:href="@{css/style.css}" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">          
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
 
 
-<style>
-/* Make the image fully responsive */
-.carousel-inner img {
-	width: 100%;
-	height: 100%;
-}
-</style>
+   
+    <!-- Oldal betöltő animáció -->
+    <script>
+        $(document).ready(function() {
+ 
+        // Fakes the loading setting a timeout
+         setTimeout(function() {
+             $('body').addClass('loaded');
+         }, 1000);
+         
+ 
+        });
+     
+    </script>
+     
+ </head>
+
+ <title>Kezdőlap</title>    
 
 
-
-
-</head>
-
-<body>
-
-	<!-- így lehet includeolni -->
-
-	<header lang="en" th:include="header :: header"> </header>
-
-
-
-	<div id="demo" class="carousel slide" data-ride="carousel">
-
-		<!-- Indicators -->
-		<ul class="carousel-indicators">
-			<li data-target="#demo" data-slide-to="0" class="active"></li>
-			<li data-target="#demo" data-slide-to="1"></li>
-			<li data-target="#demo" data-slide-to="2"></li>
-		</ul>
-
-		<!-- The slideshow -->
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img src="job1.jpg" alt="Job1" width="1100" height="500"
-					th:src="@{images/job1.jpg}">
-				<div class="carousel-caption">
-					<h3>Karrier</h3>
-					<p>Találd meg álmaid munkáját</p>
-				</div>
-			</div>
-			<div class="carousel-item">
-				<img src="job2.jpg" alt="Job2" width="1100" height="500"
-					th:src="@{images/job2.jpg}">
-				<div class="carousel-caption">
-					<h3>Lehetőség</h3>
-					<p>Lépj előre, érd el a céljaid</p>
-				</div>
-			</div>
-			<div class="carousel-item">
-				<img src="job3.jpg" alt="Job3" width="1100" height="500"
-					th:src="@{images/job3.jpg}">
-				<div class="carousel-caption">
-					<h3>Kihívás</h3>
-					<p>Légy a legjobb, találj fel valami újat</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- Left and right controls -->
-		<a class="carousel-control-prev" href="#demo" data-slide="prev"> <span
-			class="carousel-control-prev-icon"></span>
-		</a> <a class="carousel-control-next" href="#demo" data-slide="next">
-			<span class="carousel-control-next-icon"></span>
-		</a>
+ <body>
+ 
+    <!-- Loader -->
+	<div id="loader-wrapper">
+		<div id="loader"></div>
+		<div class="loader-section section-left"></div>
+		<div class="loader-section section-right"></div>
 	</div>
-
-
-
+    
+	<header lang="en" th:include="header :: header"> </header>  
+    
+    <div class="bg " id="home"> 
+        
+    
+    </div>
+    
+                  
 </body>
 </html>
