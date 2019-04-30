@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<!-- th:fragment includeol√°shoz -->
+<!-- th:fragment includeol·shoz -->
 <html th:fragment="header" lang="hu"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
@@ -33,13 +33,13 @@
 	    </div>  
       
 	    <ul>
-	         <li><a th:href="@{index.html}" href="index.html" id="main" class="active">Kezd≈ëlap</a></li> 
-	         <li><a href="jobs.html" id="about">√Åll√°sok</a></li>  
-	         <li><a href="companies.html" id="about">C√©gek</a></li> 
+	         <li><a th:href="@{index.html}" id="main" class="active">Kezdılap</a></li> 
+	         <li><a th:href="@{jobs.html}" id="jobs">¡ll·sok</a></li>  
+	         <li><a th:href="@{companies.html}" id="companies">CÈgek</a></li> 
 	    </ul>
 	    <ul class="buttonsul">
-	        <li><button class="button button1" type="button" id="loginBtn">BEL√âP√âS</button></li>
-	        <li><button class="button button2" type="button" id="regBtn">REGISZTR√ÅCI√ì</button></li>
+	        <li><button class="button button1" type="button" id="loginBtn">BEL…P…S</button></li>
+	        <li><button class="button button2" type="button" id="regBtn">REGISZTR¡CI”</button></li>
 	    </ul>  
     
   </nav>
@@ -61,22 +61,22 @@
 						<div class="wrap-login100 p-t-85 p-b-20">
 							<form class="login100-form validate-form">
 									<span class="login100-form-title p-b-70">
-										√údv√∂z√∂lj√ºk
+										‹dvˆzˆlj¸k
 									</span>
 				                  
 									<div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter username">
 										<input class="input100right" type="text" name="username">
-										<span class="focus-input100right" data-placeholder="Felhaszn√°l√≥n√©v"></span>
+										<span class="focus-input100right" data-placeholder="Felhaszn·lÛnÈv"></span>
 									</div>
 				
 									<div class="wrap-input100 validate-input m-b-50" data-validate="Enter password">
 										<input class="input100right" type="password" name="pass">
-										<span class="focus-input100right" data-placeholder="Jelsz√≥"></span>
+										<span class="focus-input100right" data-placeholder="JelszÛ"></span>
 									</div>
 				
 									<div class="container-login100-form-btn">
 										<button class="login100-form-btn">
-											Bejelentkez√©s
+											BejelentkezÈs
 										</button>
 									</div>
 				
@@ -111,22 +111,22 @@
 				<div>
 					<div class="container-login100">
 						<div class="wrap-reg100 p-t-25 p-b-20">
-							<form name="registration" th:action="@{/reg}" th:object="${allaskereso}" method="post">
+							<form>
 									<span class="login100-form-title p-b-20">
-										Regisztr√°ci√≥
+										Regisztr·ciÛ
 									</span>
 				                
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter username">
-                                                <input name="felh_nev" id="felh_nev" th:field="*{felh_nev}" class="input100" type="text">
-                                                <span class="focus-input100" data-placeholder="Felhaszn√°l√≥n√©v"></span>
+                                                <input class="input100" type="text" name="username">
+                                                <span class="focus-input100" data-placeholder="Felhaszn·lÛnÈv"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter email">
-                                                <input th:field="*{email}" class="input100" type="text" name="email">
-                                                <span class="focus-input100" data-placeholder="Email c√≠m"></span>
+                                                <input class="input100" type="text" name="email">
+                                                <span class="focus-input100" data-placeholder="Email cÌm"></span>
                                             </div>
                                         </div>
                                         
@@ -134,27 +134,27 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate="Enter password">
-                                                <input th:field="*{jelszo}" class="input100" type="password" name="pass">
-                                                <span class="focus-input100" data-placeholder="Jelsz√≥"></span>
+                                                <input class="input100" type="password" name="pass">
+                                                <span class="focus-input100" data-placeholder="JelszÛ"></span>
                                                 </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter town">
-                                                <input th:field="*{varos}" class="input100" type="text" name="town">
-                                                <span class="focus-input100" data-placeholder="V√°ros"></span>
+                                                <input class="input100" type="text" name="town">
+                                                <span class="focus-input100" data-placeholder="V·ros"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter fullname">
-                                                <input th:field="*{nev}" class="input100" type="text" name="fullname">
-                                                <span class="focus-input100" data-placeholder="Teljes n√©v"></span>
+                                                <input class="input100" type="text" name="fullname">
+                                                <span class="focus-input100" data-placeholder="Teljes nÈv"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter street">
-                                                <input th:field="*{utca}" class="input100" type="text" name="street">
+                                                <input class="input100" type="text" name="street">
                                                 <span class="focus-input100" data-placeholder="Utca"></span>
                                             </div>
                                         </div>
@@ -163,14 +163,14 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter birthdate">
-                                                <input th:field="*{szul_ido}" class="input100" type="text" name="birthdate">
-                                                <span class="focus-input100" data-placeholder="Sz√ºlet√©si d√°tum"></span>
+                                                <input class="input100" type="text" name="birthdate">
+                                                <span class="focus-input100" data-placeholder="Sz¸letÈsi d·tum"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter house number">
-                                                <input th:field="*{hazszam}" class="input100" type="text" name="house number">
-                                                <span class="focus-input100" data-placeholder="H√°zsz√°m"></span>
+                                                <input class="input100" type="text" name="house number">
+                                                <span class="focus-input100" data-placeholder="H·zsz·m"></span>
                                             </div>
                                         </div>
 				                    </div>
@@ -179,8 +179,8 @@
                                     <div class="col-md-4"></div>
                                     <div class="col-md-4">   
 									<div class="container-login100-form-btn">
-										<button class="login100-form-btn" type="submit">
-											Regisztr√°l√°s
+										<button class="login100-form-btn">
+											Regisztr·l·s
 										</button>
 									</div>
                                     </div>     
@@ -206,8 +206,31 @@
     
     
     </script>
+    
+    <!--AktÌv men¸pont-->
+    <script> 
+          $(function() {
+              
+            var url = window.location.pathname;
+            var filename = url.substring(url.lastIndexOf('/')+1);
+             
+            if( filename === 'jobs.html'){
+            $("#jobs").addClass("active");
+            $("#main").removeClass("active"); 
+            $("#companies").removeClass("active");    
+            }
+              
+            if( filename === 'companies.html'){
+            $("#companies").addClass("active");
+            $("#main").removeClass("active"); 
+            $("#jobs").removeClass("active");    
+            }  
+              
+              
+        });
+    </script> 
 
-<!-- popup ablak anim√°ci√≥-->
+	<!-- popup ablak anim·ciÛ-->
     <script>
                 // Get the modal
                 var modallog = document.getElementById('logModal');
