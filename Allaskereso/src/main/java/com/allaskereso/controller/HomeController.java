@@ -14,6 +14,8 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.allaskereso.domain.*;
@@ -22,48 +24,66 @@ import com.allaskereso.services.DAO;
 
 @Controller
 public class HomeController {
-
+	
+	DAO dao = new DAO();
+	Allaskeresoreg regi=new Allaskeresoreg();
+	
 	@PersistenceContext
     private EntityManager manager;
 	
 	
 
 	@RequestMapping("/")
-	public String print(Model model) throws IOException {
+	public String HomePageD() throws IOException {
 		
-		
-		DAO dao = new DAO();
-		String ret="index";
-		
-		
-		boolean succ;
-		Date x = new Date(System.currentTimeMillis());
-		//byte[] blob=dao.convertFileContentToBlob("C:\\Users\\CK\\Desktop\\asd.rtf");
-		Timestamp ts = new Timestamp(System.currentTimeMillis());
-		//Long asdx=(long) 2;
-		succ=dao.insertAllaskereso(manager,"alma",x,"alfa@alfac.hu",2,"Strret","2","asdfggxx","asdfghjkl",ts);
-		System.out.println(succ);
-		
-		try {
-			List<Allaskereso> allaskereso = dao.listAllaskeresok(manager);
-			model.addAttribute("emberek",allaskereso);
-			
-			if(allaskereso == null) {
-				throw new Exception();
-			}else {
-				ret = "index1";
-			}
-			
-			
-		}
-		catch(Exception e){
-			ret = "index";
-		}
 		
 		return "index";
 		
 	}
 	
+	@RequestMapping("/index.html")
+	public String HomePage1() throws IOException {
+		
+		
+		
+		return "index";
+		
+	}
+	@RequestMapping("/login.html")
+	public String Login(Model model) throws IOException {
+		
+		model.addAttribute("allaskereso", regi);
+		
+		return "login";
+		
+	}
+	
+	
+	
+	@PostMapping("/reg")
+	public String AllaskeresoReg(@ModelAttribute Allaskeresoreg allaskereso) {
+		
+		VarosIDSearch varosom = dao.varosIdByName(manager,allaskereso.getVaros());
+		
+		dao.insertAllaskereso(manager,allaskereso.getNev(),allaskereso.getSzul_ido(),allaskereso.getEmail(),varosom.getId(),
+				allaskereso.getUtca(),allaskereso.getHazszam(),allaskereso.getFelh_nev(),allaskereso.getJelszo(),new Timestamp(System.currentTimeMillis()));
+		
+		System.out.println("Kész");
+		
+		return "index";
+	}
+	
+	
+	
+	@RequestMapping("/jobs.html")
+	public String JobsPage(Model model) throws IOException {
+		
+		
+		
+		
+		return "jobs";
+		
+	}
 	
 		
 }

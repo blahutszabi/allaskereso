@@ -226,7 +226,7 @@ public class DAO {
 		return fileContent;
 	}
 	
-	public boolean insertAllaskereso(EntityManager manager, String anev, Date szul, String emailc, Integer varosid, String utcap, String hazszamp,
+	public boolean insertAllaskereso(EntityManager manager, String anev, Date szul, String emailc, Long varosid, String utcap, String hazszamp,
 			String felh_nevp, String jelszop, Timestamp utolso_belepesp) {
 		
 		try {
@@ -243,7 +243,7 @@ public class DAO {
 			procedureQuery.setParameter("emailc", emailc);
 			
 			
-			procedureQuery.registerStoredProcedureParameter("varosid", Integer.class, ParameterMode.IN);
+			procedureQuery.registerStoredProcedureParameter("varosid", Long.class, ParameterMode.IN);
 			procedureQuery.setParameter("varosid", varosid);
 			
 			procedureQuery.registerStoredProcedureParameter("utcap", String.class, ParameterMode.IN);

@@ -1,4 +1,4 @@
-DROP TABLE JELENTKEZES;
+ DROP TABLE JELENTKEZES;
 DROP TABLE ALLASERT;
 DROP TABLE ALLASKERESOERT;
 DROP TABLE ONELETRAJZ;
@@ -4529,7 +4529,7 @@ END;
 CREATE OR REPLACE PROCEDURE ujAllaskereso(anev IN ALLASKERESO.nev%TYPE,szul IN allaskereso.szul_ido%TYPE,emailc IN allaskereso.email%TYPE,varosid IN VAROS.id%TYPE,
 utcap IN allaskereso.utca%TYPE, hazszamp IN allaskereso.hazszam%TYPE,felh_nevp IN allaskereso.felh_nev%TYPE, jelszop IN allaskereso.jelszo%TYPE, utolso_belepesp IN allaskereso.utolso_belepes%TYPE)
 IS
-    new_id_oneletrajz NUMBER;
+    
     new_id NUMBER;
 BEGIN
     SELECT MAX(ALLASKERESo.id) INTO new_id FROM ALLASKERESO;

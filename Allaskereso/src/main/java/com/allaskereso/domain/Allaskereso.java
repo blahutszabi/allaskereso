@@ -18,7 +18,25 @@ public class Allaskereso {
 	private String nev;
 	private Date szul_ido;
 	private String email;
+	private String utca;
+	private String hazszam;
 	
+	public String getUtca() {
+		return utca;
+	}
+
+	public void setUtca(String utca) {
+		this.utca = utca;
+	}
+
+	public String getHazszam() {
+		return hazszam;
+	}
+
+	public void setHazszam(String hazszam) {
+		this.hazszam = hazszam;
+	}
+
 	@ManyToOne
 	private Varos varos;
 	
@@ -44,7 +62,7 @@ public class Allaskereso {
 	@OneToMany(mappedBy="allaskereso")
 	private List<Allaskeresoert> allaskeresoertekelesek;
 	
-	private Allaskereso() {}
+	public Allaskereso() {}
 
 	public Long getId() {
 		return id;
@@ -160,11 +178,12 @@ public class Allaskereso {
 
 	@Override
 	public String toString() {
-		return "Allaskereso [id=" + id + ", nev=" + nev + ", szul_ido=" + szul_ido + ", email=" + email + ", varos="
-				+ varos + ", felh_nev=" + felh_nev + ", jelszo=" + jelszo + ", utolso_belepes=" + utolso_belepes
-				+ ", allasertekelesek=" + allasertekelesek + ", statusz=" + statusz + ", oneletrajzok=" + oneletrajzok
-				+ ", jelentkezesek=" + jelentkezesek + ", allaskeresoszakmak=" + allaskeresoszakmak
-				+ ", allaskeresoertekelesek=" + allaskeresoertekelesek + "]";
+		return "Allaskereso [id=" + id + ", nev=" + nev + ", szul_ido=" + szul_ido + ", email=" + email + ", utca="
+				+ utca + ", hazszam=" + hazszam + ", varos=" + varos + ", felh_nev=" + felh_nev + ", jelszo=" + jelszo
+				+ ", utolso_belepes=" + utolso_belepes + ", allasertekelesek=" + allasertekelesek + ", statusz="
+				+ statusz + ", oneletrajzok=" + oneletrajzok + ", jelentkezesek=" + jelentkezesek
+				+ ", allaskeresoszakmak=" + allaskeresoszakmak + ", allaskeresoertekelesek=" + allaskeresoertekelesek
+				+ "]";
 	}
 	
 	

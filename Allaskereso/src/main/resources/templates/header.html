@@ -33,7 +33,7 @@
 	    </div>  
       
 	    <ul>
-	         <li><a href="index.html" id="main" class="active">Kezdőlap</a></li> 
+	         <li><a th:href="@{index.html}" href="index.html" id="main" class="active">Kezdőlap</a></li> 
 	         <li><a href="jobs.html" id="about">Állások</a></li>  
 	         <li><a href="companies.html" id="about">Cégek</a></li> 
 	    </ul>
@@ -111,7 +111,7 @@
 				<div>
 					<div class="container-login100">
 						<div class="wrap-reg100 p-t-25 p-b-20">
-							<form>
+							<form name="registration" th:action="@{/reg}" th:object="${allaskereso}" method="post">
 									<span class="login100-form-title p-b-20">
 										Regisztráció
 									</span>
@@ -119,70 +119,58 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter username">
-                                                <input class="input100" type="text" name="username">
+                                                <input name="felh_nev" id="felh_nev" th:field="*{felh_nev}" class="input100" type="text">
                                                 <span class="focus-input100" data-placeholder="Felhasználónév"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter town">
-                                                <input class="input100" type="text" name="town">
-                                                <span class="focus-input100" data-placeholder="Város"></span>
+                                            <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter email">
+                                                <input th:field="*{email}" class="input100" type="text" name="email">
+                                                <span class="focus-input100" data-placeholder="Email cím"></span>
                                             </div>
                                         </div>
+                                        
 				                    </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate="Enter password">
-                                                <input class="input100" type="password" name="pass">
+                                                <input th:field="*{jelszo}" class="input100" type="password" name="pass">
                                                 <span class="focus-input100" data-placeholder="Jelszó"></span>
                                                 </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter street">
-                                                <input class="input100" type="text" name="street">
-                                                <span class="focus-input100" data-placeholder="Utca"></span>
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter town">
+                                                <input th:field="*{varos}" class="input100" type="text" name="town">
+                                                <span class="focus-input100" data-placeholder="Város"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter fullname">
-                                                <input class="input100" type="text" name="fullname">
+                                                <input th:field="*{nev}" class="input100" type="text" name="fullname">
                                                 <span class="focus-input100" data-placeholder="Teljes név"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter house number">
-                                                <input class="input100" type="text" name="house number">
-                                                <span class="focus-input100" data-placeholder="Házszám"></span>
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter street">
+                                                <input th:field="*{utca}" class="input100" type="text" name="street">
+                                                <span class="focus-input100" data-placeholder="Utca"></span>
                                             </div>
                                         </div>
+                                      
 				                    </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter birthdate">
-                                                <input class="input100" type="text" name="birthdate">
+                                                <input th:field="*{szul_ido}" class="input100" type="text" name="birthdate">
                                                 <span class="focus-input100" data-placeholder="Születési dátum"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter cv">
-                                                <input class="input100" type="text" name="cv">
-                                                <span class="focus-input100" data-placeholder="Önéletrajz"></span>
-                                            </div>
-                                        </div>
-				                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="wrap-input100 validate-input m-b-50" data-validate = "Enter email">
-                                                <input class="input100" type="text" name="email">
-                                                <span class="focus-input100" data-placeholder="Email cím"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter profession">
-                                                <input class="input100" type="text" name="profession">
-                                                <span class="focus-input100" data-placeholder="Szakma"></span>
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter house number">
+                                                <input th:field="*{hazszam}" class="input100" type="text" name="house number">
+                                                <span class="focus-input100" data-placeholder="Házszám"></span>
                                             </div>
                                         </div>
 				                    </div>
@@ -191,7 +179,7 @@
                                     <div class="col-md-4"></div>
                                     <div class="col-md-4">   
 									<div class="container-login100-form-btn">
-										<button class="login100-form-btn">
+										<button class="login100-form-btn" type="submit">
 											Regisztrálás
 										</button>
 									</div>
