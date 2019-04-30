@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<link  th:href="@{css/style.css}" rel="stylesheet" href="style.css">
+<link th:href="@{css/login.css}" rel="stylesheet" href="login.css"> 
+	<link rel="icon" type="image/png" href="modal/images/icons/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="modal/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="modal/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="modal/fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="modal/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="modal/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="modal/vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="modal/vendor/select2/select2.min.css">	
+	<link rel="stylesheet" type="text/css" href="modal/vendor/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="modal/css/util.css">
+	<link rel="stylesheet" type="text/css" href="modal/css/main.css">
+
+    
+    
+<body>   
+<header lang="en" th:include="mainheader"> </header> 
+<div class="row">
+<div class="col-md-1"></div>
+<div class="col-md-10">
+<div class="container-login100">
+						<div class="wrap-reg100 p-t-25 p-b-20">
+							<form th:action="@{/userreg}" th:object="${allaskereso}" method="POST">
+									<span class="login100-form-title p-b-20">
+										Álláskereső regisztráció
+									</span>
+				                
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter username">
+                                                <input th:field="*{felh_nev}" class="input100" type="text" name="username">
+                                                <span class="focus-input100" data-placeholder="Felhasználónév"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="wrap-input100 validate-input m-t-85 m-b-35" data-validate = "Enter email">
+                                                <input th:field="*{email}"class="input100" type="text" name="email">
+                                                <span class="focus-input100" data-placeholder="Email cím"></span>
+                                            </div>
+                                        </div>
+                                        
+				                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate="Enter password">
+                                                <input th:field="*{jelszo}" class="input100" type="password" name="pass">
+                                                <span class="focus-input100" data-placeholder="Jelszó"></span>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter town">
+                                                <input th:field="*{varos}"class="input100" type="text" name="town">
+                                                <span class="focus-input100" data-placeholder="Város"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter fullname">
+                                                <input th:field="*{nev}" class="input100" type="text" name="fullname">
+                                                <span class="focus-input100" data-placeholder="Teljes név"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter street">
+                                                <input th:field="*{utca}" class="input100" type="text" name="street">
+                                                <span class="focus-input100" data-placeholder="Utca"></span>
+                                            </div>
+                                        </div>
+                                      
+				                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter birthdate">
+                                                <input  th:field="*{szul_ido}" class="input100" type="text" name="birthdate">
+                                                <span class="focus-input100" data-placeholder="Születési dátum"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter house number">
+                                                <input th:field="*{hazszam}" class="input100" type="text" name="house number">
+                                                <span class="focus-input100" data-placeholder="Házszám"></span>
+                                            </div>
+                                        </div>
+				                    </div>
+                                    <div class="row">
+                                     
+                                        
+				                    </div>
+								
+				                    <div class="row">
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4">   
+									<div class="container-login100-form-btn">
+										<button class="login100-form-btn" type="submit">
+											Regisztrálás
+										</button>
+									</div>
+                                    </div>     
+                                    <div class="col-md-4"></div>      
+                                    </div>    
+				
+							</form>
+						</div>
+					 </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</body> 
+</html>

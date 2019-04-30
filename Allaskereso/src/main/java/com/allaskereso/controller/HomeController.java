@@ -2,12 +2,8 @@ package com.allaskereso.controller;
 
 
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,9 +20,7 @@ import com.allaskereso.services.DAO;
 
 @Controller
 public class HomeController {
-	
 	DAO dao = new DAO();
-	Allaskeresoreg regi=new Allaskeresoreg();
 	
 	@PersistenceContext
     private EntityManager manager;
@@ -34,56 +28,95 @@ public class HomeController {
 	
 
 	@RequestMapping("/")
-	public String HomePageD() throws IOException {
+	public String HomePage() throws IOException {
 		
+		return "index";
+		
+	}
+	
+	@RequestMapping("/index")
+	public String HomePageIndex() throws IOException {
 		
 		return "index";
 		
 	}
 	
 	@RequestMapping("/index.html")
-	public String HomePage1() throws IOException {
-		
-		
+	public String HomePageIndexHtml() throws IOException {
 		
 		return "index";
 		
 	}
-	@RequestMapping("/login.html")
-	public String Login(Model model) throws IOException {
+	
+	@RequestMapping("/loginredirect.html")
+	public String LoginRedirect() throws IOException {
 		
-		model.addAttribute("allaskereso", regi);
+		return "loginredirect";
 		
-		return "login";
+	}
+	
+	@RequestMapping("/userlogin.html")
+	public String UserLogin() throws IOException {
+		
+		return "userlogin";
+		
+	}
+	
+	@RequestMapping("/registrationredirect.html")
+	public String RegistrationRedirect() throws IOException {
+		
+		return "registrationredirect";
+		
+	}
+	
+	@RequestMapping("/userreg.html")
+	public String UserReg(Model model) throws IOException {
+		
+		
+		model.addAttribute("allaskereso", new Allaskeresoreg());
+		return "userreg";
 		
 	}
 	
 	
+	@RequestMapping("/companyreg.html")
+	public String CompanyReg() throws IOException {
+		
+		return "companyreg";
+		
+	}
 	
-	@PostMapping("/reg")
+	@RequestMapping("/companylogin.html")
+	public String CompanyLogin() throws IOException {
+		
+		return "companylogin";
+		
+	}
+	
+	@RequestMapping("/moderatorlogin.html")
+	public String ModeratorLogin() throws IOException {
+		
+		return "moderatorlogin";
+		
+	}
+	
+	@PostMapping("/userreg")
 	public String AllaskeresoReg(@ModelAttribute Allaskeresoreg allaskereso) {
 		
+		try {
+		boolean succ=false;
 		VarosIDSearch varosom = dao.varosIdByName(manager,allaskereso.getVaros());
-		
-		dao.insertAllaskereso(manager,allaskereso.getNev(),allaskereso.getSzul_ido(),allaskereso.getEmail(),varosom.getId(),
-				allaskereso.getUtca(),allaskereso.getHazszam(),allaskereso.getFelh_nev(),allaskereso.getJelszo(),new Timestamp(System.currentTimeMillis()));
-		
-		System.out.println("Kész");
-		
-		return "index";
+		succ=dao.insertAllaskereso(manager,allaskereso.getNev(),allaskereso.getSzul_ido(),allaskereso.getEmail(),varosom.getId(),
+			allaskereso.getUtca(),allaskereso.getHazszam(),allaskereso.getFelh_nev(),allaskereso.getJelszo(),new Timestamp(System.currentTimeMillis()));
+			return "index";	
+		}catch(Exception e) {
+			
+		}
+		return "userreg";
+			
 	}
 	
 	
-	
-	@RequestMapping("/jobs.html")
-	public String JobsPage(Model model) throws IOException {
-		
-		
-		
-		
-		return "jobs";
-		
-	}
 	
 		
 }
