@@ -38,10 +38,10 @@ public class HomeController {
 		
 		boolean succ;
 		Date x = new Date(System.currentTimeMillis());
-		byte[] blob=dao.convertFileContentToBlob("C:\\Users\\CK\\Desktop\\asd.rtf");
+		//byte[] blob=dao.convertFileContentToBlob("C:\\Users\\CK\\Desktop\\asd.rtf");
 		Timestamp ts = new Timestamp(System.currentTimeMillis());
-		Long asdx=(long) 2;
-		succ=dao.insertAllaskereso(manager,"alma",x,"alfa@alfac.hu",2,"Strret","2","asdfggxx","asdfghjkl",ts,asdx, blob );
+		//Long asdx=(long) 2;
+		succ=dao.insertAllaskereso(manager,"alma",x,"alfa@alfac.hu",2,"Strret","2","asdfggxx","asdfghjkl",ts);
 		System.out.println(succ);
 		
 		try {
@@ -60,7 +60,7 @@ public class HomeController {
 			ret = "index";
 		}
 		
-		return ret;
+		return "index";
 		
 	}
 	

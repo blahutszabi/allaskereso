@@ -227,7 +227,7 @@ public class DAO {
 	}
 	
 	public boolean insertAllaskereso(EntityManager manager, String anev, Date szul, String emailc, Integer varosid, String utcap, String hazszamp,
-			String felh_nevp, String jelszop, Timestamp utolso_belepesp,Long id, byte[] asd ) {
+			String felh_nevp, String jelszop, Timestamp utolso_belepesp) {
 		
 		try {
 			
@@ -260,13 +260,13 @@ public class DAO {
 			
 			procedureQuery.registerStoredProcedureParameter("utolso_belepesp", Timestamp.class, ParameterMode.IN);
 			procedureQuery.setParameter("utolso_belepesp", utolso_belepesp);
-			
+			/*
 			procedureQuery.registerStoredProcedureParameter("szakmap", Long.class, ParameterMode.IN);
 			procedureQuery.setParameter("szakmap", id);
 			
 			procedureQuery.registerStoredProcedureParameter("oneletrajzp", byte[].class, ParameterMode.IN);
 			procedureQuery.setParameter("oneletrajzp", asd);
-			
+			*/
 			procedureQuery.execute();
 			
 			

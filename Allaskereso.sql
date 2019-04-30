@@ -4527,8 +4527,7 @@ END;
 
 
 CREATE OR REPLACE PROCEDURE ujAllaskereso(anev IN ALLASKERESO.nev%TYPE,szul IN allaskereso.szul_ido%TYPE,emailc IN allaskereso.email%TYPE,varosid IN VAROS.id%TYPE,
-utcap IN allaskereso.utca%TYPE, hazszamp IN allaskereso.hazszam%TYPE,felh_nevp IN allaskereso.felh_nev%TYPE, jelszop IN allaskereso.jelszo%TYPE, utolso_belepesp IN allaskereso.utolso_belepes%TYPE,
-szakmap SZAKMA.id%TYPE, oneletrajzp oneletrajz.oneletrajz%TYPE)
+utcap IN allaskereso.utca%TYPE, hazszamp IN allaskereso.hazszam%TYPE,felh_nevp IN allaskereso.felh_nev%TYPE, jelszop IN allaskereso.jelszo%TYPE, utolso_belepesp IN allaskereso.utolso_belepes%TYPE)
 IS
     new_id_oneletrajz NUMBER;
     new_id NUMBER;
@@ -4537,9 +4536,6 @@ BEGIN
     new_id:=new_id+1;
     INSERT INTO ALLASKERESO(id,nev,szul_ido,email,varos_id,utca,hazszam,statusz_id,felh_nev,jelszo,utolso_belepes) 
     VALUES (new_id,anev,szul,emailc,varosid,utcap,hazszamp,1,felh_nevp,jelszop,utolso_belepesp);
-    INSERT INTO ALLASKERESOSZAKMA(szakma_id,allaskereso_id) VALUES (szakmap,new_id);
-    SELECT MAX(oneletrajz.id) INTO new_id_oneletrajz FROM ONELETRAJZ;
-    new_id_oneletrajz:=new_id_oneletrajz+1;
-    INSERT INTO ONELETRAJZ(id,allaskereso_id,oneletrajz) VALUES (new_id_oneletrajz,new_id,oneletrajzp);
 END;
 /
+
