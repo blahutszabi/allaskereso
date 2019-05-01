@@ -207,7 +207,7 @@ public class HomeController {
 			ceg.getUtca(),ceg.getHazszam(),ceg.getFelh_nev(),ceg.getJelszo(),ceg.getKapcs_nev(),ceg.getKapcs_tel(),ceg.getKapcs_email());
 		
 		if(succ) {
-			return "alertuserregsuccess";	
+			return "alertcompanyregsuccess";	
 		} else {
 			return "cegreg";
 		}
