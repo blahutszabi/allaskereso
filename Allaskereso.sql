@@ -4591,3 +4591,36 @@ BEGIN
     OPEN ret FOR SELECT ceg.id,ceg.felh_nev FROM ceg WHERE ceg.felh_nev=fnev;
 END;
 /
+CREATE OR REPLACE PROCEDURE insertOneletrajz(allaskeresop IN allaskereso.id%TYPE,oneletrajzp IN oneletrajz.oneletrajz%TYPE)
+IS
+    max_oneletrajzid NUMBER;
+BEGIN
+    SELECT MAX(id) INTO max_oneletrajzid FROM ONELETRAJZ;
+    max_oneletrajzid:=max_oneletrajzid+1;
+    INSERT INTO ONELETRAJZ(id,allaskereso_id,oneletrajz)
+    VALUES(max_oneletrajzid,allaskeresop,oneletrajzp);
+END;
+/
+CREATE OR REPLACE TRIGGER ismeretlen_szakma
+BEFORE UPDATE OR INSERT ON SZAKMA
+FOR EACH ROW
+DECLARE
+  szakma_cnt PLS_INTEGER:=0;
+  new_szakmaid NUMBER;
+BEGIN 
+  SELECT COUNT(*) INTO szakma_cnt FROM SZAKMA WHERE megnevezes=:NEW.megnevezes;
+  IF szakma_cnt=0 THEN
+    SELECT MAX(id) INTO new_szakmaid FROM szakma;
+    new_szakmaid:=new_szakmaid+1;
+    INSERT INTO SZAKMA(id,megnevezes)
+    VALUES(new_szakmaid,:NEW.megnevezes);
+  END IF;
+END;
+/
+CREATE OR REPLACE PROCEDURE insertAllaskeresoSzakma(allask_id IN allaskereso.id%TYPE,szakmaid IN szakma.id%TYPE)
+IS
+BEGIN
+    INSERT INTO allaskeresoszakma(szakma_id,allaskereso_id)
+    VALUES(szakmaid,allask_id);
+END;
+/

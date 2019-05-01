@@ -3,12 +3,14 @@ package com.allaskereso.controller;
 
 
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Timestamp;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -109,6 +111,25 @@ public class HomeController {
 		
 		model.addAttribute("moderator", new ModeratorLogin());
 		return "moderatorlogin";
+		
+	}
+	@RequestMapping("/jobs.html")
+	public String JobsHtml(Model model, HttpServletRequest request) throws IOException {
+		
+		HttpSession session = request.getSession();
+		String valami =(String) session.getAttribute("felhnev");
+		
+		//System.out.println(valami);
+		// session.invalidate(); Destroy the session.
+		return "jobs";
+		
+	}
+	
+	@RequestMapping("/upload.html")
+	public String UserUpload(Model model, HttpServletRequest request) throws IOException {
+		
+		model.addAttribute("obj",new SzakmaOneletrajzUp());
+		return "upload";
 		
 	}
 	
@@ -218,14 +239,18 @@ public class HomeController {
 	}
 	
 	@PostMapping("/userlogin")
-	public String UserLogin(@ModelAttribute AllaskeresoLogin allaskereso, Model model) {
+	public String UserLogin(@ModelAttribute AllaskeresoLogin allaskereso, Model model, HttpServletRequest request) {
 
+		
 		try {
 		model.addAttribute("allaskereso", allaskereso);
 		AllaskeresoLogin login = dao.allaskeresoLogin(manager, allaskereso.getFelh_nev());
 		if(login.getFelh_nev().equals(allaskereso.getFelh_nev()) && login.getJelszo().equals(allaskereso.getJelszo())) {
 			
-				return "index";	
+			HttpSession session = request.getSession();
+			session.setAttribute("felhnev",allaskereso.getFelh_nev());
+			
+				return "jobs";	
 			} else {
 					
 		
@@ -274,6 +299,45 @@ public class HomeController {
 		}catch(Exception e) {
 			return "alertmoderatorlogin";
 		}
+	}
+	
+	@PostMapping("/fileupload")
+	public String UploadSzakmaOneletrajz(@ModelAttribute SzakmaOneletrajzUp obj, Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		
+		String felhasznalo =(String) session.getAttribute("felhnev");
+		
+		AllaskeresoIDSearchByFNev kereso = dao.allaskeresoIdByFNev(manager,felhasznalo);
+		
+		boolean succ = false;
+		boolean succ2 = false;
+		
+		
+		model.addAttribute("obj", obj);
+		
+		if(!obj.getOneletrajz().equals(null)) {
+			
+			byte[] array = dao.convertFileContentToBlob(obj.getOneletrajz());
+			
+			
+			 succ = dao.insertOneletrajz(manager,kereso.getId(),array);
+			
+		}
+		if(!obj.getMegnevezes().equals(null)) {
+			
+			SzakmaSearch szakma = dao.szakmaIdByName(manager,obj.getMegnevezes());
+			 succ2 = dao.insertAllaskeresoSzakma(manager,kereso.getId(),szakma.getId());
+			 
+		}
+		
+		System.out.println(succ);
+		System.out.println(succ2);
+		
+		return "alertsuccupload";
+		
+		
+		
 	}
 	
 	

@@ -205,9 +205,9 @@ public class DAO {
 	}
 	
 	//file to BLOB
-	public static byte[] convertFileContentToBlob(String filePath) throws IOException {
+	public static byte[] convertFileContentToBlob(File file) throws IOException {
 		// create file object
-		File file = new File(filePath);
+		
 		// initialize a byte array of size of the file
 		byte[] fileContent = new byte[(int) file.length()];
 		FileInputStream inputStream = null;
@@ -374,6 +374,52 @@ public class DAO {
 		procedureQuery.execute();
 		CegIDSearchByFNev firstrow = (CegIDSearchByFNev) procedureQuery.getSingleResult();
 	    return firstrow;
+	}
+	
+	public boolean insertOneletrajz(EntityManager manager, Long allaskid, byte[] oneletrajz) {
+		
+		try {
+			
+			StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("insertOneletrajz");
+			
+			procedureQuery.registerStoredProcedureParameter("allaskeresop", Long.class, ParameterMode.IN);
+			procedureQuery.setParameter("allaskeresop", allaskid);
+			
+			procedureQuery.registerStoredProcedureParameter("oneletrajzp", byte[].class, ParameterMode.IN);
+			procedureQuery.setParameter("oneletrajzp", oneletrajz);
+			
+			procedureQuery.execute();
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	public boolean insertAllaskeresoSzakma(EntityManager manager, Long allaskid, Long szakmaid) {
+		
+		
+			
+			StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("insertAllaskeresoSzakma");
+			
+			procedureQuery.registerStoredProcedureParameter("allask_id", Long.class, ParameterMode.IN);
+			procedureQuery.setParameter("allask_id", allaskid);
+			
+			procedureQuery.registerStoredProcedureParameter("szakmaid", Long.class, ParameterMode.IN);
+			procedureQuery.setParameter("szakmaid", szakmaid);
+			
+			procedureQuery.execute();
+			
+			
+		
+		
+		return true;
+		
 	}
 	
 }
