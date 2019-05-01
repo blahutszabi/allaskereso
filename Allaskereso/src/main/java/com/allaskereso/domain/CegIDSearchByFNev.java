@@ -5,15 +5,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class CegLogin {
-	
+public class CegIDSearchByFNev {
 	@GeneratedValue
 	@Id
 	private Long id;
 	private String felh_nev;
-	private String jelszo;
 	
-	public CegLogin() {}
+	public CegIDSearchByFNev() {}
 
 	public Long getId() {
 		return id;
@@ -31,14 +29,9 @@ public class CegLogin {
 		this.felh_nev = felh_nev;
 	}
 
-	public String getJelszo() {
-		return jelszo;
-	}
-
-	public void setJelszo(String jelszo) {
-		this.jelszo = jelszo;
+	@Override
+	public String toString() {
+		return "CegIDSearchByFNev [id=" + id + ", felh_nev=" + felh_nev + "]";
 	}
 	
-	
-
 }

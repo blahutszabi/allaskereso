@@ -92,6 +92,7 @@ public class DAO {
 		List<Oneletrajz> oneletrajzok = procedureQuery.getResultList();
 	    return oneletrajzok;
 	}
+	
 	public List<Allaskeresoszakma> listAllaskeresoszakmak(EntityManager manager) {
 		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listAllaskeresoszakmak",Allaskeresoszakma.class);
 		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
@@ -279,6 +280,100 @@ public class DAO {
 		return true;
 	}
 	
-	
+	public boolean insertCeg(EntityManager manager, String cnev, Long varosid, String utcap, String hazszamp,
+			String felh_nevp, String jelszop, String kapcs_nev, String kapcs_tel,String kapcs_email) {
+		
+		try {
+			
+			StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("ujCeg");
+			
+			procedureQuery.registerStoredProcedureParameter("cnev", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("cnev", cnev);
+			
+			procedureQuery.registerStoredProcedureParameter("varosid", Long.class, ParameterMode.IN);
+			procedureQuery.setParameter("varosid", varosid);
+			
+			procedureQuery.registerStoredProcedureParameter("utcap", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("utcap", utcap);
 
+			procedureQuery.registerStoredProcedureParameter("hazszamp", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("hazszamp", hazszamp);
+			
+			procedureQuery.registerStoredProcedureParameter("felh_nevp", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("felh_nevp", felh_nevp);
+			
+			procedureQuery.registerStoredProcedureParameter("jelszop", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("jelszop", jelszop);
+			
+			procedureQuery.registerStoredProcedureParameter("kapcs_nev", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("kapcs_nev", kapcs_nev);
+			
+			procedureQuery.registerStoredProcedureParameter("kapcs_tel", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("kapcs_tel", kapcs_tel);
+			
+			procedureQuery.registerStoredProcedureParameter("kapcs_email", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("kapcs_email", kapcs_email);
+
+			procedureQuery.execute();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+
+	
+	public AllaskeresoIDSearchByFNev allaskeresoIdByFNev(EntityManager manager, String anev) {
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allaskeresoIdByFNev",AllaskeresoIDSearchByFNev.class);
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		procedureQuery.registerStoredProcedureParameter("anev", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("anev", anev);
+		procedureQuery.execute();
+		AllaskeresoIDSearchByFNev firstrow = (AllaskeresoIDSearchByFNev) procedureQuery.getSingleResult();
+	    return firstrow;
+	}
+	
+	public AllaskeresoIDSearchByEmail allaskeresoIdByEmail(EntityManager manager, String emailc) {
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allaskeresoIdByEmail",AllaskeresoIDSearchByEmail.class);
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		procedureQuery.registerStoredProcedureParameter("emailc", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("emailc", emailc);
+		procedureQuery.execute();
+		AllaskeresoIDSearchByEmail firstrow = (AllaskeresoIDSearchByEmail) procedureQuery.getSingleResult();
+	    return firstrow;
+	}
+	
+	public KapcsolattartoIDSearchByEmail kapcsolattartoIdByEmail(EntityManager manager, String emailc) {
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("kapcsolattartoIdByEmail",KapcsolattartoIDSearchByEmail.class);
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		procedureQuery.registerStoredProcedureParameter("emailc", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("emailc", emailc);
+		procedureQuery.execute();
+		KapcsolattartoIDSearchByEmail firstrow = (KapcsolattartoIDSearchByEmail) procedureQuery.getSingleResult();
+	    return firstrow;
+	}
+	
+	public KapcsolattartoIDSearchByTel kapcsolattartoIdByTel(EntityManager manager, String tel) {
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("kapcsolattartoIdByTel",KapcsolattartoIDSearchByTel.class);
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		procedureQuery.registerStoredProcedureParameter("tel", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("tel", tel);
+		procedureQuery.execute();
+		KapcsolattartoIDSearchByTel firstrow = (KapcsolattartoIDSearchByTel) procedureQuery.getSingleResult();
+	    return firstrow;
+	}
+	
+	public CegIDSearchByFNev cegIdByFNev(EntityManager manager, String fnev) {
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("cegIdByFNev",CegIDSearchByFNev.class);
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		procedureQuery.registerStoredProcedureParameter("fnev", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("fnev", fnev);
+		procedureQuery.execute();
+		CegIDSearchByFNev firstrow = (CegIDSearchByFNev) procedureQuery.getSingleResult();
+	    return firstrow;
+	}
+	
 }

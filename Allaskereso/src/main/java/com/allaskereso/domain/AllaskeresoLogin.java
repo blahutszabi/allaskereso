@@ -13,7 +13,7 @@ public class AllaskeresoLogin {
 	private String felh_nev;
 	private String jelszo;
 	
-	private AllaskeresoLogin() {}
+	public AllaskeresoLogin() {}
 
 	public long getId() {
 		return id;

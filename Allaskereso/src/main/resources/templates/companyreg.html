@@ -24,7 +24,7 @@
 <div class="col-md-10">  
 <div class="container-login100">
 						<div class="wrap-reg100 p-t-25 p-b-20">
-							<form>
+							<form th:action="@{/cegreg}" th:object="${ceg}" method="POST">
 									<span class="login100-form-title p-b-20">
 										Cég regisztráció
 									</span>
@@ -39,13 +39,13 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-t-55 m-b-35" data-validate = "Enter username">
-                                                <input class="input100" type="text" name="username">
+                                                <input th:field="*{felh_nev}" class="input100" type="text" name="username" required="required">
                                                 <span class="focus-input100" data-placeholder="Felhasználónév"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-t-55 m-b-35" data-validate="Enter password">
-                                                <input class="input100" type="password" name="pass">
+                                                <input  th:field="*{jelszo}"class="input100" type="password" name="pass" required="required">
                                                 <span class="focus-input100" data-placeholder="Jelszó"></span>
                                                 </div>
                                         </div>                                      
@@ -53,13 +53,13 @@
                                     <div class="row">
                                           <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter fullname">
-                                                <input class="input100" type="text" name="fullname">
+                                                <input th:field="*{nev}" class="input100" type="text" name="fullname" required="required">
                                                 <span class="focus-input100" data-placeholder="Teljes név"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter town">
-                                                <input class="input100" type="text" name="town">
+                                                <input th:field="*{varos}"  class="input100" type="text" name="town" required="required">
                                                 <span class="focus-input100" data-placeholder="Város"></span>
                                             </div>
                                         </div>                                  
@@ -69,13 +69,13 @@
                                       
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter street">
-                                                <input class="input100" type="text" name="street">
+                                                <input th:field="*{utca}" class="input100" type="text" name="street" required="required">
                                                 <span class="focus-input100" data-placeholder="Utca"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter house number">
-                                                <input class="input100" type="text" name="house number">
+                                                <input th:field="*{hazszam}" class="input100" type="text" name="house number" required="required">
                                                 <span class="focus-input100" data-placeholder="Házszám"></span>
                                             </div>
                                         </div>
@@ -91,13 +91,13 @@
                                     <div class="row">
                                        <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-t-55 m-b-35" data-validate = "Enter contactname">
-                                                <input class="input100" type="text" name="Contactname">
+                                                <input th:field="*{kapcs_nev}" class="input100" type="text" name="Contactname" required="required">
                                                 <span class="focus-input100" data-placeholder="Név"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-t-55 m-b-35" data-validate = "Enter contactemail">
-                                                <input class="input100" type="text" name="Contactemail">
+                                                <input th:field="*{kapcs_email}" class="input100" type="text" name="Contactemail" required="required">
                                                 <span class="focus-input100" data-placeholder="Email"></span>
                                             </div>
                                         </div>
@@ -105,7 +105,7 @@
                                     <div class="row">
                                       <div class="col-md-6">
                                             <div class="wrap-input100 validate-input m-b-35" data-validate = "Enter telefon">
-                                                <input class="input100" type="text" name="Telefon">
+                                                <input th:field="*{kapcs_tel}" class="input100" type="text" name="Telefon" id="phone-number" placeholder="+36-xx-xxx-xxxx" required="required">
                                                 <span class="focus-input100" data-placeholder="Telefon"></span>
                                             </div>
                                         </div>     
@@ -115,7 +115,7 @@
                                     <div class="col-md-4"></div>
                                     <div class="col-md-4">   
 									<div class="container-login100-form-btn">
-										<button class="login100-form-btn">
+										<button  type="submit" class="login100-form-btn">
 											Regisztrálás
 										</button>
 									</div>
@@ -129,5 +129,8 @@
         </div>
         <div class="col-md-1"></div>
     </div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+<script src="css/mask.js"></script>
 </body> 
 </html>

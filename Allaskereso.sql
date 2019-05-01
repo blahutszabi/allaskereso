@@ -4529,7 +4529,6 @@ END;
 CREATE OR REPLACE PROCEDURE ujAllaskereso(anev IN ALLASKERESO.nev%TYPE,szul IN allaskereso.szul_ido%TYPE,emailc IN allaskereso.email%TYPE,varosid IN VAROS.id%TYPE,
 utcap IN allaskereso.utca%TYPE, hazszamp IN allaskereso.hazszam%TYPE,felh_nevp IN allaskereso.felh_nev%TYPE, jelszop IN allaskereso.jelszo%TYPE, utolso_belepesp IN allaskereso.utolso_belepes%TYPE)
 IS
-    
     new_id NUMBER;
 BEGIN
     SELECT MAX(ALLASKERESo.id) INTO new_id FROM ALLASKERESO;
@@ -4539,3 +4538,56 @@ BEGIN
 END;
 /
 
+
+CREATE OR REPLACE PROCEDURE ujCeg(cnev IN CEG.nev%TYPE,varosid IN varos.id%TYPE,
+utcap IN ceg.utca%TYPE, hazszamp IN ceg.hazszam%TYPE,felh_nevp IN ceg.felh_nev%TYPE, jelszop IN ceg.jelszo%TYPE,kapcs_nev IN kapcsolattarto.nev%TYPE,
+kapcs_tel IN kapcsolattarto.telefonszam%type, kapcs_email IN kapcsolattarto.email%TYPE)
+IS
+    new_cegid NUMBER;
+    new_kapcsolattartoid NUMBER;
+BEGIN
+    SELECT MAX(ceg.id) INTO new_cegid FROM CEG;
+    new_cegid:=new_cegid+1;
+    SELECT MAX(kapcsolattarto.id) INTO new_kapcsolattartoid FROM kapcsolattarto;
+    new_kapcsolattartoid:=new_kapcsolattartoid+1;
+    INSERT INTO KAPCSOLATTARTO(id, nev, email, telefonszam) 
+    VALUES(new_kapcsolattartoid,kapcs_nev,kapcs_email,kapcs_tel);
+    INSERT INTO CEG(id,nev,varos_id,utca,hazszam,felh_nev,jelszo,kapcsolattarto_id) 
+    VALUES (new_cegid,cnev,varosid,utcap,hazszamp,felh_nevp,jelszop,new_kapcsolattartoid);
+END;
+/
+
+CREATE OR REPLACE PROCEDURE allaskeresoIdByFNev(anev IN allaskereso.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT allaskereso.id,allaskereso.felh_nev FROM allaskereso WHERE allaskereso.felh_nev=anev;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE allaskeresoIdByEmail(emailc IN allaskereso.email%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT allaskereso.id,allaskereso.email FROM allaskereso WHERE allaskereso.email=emailc;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE kapcsolattartoIdByEmail(emailc IN kapcsolattarto.email%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT kapcsolattarto.id,kapcsolattarto.email FROM kapcsolattarto WHERE kapcsolattarto.email=emailc;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE kapcsolattartoIdByTel(tel IN kapcsolattarto.telefonszam%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT kapcsolattarto.id,kapcsolattarto.telefonszam FROM kapcsolattarto WHERE kapcsolattarto.telefonszam=tel;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE cegIdByFNev(fnev IN ceg.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT ceg.id,ceg.felh_nev FROM ceg WHERE ceg.felh_nev=fnev;
+END;
+/
