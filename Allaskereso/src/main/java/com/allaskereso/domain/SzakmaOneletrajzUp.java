@@ -37,17 +37,15 @@ public class SzakmaOneletrajzUp {
 	
 	
 	
-	private File oneletrajz;
+	private String oneletrajz;
 	
 	
 
-	
-
-	public File getOneletrajz() {
+	public String getOneletrajz() {
 		return oneletrajz;
 	}
 
-	public void setOneletrajz(File oneletrajz) {
+	public void setOneletrajz(String oneletrajz) {
 		this.oneletrajz = oneletrajz;
 	}
 

@@ -205,9 +205,19 @@ public class DAO {
 	}
 	
 	//file to BLOB
-	public static byte[] convertFileContentToBlob(File file) throws IOException {
+	public static byte[] convertFileContentToBlob(String path) throws IOException {
 		// create file object
+		File file = new File(path);
 		
+		byte[] bytesArray = new byte[(int) file.length()]; 
+
+		  FileInputStream fis = new FileInputStream(file);
+		  fis.read(bytesArray); //read file into bytes[]
+		  fis.close();
+					
+		  return bytesArray;
+		
+		/*
 		// initialize a byte array of size of the file
 		byte[] fileContent = new byte[(int) file.length()];
 		FileInputStream inputStream = null;
@@ -224,7 +234,11 @@ public class DAO {
 				inputStream.close();
 			}
 		}
+		
+		
 		return fileContent;
+		*/
+		  
 	}
 	
 	public boolean insertAllaskereso(EntityManager manager, String anev, Date szul, String emailc, Long varosid, String utcap, String hazszamp,
@@ -421,5 +435,8 @@ public class DAO {
 		return true;
 		
 	}
+	
+
+	
 	
 }

@@ -316,6 +316,8 @@ public class HomeController {
 		
 		model.addAttribute("obj", obj);
 		
+		System.out.println(obj.getOneletrajz());
+		
 		if(!obj.getOneletrajz().equals(null)) {
 			
 			byte[] array = dao.convertFileContentToBlob(obj.getOneletrajz());
@@ -325,9 +327,15 @@ public class HomeController {
 			
 		}
 		if(!obj.getMegnevezes().equals(null)) {
+			try{
+			SzakmaSearch szakma = dao.szakmaIdByName(manager,obj.getMegnevezes());
+			}
+			catch(javax.persistence.NoResultException ex) {
+				dao.insertSzakma(manager,obj.getMegnevezes());
+			}
 			
 			SzakmaSearch szakma = dao.szakmaIdByName(manager,obj.getMegnevezes());
-			 succ2 = dao.insertAllaskeresoSzakma(manager,kereso.getId(),szakma.getId());
+			succ2 = dao.insertAllaskeresoSzakma(manager,kereso.getId(),szakma.getId());
 			 
 		}
 		
