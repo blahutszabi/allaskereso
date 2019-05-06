@@ -4608,3 +4608,14 @@ BEGIN
     VALUES(szakmaid,allask_id);
 END;
 /
+CREATE OR REPLACE PROCEDURE ujAllas(ceg_idp IN CEG.id%TYPE,varos_idp IN varos.id%TYPE,szakma_idp IN szakma.id%TYPE,munkakorp IN allas.munkakor%TYPE,
+leirasp IN allas.leiras%TYPE, berp IN allas.ber%TYPE,feladas_datumap IN allas.feladas_datuma%TYPE)
+IS
+    new_id NUMBER;
+BEGIN
+    SELECT MAX(ALLAS.id) INTO new_id FROM ALLAS;
+    new_id:=new_id+1;
+    INSERT INTO ALLAS
+    VALUES (new_id,ceg_idp,varos_idp,szakma_idp,munkakorp,leirasp,berp,feladas_datumap);
+END;
+/
