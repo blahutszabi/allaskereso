@@ -436,6 +436,47 @@ public class DAO {
 		
 	}
 	
+	public boolean insertAllas(EntityManager manager, Long ceg_idp, Long varos_idp, Long szakma_idp, String munkakorp,
+			String leirasp, Integer berp, Timestamp feladas_datumap) {
+		
+		try {
+			
+			StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("ujAllas");
+			
+			procedureQuery.registerStoredProcedureParameter("ceg_idp", Long.class, ParameterMode.IN);
+			procedureQuery.setParameter("ceg_idp", ceg_idp);
+			
+			procedureQuery.registerStoredProcedureParameter("varos_idp", Long.class, ParameterMode.IN);
+			procedureQuery.setParameter("varos_idp", varos_idp);
+			
+			procedureQuery.registerStoredProcedureParameter("szakma_idp", Long.class, ParameterMode.IN);
+			procedureQuery.setParameter("szakma_idp", szakma_idp);
+
+			procedureQuery.registerStoredProcedureParameter("munkakorp", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("munkakorp", munkakorp);
+			
+			procedureQuery.registerStoredProcedureParameter("leirasp", String.class, ParameterMode.IN);
+			procedureQuery.setParameter("leirasp", leirasp);
+			
+			procedureQuery.registerStoredProcedureParameter("berp", Integer.class, ParameterMode.IN);
+			procedureQuery.setParameter("berp", berp);
+			
+			procedureQuery.registerStoredProcedureParameter("feladas_datumap", Timestamp.class, ParameterMode.IN);
+			procedureQuery.setParameter("feladas_datumap", feladas_datumap);
+			
+			
+
+			procedureQuery.execute();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
+	
 
 	
 	

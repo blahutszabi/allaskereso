@@ -1,5 +1,6 @@
 package com.allaskereso.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Timestamp;
@@ -169,7 +170,7 @@ public class HomeController {
 	@RequestMapping("/allasfeladas.html")
 	public String AllasFeladas(Model model) throws IOException {
 
-		model.addAttribute("obj", new ModeratorLogin());
+		model.addAttribute("obj", new AllasUp());
 		return "allasfeladas";
 
 	}
@@ -350,9 +351,16 @@ public class HomeController {
 
 		if (!obj.getOneletrajz().equals("")) {
 
-			byte[] array = dao.convertFileContentToBlob(obj.getOneletrajz());
+			try {
+				byte[] array = dao.convertFileContentToBlob(obj.getOneletrajz());
+				succ = dao.insertOneletrajz(manager, kereso.getId(), array);
+			}
+			catch(FileNotFoundException e) {
+				return "alertnotfound";
+			}
+			
 
-			succ = dao.insertOneletrajz(manager, kereso.getId(), array);
+			
 
 		}
 		if (!obj.getMegnevezes().equals("")) {
@@ -376,5 +384,50 @@ public class HomeController {
 		return res;
 
 	}
+	
+	@PostMapping("/allasfelad")
+	public String AllasFelad(@ModelAttribute AllasUp allasup, Model model, HttpServletRequest request) {
+		
+		String res = "";
+		VarosIDSearch varosom;
+		SzakmaSearch szakma;
+		
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("felhnev");
+		
+		model.addAttribute("obj", allasup);
+		
+		CegIDSearchByFNev ceg = dao.cegIdByFNev(manager, felhasznalo);
+		
+		try {
+			varosom = dao.varosIdByName(manager, allasup.getVaros());
+		}
+		catch (javax.persistence.NoResultException ex) {
+
+			return "alertuserreginvalidtown";
+		}
+		
+		try {
+			szakma = dao.szakmaIdByName(manager, allasup.getSzakma());
+		} catch (javax.persistence.NoResultException ex) {
+			dao.insertSzakma(manager, allasup.getSzakma());
+			szakma = dao.szakmaIdByName(manager, allasup.getSzakma());
+		}
+		
+		//EntityManager manager, Long ceg_idp, Long varos_idp, Long szakma_idp, String munkakorp,
+		//String leirasp, Integer berp, Timestamp feladas_datumap
+		try {
+			dao.insertAllas(manager,ceg.getId(),varosom.getId(),szakma.getId(),allasup.getMunkakor(),allasup.getLeiras(),
+					allasup.getBer(), new Timestamp(System.currentTimeMillis()));
+		}
+		catch(Exception e){
+			
+		};
+
+		
+		return res;
+	}
+	
+	
 
 }
