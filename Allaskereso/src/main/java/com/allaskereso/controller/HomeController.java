@@ -139,9 +139,13 @@ public class HomeController {
 		try {
 			String felhasznalo = (String) session.getAttribute("felhnev");
 			
-			System.out.println(felhasznalo);
+			//System.out.println(felhasznalo);
 			
 			if(felhasznalo.equals("null")) {
+				
+				//ceg lehet hogy be van lépve, de önéletrajzot ő nem igen ad fel
+				session.invalidate();
+				
 				return "alertloginplease";
 			}
 		}catch(NullPointerException e) {
@@ -168,9 +172,30 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/allasfeladas.html")
-	public String AllasFeladas(Model model) throws IOException {
-
+	public String AllasFeladas(Model model, HttpServletRequest request) throws IOException {
+		
+		HttpSession session = request.getSession();
 		model.addAttribute("obj", new AllasUp());
+		
+		try {
+			String felhasznalo = (String) session.getAttribute("cegfelhnev");
+			
+			//System.out.println(felhasznalo);
+			
+			if(felhasznalo.equals("null")) {
+				
+				//álláskereső nem ad fel állást
+				session.invalidate();
+				
+				return "alertlogincompanyplease";
+			}
+		}catch(NullPointerException e) {
+			
+			return "alertlogincompanyplease";
+			
+		}
+		
+		
 		return "allasfeladas";
 
 	}
@@ -292,12 +317,15 @@ public class HomeController {
 	}
 
 	@PostMapping("/companylogin")
-	public String CompanyLogin(@ModelAttribute CegLogin ceg, Model model) {
+	public String CompanyLogin(@ModelAttribute CegLogin ceg, Model model, HttpServletRequest request) {
 
 		try {
 			model.addAttribute("ceg", ceg);
 			CegLogin login = dao.cegLogin(manager, ceg.getFelh_nev());
 			if (login.getFelh_nev().equals(ceg.getFelh_nev()) && login.getJelszo().equals(ceg.getJelszo())) {
+				
+				HttpSession session = request.getSession();
+				session.setAttribute("cegfelhnev", ceg.getFelh_nev());
 
 				return "index";
 			} else {
@@ -393,7 +421,9 @@ public class HomeController {
 		SzakmaSearch szakma;
 		
 		HttpSession session = request.getSession();
-		String felhasznalo = (String) session.getAttribute("felhnev");
+		String felhasznalo = (String) session.getAttribute("cegfelhnev");
+		
+		//System.out.println(felhasznalo);
 		
 		model.addAttribute("obj", allasup);
 		
@@ -419,6 +449,7 @@ public class HomeController {
 		try {
 			dao.insertAllas(manager,ceg.getId(),varosom.getId(),szakma.getId(),allasup.getMunkakor(),allasup.getLeiras(),
 					allasup.getBer(), new Timestamp(System.currentTimeMillis()));
+			res = "alertallasfeladva";
 		}
 		catch(Exception e){
 			
