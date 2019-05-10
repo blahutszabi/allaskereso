@@ -128,6 +128,18 @@ public class HomeController {
 		return "jobs";
 
 	}
+	
+	@RequestMapping("/loggedindex.html")
+	public String JobsHtml1(Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		//String valami = (String) session.getAttribute("felhnev");
+
+		// System.out.println(valami);
+		 session.invalidate(); //Destroy the session.
+		return "loggedindex";
+
+	}
 
 	@RequestMapping("/upload.html")
 	public String UserUpload(Model model, HttpServletRequest request) throws IOException {
