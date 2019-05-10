@@ -48,48 +48,49 @@
     
 
 <body>
- 	<header lang="en" th:include="loggedheader"> </header>  
-<article>
+ 	<header lang="en" th:include="loggedheader"> </header> 
+ 	 
+<article th:each="allas :${allasok}">
     
     <div class="row" id="row">
     <div class="col-md-4"></div>
         <div class="col-md-4" id="name">
-            <h3>Kukás</h3>
+            <h3 th:text="${allas.munkakor}">Kukás</h3>
         </div>
     <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="description">
-            <p>szir szar munkakör<p>
+            <p th:text="${allas.leiras}">szir szar munkakör<p>
         </div>
      <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="description">
-            <p>leírom<p>
+            <p th:text="${allas.szakma.megnevezes}">leírom<p>
         </div>
       <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p>90 000 Ft<p>
+            <p th:text="${allas.ber}">90 000 Ft<p>
         </div>
      <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p>Cégem<p>
+            <p th:text="${allas.ceg.nev}">Cégem<p>
         </div>
       <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p>Bugyi<p>
+            <p th:text="${allas.varos.nev}">Bugyi<p>
         </div>
       <div class="col-md-4"></div>
     </div> 
@@ -97,7 +98,7 @@
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p>2019-05-10<p>
+            <p th:text="${allas.feladas_datuma}">2019-05-10<p>
         </div>
       <div class="col-md-4"></div>
     </div> 

@@ -4631,6 +4631,18 @@ BEGIN
     UPDATE ALLASKERESO SET utolso_belepes=new_date where felh_nev=fnev;
 END;
 /
+CREATE OR REPLACE PROCEDURE listAllaskeresoByFnev(fnev IN allaskereso.felh_nev%TYPE, ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+	OPEN ret FOR SELECT * FROM ALLASKERESO WHERE felh_nev=fnev;
+END;
+/
+CREATE OR REPLACE PROCEDURE listAllasBySzakmaId(szid IN allas.szakma_id%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+	OPEN ret FOR SELECT * FROM ALLAS WHERE allas.szakma_id=szid;
+END;
+/
 --listazza a 30 napnal nem regebbi allasajanlatokat, ha a bejelentkezett szemely szakmajaval azonos
 CREATE OR REPLACE PROCEDURE listSzakmak30(username IN allaskereso.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
 IS

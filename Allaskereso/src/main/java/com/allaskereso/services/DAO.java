@@ -41,6 +41,35 @@ public class DAO {
 		return allaskeresok;
 	}
 
+	public Allaskereso listAllaskeresokByFnev(EntityManager manager, String fnev) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listAllaskeresoByFnev", Allaskereso.class);
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+
+		procedureQuery.registerStoredProcedureParameter("fnev", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("fnev", fnev);
+
+		procedureQuery.execute();
+
+		Allaskereso allaskereso = (Allaskereso) procedureQuery.getSingleResult();
+		return allaskereso;
+	}
+
+	public List<Allas> listAllasBySzakmaID(EntityManager manager, Long szid) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listAllasBySzakmaId", Allas.class);
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+
+		procedureQuery.registerStoredProcedureParameter("szid", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("szid", szid);
+
+		procedureQuery.execute();
+
+		List<Allas> allasok = procedureQuery.getResultList();
+		
+		return allasok;
+	}
+
 	public List<Szakma> listSzakmak(EntityManager manager) {
 		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listSzakmak", Szakma.class);
 		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
@@ -471,25 +500,20 @@ public class DAO {
 		procedureQuery.setParameter("new_date", new_date);
 
 		procedureQuery.execute();
-		
-		
 
 	}
-	
-	public List<Allas30> listAllas30(EntityManager manager,String felh_nev) {
+
+	public List<Allas30> listAllas30(EntityManager manager, String felh_nev) {
 		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listSzakmak30", Allas30.class);
-		
+
 		procedureQuery.registerStoredProcedureParameter("username", String.class, ParameterMode.IN);
 		procedureQuery.setParameter("username", felh_nev);
-		
-		
+
 		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
 		procedureQuery.execute();
-		
+
 		List<Allas30> allasok30 = procedureQuery.getResultList();
 		return allasok30;
 	}
-
-	
 
 }
