@@ -3,10 +3,10 @@
 	xmlns:th="http://www.thymeleaf.org" class="no-js">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Állás feladás</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">          
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+<link rel="stylesheet" type="text/css" href="style.css">  
+
 </head> 
     
 <style>
@@ -19,6 +19,13 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+ input[type=text]:focus {
+ 		 border: 3px solid #1478a0;
+ }
+ input[type=number]:focus {
+ 		 border: 3px solid #1478a0;
 }
 
 input[type=number], select {
@@ -49,6 +56,8 @@ input[type=number], select {
     #label{
         text-align: right;
         margin-right: 5%;
+        color: #303a49;
+        margin-top:1.1%;
     }
     
     #firstrow{
@@ -58,6 +67,7 @@ input[type=number], select {
     }
     #title{
         text-align: center;
+        color: #303a49;
     }
 
 
@@ -65,8 +75,9 @@ input[type=number], select {
     
 </style>
     
-<body>
+<header lang="hu" th:include="loggedheadercompany"> </header> 
  
+<body>
 <form th:action="@{/allasfelad}" th:object="${obj}" method="POST">
     
 <div class="row" id="firstrow">
@@ -77,35 +88,35 @@ input[type=number], select {
     
 <div class="row">
 <div class="col-md-2"></div> 
-<div class="col-md-3" id="label"><h3>Város</h3></div>
+<div class="col-md-3" id="label"><h4>Város</h4></div>
 <div class="col-md-3"><input type="text" id="city" th:field="*{varos}"></div>
 <div class="col-md-4"></div>
 </div>
     
 <div class="row">
 <div class="col-md-2"></div> 
-<div class="col-md-3" id="label"><h3>Szakma</h3></div>
+<div class="col-md-3" id="label"><h4>Szakma</h4></div>
 <div class="col-md-3"><input type="text" id="szakma" th:field="*{szakma}"></div>
 <div class="col-md-4"></div>
 </div>
     
 <div class="row">
 <div class="col-md-2"></div> 
-<div class="col-md-3" id="label"><h3>Munkakör</h3></div>
+<div class="col-md-3" id="label"><h4>Munkakör</h4></div>
 <div class="col-md-3"><input type="text" id="munkakor" th:field="*{munkakor}"></div>
 <div class="col-md-4"></div>
 </div>
     
 <div class="row">
 <div class="col-md-2"></div> 
-<div class="col-md-3" id="label"><h3>Leírás</h3></div>
+<div class="col-md-3" id="label"><h4>Leírás</h4></div>
 <div class="col-md-3"><input type="text" id="leiras" th:field="*{leiras}"></div>
 <div class="col-md-4"></div>
 </div>
 
 <div class="row">
 <div class="col-md-2"></div> 
-<div class="col-md-3" id="label"><h3>Bér</h3></div>
+<div class="col-md-3" id="label"><h4>Bér</h4></div>
 <div class="col-md-3"><input type="number" min="90000" max="15000000" id="ber" th:field="*{ber}"></div>
 <div class="col-md-4"></div>
 </div>

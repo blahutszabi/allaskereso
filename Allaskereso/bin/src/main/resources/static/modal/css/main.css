@@ -187,7 +187,12 @@ iframe {
   background: #fff;
 }
 
-
+.title{
+    
+    text-align: center;
+    align-content: center;
+    margin-top: 4%;
+}
 /*------------------------------------------------------------------
 [ Form ]*/
 
@@ -202,6 +207,7 @@ iframe {
   color: #333333;
   line-height: 0;
   text-align: center;
+  margin-top:10%;
 }
 
 .login100-form-avatar {
@@ -253,9 +259,10 @@ iframe {
   height: 52px;
   background: transparent;
   padding: 0 5px;
-  text-align: left;
+  text-align: center;
   
 }
+
 
 /*---------------------------------------------*/ 
 .focus-input100, .focus-input100right {
@@ -296,7 +303,7 @@ iframe {
   width: 100%;
   position: absolute;
   top: 15px;
-  left: -30%;
+  left: 0;
   padding-left: 5px;
 
   -webkit-transition: all 0.4s;

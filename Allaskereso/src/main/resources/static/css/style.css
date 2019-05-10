@@ -110,7 +110,7 @@ nav ul
 {
     float:right;
     margin-right: 0;
-    margin-top: 0;
+	margin-top: -0.1%;
 }
 
 .button {
@@ -136,6 +136,7 @@ nav ul
   background-color: #041721; 
   color: #008CBA; 
   border: 1px solid #008CBA;
+
 }
 
 ul li
