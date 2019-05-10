@@ -105,6 +105,8 @@
     
     
 	<body>
+	<header lang="en" th:include="loggedheader"> </header>  
+	
 				<form th:action="@{/fileupload}" th:object="${obj}" method="POST">
 	
                 <div class="row">

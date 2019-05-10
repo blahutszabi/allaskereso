@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Timestamp;
+import java.util.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,8 +51,17 @@ public class HomeController {
 	}
 
 	@RequestMapping("/index")
-	public String HomePageIndex() throws IOException {
+	public String HomePageIndex(HttpServletRequest request) throws IOException {
+		
+		
+		HttpSession session = request.getSession();
+		String valami = (String) session.getAttribute("felhnev");
+		
+		if(!valami.equals("null")) {
 
+			return "loggedindex";
+		}
+		
 		return "index";
 
 	}
@@ -130,14 +140,47 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/loggedindex.html")
-	public String JobsHtml1(Model model, HttpServletRequest request) throws IOException {
+	public String LoggedAk(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
-		//String valami = (String) session.getAttribute("felhnev");
-
-		// System.out.println(valami);
-		 session.invalidate(); //Destroy the session.
+		String felhasznalo = "";
+		
+		try {
+			
+			felhasznalo = (String) session.getAttribute("felhnev");
+			
+			//System.out.println(felhasznalo);
+			
+			if(felhasznalo.equals("null")) {
+				
+				//ceg lehet hogy be van lépve, de önéletrajzot ő nem igen ad fel
+				session.invalidate();
+				
+				return "alertloginplease";
+			}
+			
+			
+			
+		}catch(NullPointerException e) {
+		
+			
+			return "alertloginplease";
+			
+		}
+		
+		
+		
 		return "loggedindex";
+
+	}
+	
+	@RequestMapping("/alertsucclogout.html")
+	public String LogoutAk(Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		session.invalidate();
+		
+		return "alertsucclogout";
 
 	}
 
@@ -209,6 +252,23 @@ public class HomeController {
 		
 		
 		return "allasfeladas";
+
+	}
+	@RequestMapping("/allaslista.html")
+	public String MyAllas(Model model, HttpServletRequest request) throws IOException {
+
+		//model.addAttribute("moderator", new ModeratorLogin());
+		
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("felhnev");
+		
+		List<Allas30> allas30 = dao.listAllas30(manager, felhasznalo);
+		
+		for(int i = 0; i < allas30.size(); i++) {
+			System.out.println(allas30.get(i).toString());
+		}
+		
+		return "allaslista";
 
 	}
 
@@ -315,8 +375,12 @@ public class HomeController {
 
 				HttpSession session = request.getSession();
 				session.setAttribute("felhnev", allaskereso.getFelh_nev());
+				
+				String felhasznalo = (String) session.getAttribute("felhnev");
+				
+				dao.AllaskBelepLog(manager, felhasznalo,new Timestamp(System.currentTimeMillis()));
 
-				return "jobs";
+				return "loggedindex";
 			} else {
 
 				return "alertuserlogin";

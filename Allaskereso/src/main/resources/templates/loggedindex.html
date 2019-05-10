@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Kezdőlap</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"> 
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
+<link th:href="@{css/style.css}" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">          
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+
+
+   
+    <!-- Oldalbetöltő animáció-->
+    <script>
+        $(document).ready(function() {
+ 
+        // Fakes the loading setting a timeout
+         setTimeout(function() {
+             $('body').addClass('loaded');
+         }, 1000);
+         
+ 
+        });
+     
+    </script>
+</head>
+<body>
+
+ <!-- Loader -->
+	<div id="loader-wrapper">
+		<div id="loader"></div>
+		<div class="loader-section section-left"></div>
+		<div class="loader-section section-right"></div>
+	</div>
+    
+	<header lang="en" th:include="loggedheader"> </header>  
+    
+    <div class="bg " id="home"> 
+        
+    
+    </div>
+    
+
+</body>
+</html>

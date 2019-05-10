@@ -4625,18 +4625,29 @@ BEGIN
     VALUES (new_id,ceg_idp,varos_idp,szakma_idp,munkakorp,leirasp,berp,feladas_datumap);
 END;
 /
+CREATE OR REPLACE PROCEDURE allaskeresoLogUpdate(fnev IN allaskereso.felh_nev%TYPE,new_date IN allaskereso.utolso_belepes%TYPE)
+IS
+BEGIN
+    UPDATE ALLASKERESO SET utolso_belepes=new_date where felh_nev=fnev;
+END;
+/
+--listazza a 30 napnal nem regebbi allasajanlatokat, ha a bejelentkezett szemely szakmajaval azonos
+CREATE OR REPLACE PROCEDURE listSzakmak30(username IN allaskereso.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT CEG.nev as cegnev, varos.nev as varosnev, szakma.megnevezes as szakmanev, allas.munkakor as munkakor, allas.leiras as leiras, allas.ber as ber, allas.feladas_datuma as feladas
+    FROM CEG, VAROS, SZAKMA, ALLAS WHERE varos.id=allas.varos_id AND ceg.id=allas.ceg_id AND szakma.id=allas.szakma_id
+    AND (SELECT TO_DATE(SYSDATE, 'YYYY-MM-DD') -TO_DATE(allas.feladas_datuma, 'YYYY-MM-DD') FROM   dual) < 30
+    AND allas.szakma_id IN (SELECT allaskeresoszakma.szakma_id FROM ALLASKERESOSZAKMA WHERE allaskeresoszakma.allaskereso_id=(SELECT allaskereso.id FROM allaskereso where allaskereso.felh_nev=username));
+END;
+/
 --TRIGGEREK!!!
 CREATE OR REPLACE TRIGGER belepes
 AFTER UPDATE OF UTOLSO_BELEPES ON ALLASKERESO
 FOR EACH ROW
 BEGIN
     DBMS_OUTPUT.PUT_LINE('Üdvözöllek, beléptél, mint ' || :OLD.NEV);
+	INSERT INTO LOGOLAS VALUES(:OLD.NEV ||' belépett.', SYSDATE);
 END;
 /
-CREATE OR REPLACE TRIGGER BELEPESLOGOLAS
-AFTER UPDATE OF UTOLSO_BELEPES ON ALLASKERESO
-FOR EACH ROW
-BEGIN
-    INSERT INTO LOGOLAS VALUES(:OLD.NEV ||' belépett.', SYSDATE);
-END;
-/
+
