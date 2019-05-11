@@ -138,6 +138,19 @@ public class HomeController {
 		return "jobs";
 
 	}
+	@RequestMapping("/adatok.html")
+	public String AllaskAdatok(Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("felhnev");
+
+		//atkuldes
+		Allaskereso kereso = dao.listAllaskeresokByFnev(manager,felhasznalo);
+		model.addAttribute("allaskereso", kereso);
+		
+		return "jobs";
+
+	}
 	
 	@RequestMapping("/loggedindex.html")
 	public String LoggedAk(Model model, HttpServletRequest request) throws IOException {
