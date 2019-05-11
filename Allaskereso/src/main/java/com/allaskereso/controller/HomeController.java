@@ -412,6 +412,32 @@ public class HomeController {
 		return "allasokertekel";
 
 	}
+	
+	@RequestMapping("/jelentkezettek.html")
+	public String JelentkezettekList( Model model, HttpServletRequest request) throws IOException {
+
+		
+		
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("cegfelhnev");
+		List<Jelentkezes> jelentkezesek = dao.listJelentkezesek(manager);
+		
+		List<Jelentkezes> jel = new ArrayList<>();
+		
+		for(Jelentkezes j : jelentkezesek) {
+			
+			String ceg1 = j.getAllas().getCeg().getFelh_nev();
+			if(ceg1.equals(felhasznalo)) {
+				jel.add(j);
+			};
+		}
+	
+		model.addAttribute("jelentkezettek", jel);
+		
+		
+		return "jelentkezettek";
+
+	}
 
 	@PostMapping("/userreg")
 	public String AllaskeresoReg(@ModelAttribute Allaskeresoreg allaskereso, Model model, BindingResult bindingResult) {

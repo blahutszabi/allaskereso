@@ -4670,6 +4670,17 @@ BEGIN
     AND ceg.felh_nev=(SELECT felh_nev from ceg WHERE id=cegid);
 END;
 /
+CREATE OR REPLACE PROCEDURE listJelentkezesekByCegId(cegid IN ceg.id%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN RET FOR SELECT ALLASKERESO.NEV, szakma.megnevezes, ALLAPOT.MEGNEVEZES, JELENTKEZES.DATUM
+    FROM ALLASKERESO, SZAKMA, JELENTKEZES, ALLAS, CEG, ALLAPOT
+    WHERE jelentkezes.allaskereso_id=allaskereso.id
+    AND SZAKMA.ID=allas.szakma_id AND JELENTKEZES.ALLAS_ID=ALLAS.ID
+    AND CEG.ID=ALLAS.CEG_ID AND JELENTKEZES.ALLAPOT_ID=ALLAPOT.ID
+    AND ceg.felh_nev=(SELECT ceg.felh_nev FROM CEG WHERE CEG.ID=cegid);
+END;
+/
 --nem trivialis
 CREATE OR REPLACE PROCEDURE allaskeresoErtekeles(allaskid IN allaskereso.id%TYPE,allasid IN allas.id%TYPE,ert IN allaskeresoert.ertekeles%TYPE,datump IN allaskeresoert.datum%TYPE, ret OUT SYS_REFCURSOR)
 IS
@@ -4727,6 +4738,7 @@ BEGIN
     INSERT INTO JELENTKEZES VALUES(allaskid,allasid,3,datump);
 END;
 /
+
 
 --TRIGGEREK!!!
 CREATE OR REPLACE TRIGGER belepes
