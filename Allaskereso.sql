@@ -4649,10 +4649,46 @@ IS
 BEGIN
     OPEN ret FOR SELECT CEG.nev as cegnev, varos.nev as varosnev, szakma.megnevezes as szakmanev, allas.munkakor as munkakor, allas.leiras as leiras, allas.ber as ber, allas.feladas_datuma as feladas
     FROM CEG, VAROS, SZAKMA, ALLAS WHERE varos.id=allas.varos_id AND ceg.id=allas.ceg_id AND szakma.id=allas.szakma_id
-    AND (SELECT TO_DATE(SYSDATE, 'YYYY-MM-DD') -TO_DATE(allas.feladas_datuma, 'YYYY-MM-DD') FROM   dual) < 30
     AND allas.szakma_id IN (SELECT allaskeresoszakma.szakma_id FROM ALLASKERESOSZAKMA WHERE allaskeresoszakma.allaskereso_id=(SELECT allaskereso.id FROM allaskereso where allaskereso.felh_nev=username));
 END;
 /
+CREATE OR REPLACE PROCEDURE allaskeresoAdatmodositas(fnev IN allaskereso.felh_nev%TYPE,emailp IN allaskereso.email%TYPE, jelszop IN allaskereso.jelszo%TYPE,
+varosp IN allaskereso.varos_id%TYPE, utcap IN allaskereso.utca%TYPE, hazszamp IN allaskereso.hazszam%TYPE, statuszp IN allaskereso.statusz_id%TYPE)
+IS
+BEGIN
+    UPDATE ALLASKERESO SET email=emailp, jelszo=jelszop, varos_id=varosp, utca=utcap, hazszam=hazszamp, statusz_id=statuszp where felh_nev=fnev;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE statuszIdBynev(snev IN statusz.megnevezes%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT * FROM statusz WHERE statusz.megnevezes=snev;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE cegAdatmodositas(fnev IN ceg.felh_nev%TYPE,kapcsp IN ceg.kapcsolattarto_id%TYPE,nevp IN ceg.nev%TYPE, jelszop IN ceg.jelszo%TYPE,
+varosp IN ceg.varos_id%TYPE, utcap IN ceg.utca%TYPE, hazszamp IN ceg.hazszam%TYPE,kapcsnev IN kapcsolattarto.nev%TYPE,
+kapcsemail IN kapcsolattarto.email%TYPE, kapcstel IN kapcsolattarto.telefonszam%TYPE)
+IS
+BEGIN
+    UPDATE KAPCSOLATTARTO SET nev=kapcsnev, email=kapcsemail, telefonszam=kapcstel where id=kapcsp;
+    UPDATE CEG SET nev=nevp, jelszo=jelszop, varos_id=varosp, utca=utcap, hazszam=hazszamp where felh_nev=fnev;
+END;
+/
+CREATE OR REPLACE PROCEDURE listCegByFnev(fnev IN ceg.felh_nev%TYPE, ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+	OPEN ret FOR SELECT * FROM CEG WHERE felh_nev=fnev;
+END;
+/
+CREATE OR REPLACE PROCEDURE ujJelentkezes(allaskid IN allaskereso.id%TYPE,allasid IN allas.id%TYPE, datump IN jelentkezes.datum%TYPE)
+IS
+BEGIN
+    INSERT INTO JELENTKEZES VALUES(allaskid,allasid,3,datump);
+END;
+/
+
 --TRIGGEREK!!!
 CREATE OR REPLACE TRIGGER belepes
 AFTER UPDATE OF UTOLSO_BELEPES ON ALLASKERESO
@@ -4662,4 +4698,5 @@ BEGIN
 	INSERT INTO LOGOLAS VALUES(:OLD.NEV ||' belépett.', SYSDATE);
 END;
 /
+
 

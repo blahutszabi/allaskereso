@@ -54,6 +54,20 @@ public class DAO {
 		Allaskereso allaskereso = (Allaskereso) procedureQuery.getSingleResult();
 		return allaskereso;
 	}
+	
+	public Ceg listCegByFnev(EntityManager manager, String fnev) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listCegByFnev", Ceg.class);
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+
+		procedureQuery.registerStoredProcedureParameter("fnev", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("fnev", fnev);
+
+		procedureQuery.execute();
+
+		Ceg ceg = (Ceg) procedureQuery.getSingleResult();
+		return ceg;
+	}
 
 	public List<Allas> listAllasBySzakmaID(EntityManager manager, Long szid) {
 
@@ -502,7 +516,93 @@ public class DAO {
 		procedureQuery.execute();
 
 	}
+	
+	public void AllaskeresoAdatmodositas(EntityManager manager, String fnev, String emailp, String jelszop, Long varosp, String utcap, String hazszamp, Long statuszp) {
 
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allaskeresoAdatmodositas");
+
+		procedureQuery.registerStoredProcedureParameter("fnev", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("fnev", fnev);
+		
+		procedureQuery.registerStoredProcedureParameter("emailp", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("emailp", emailp);
+		
+		procedureQuery.registerStoredProcedureParameter("jelszop", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("jelszop", jelszop);
+		
+		procedureQuery.registerStoredProcedureParameter("varosp", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("varosp", varosp);
+		
+		procedureQuery.registerStoredProcedureParameter("utcap", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("utcap", utcap);
+		
+		procedureQuery.registerStoredProcedureParameter("hazszamp", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("hazszamp", hazszamp);
+		
+		procedureQuery.registerStoredProcedureParameter("statuszp", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("statuszp", statuszp);
+		
+		procedureQuery.execute();
+
+	}
+
+	public void CegemAdatmodositas(EntityManager manager, String fnev, Long kapcsp, String nevp, String jelszop, Long varosp,
+			String utcap, String hazszamp, String kapcsnev, String kapcsemail, String kapcstel) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("cegAdatmodositas");
+
+		procedureQuery.registerStoredProcedureParameter("fnev", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("fnev", fnev);
+		
+		procedureQuery.registerStoredProcedureParameter("kapcsp", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("kapcsp", kapcsp);
+		
+		procedureQuery.registerStoredProcedureParameter("nevp", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("nevp", nevp);
+		
+		procedureQuery.registerStoredProcedureParameter("jelszop", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("jelszop", jelszop);
+		
+		procedureQuery.registerStoredProcedureParameter("varosp", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("varosp", varosp);
+		
+		procedureQuery.registerStoredProcedureParameter("utcap", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("utcap", utcap);
+		
+		procedureQuery.registerStoredProcedureParameter("hazszamp", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("hazszamp", hazszamp);
+		
+		procedureQuery.registerStoredProcedureParameter("kapcsnev", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("kapcsnev", kapcsnev);
+		
+		procedureQuery.registerStoredProcedureParameter("kapcsemail", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("kapcsemail", kapcsemail);
+		
+		procedureQuery.registerStoredProcedureParameter("kapcstel", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("kapcstel", kapcstel);
+		
+		procedureQuery.execute();
+
+	}
+	
+	public void AllasJelentkezesem(EntityManager manager, Long allaskid, Long allasid, Timestamp datump) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("ujJelentkezes");
+
+		procedureQuery.registerStoredProcedureParameter("allaskid", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("allaskid", allaskid);
+		
+		procedureQuery.registerStoredProcedureParameter("allasid", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("allasid", allasid);
+		
+		procedureQuery.registerStoredProcedureParameter("datump", Timestamp.class, ParameterMode.IN);
+		procedureQuery.setParameter("datump", datump);
+
+		procedureQuery.execute();
+
+	}
+
+	
 	public List<Allas30> listAllas30(EntityManager manager, String felh_nev) {
 		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listSzakmak30", Allas30.class);
 
@@ -514,6 +614,22 @@ public class DAO {
 
 		List<Allas30> allasok30 = procedureQuery.getResultList();
 		return allasok30;
+	}
+	
+	public Statusz statuszIdBynev(EntityManager manager, String snev) {
+		
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("statuszIdBynev",Statusz.class);
+		
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		
+		procedureQuery.registerStoredProcedureParameter("snev", String.class, ParameterMode.IN);
+		procedureQuery.setParameter("snev", snev);
+		
+		procedureQuery.execute();
+		
+		Statusz firstrow = (Statusz) procedureQuery.getSingleResult();
+		
+		return firstrow;
 	}
 
 }

@@ -73,8 +73,7 @@
 	<div class="col-md-4"><input type="text" placeholder="Állás keresése.."></div>
 	<div class="col-md-4"></div>
 </div>
- 	 
-<article th:each="allas :${allasok}">
+<article th:each="allas :${allasok}" >
     
     <div class="row" id="row">
     <div class="col-md-4"></div>
@@ -126,9 +125,26 @@
         </div>
       <div class="col-md-4"></div>
     </div> 
-       
-</article>
     
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="${allas.id}">Jelentkezes</p>
+        </div>
+      <div class="col-md-4"></div>
+    </div>     
+</article>
+
+<form th:action="@{/jelentkezes}" th:object="${allasid}" method="POST"> 
+<div class="row" id="searchrow">
+	<div class="col-md-2"></div>
+	<div class="col-md-4"><input type="text" th:field="*{id}" placeholder="Állás id"></div>
+	<div class="col-md-4"><button type="submit">Jelentkezés</button></div>
+	<div class="col-md-2"></div>
+</div>
+
+</form>
+   
         
 </body>
 </html>
