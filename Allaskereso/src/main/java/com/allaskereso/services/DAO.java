@@ -517,6 +517,26 @@ public class DAO {
 
 	}
 	
+	public void AllaskAllastErtekel(EntityManager manager, Long allaskid, Long allasid, String szovegp, Integer ertekp, Timestamp datump) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allasErtekeles");
+
+		procedureQuery.registerStoredProcedureParameter("allaskid", Long.class, ParameterMode.IN);
+		procedureQuery.registerStoredProcedureParameter("allasid", Long.class, ParameterMode.IN);
+		procedureQuery.registerStoredProcedureParameter("szovegp", String.class, ParameterMode.IN);
+		procedureQuery.registerStoredProcedureParameter("ertekp", Integer.class, ParameterMode.IN);
+		procedureQuery.registerStoredProcedureParameter("datump", Timestamp.class, ParameterMode.IN);
+
+		procedureQuery.setParameter("allaskid", allaskid);
+		procedureQuery.setParameter("allasid", allasid);
+		procedureQuery.setParameter("szovegp", szovegp);
+		procedureQuery.setParameter("ertekp", ertekp);
+		procedureQuery.setParameter("datump", datump);
+
+		procedureQuery.execute();
+
+	}
+	
 	public void AllaskeresoAdatmodositas(EntityManager manager, String fnev, String emailp, String jelszop, Long varosp, String utcap, String hazszamp, Long statuszp) {
 
 		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allaskeresoAdatmodositas");

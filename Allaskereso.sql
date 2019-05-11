@@ -4681,6 +4681,24 @@ BEGIN
     AND ceg.felh_nev=(SELECT ceg.felh_nev FROM CEG WHERE CEG.ID=cegid);
 END;
 /
+CREATE OR REPLACE PROCEDURE atlagFizetesSzakmankent(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT AVG(ALLAS.BER),SZAKMA.MEGNEVEZES FROM ALLAS, SZAKMA
+    WHERE SZAKMA.ID=ALLAS.SZAKMA_ID
+    GROUP BY SZAKMA.MEGNEVEZES;
+END;
+/
+CREATE OR REPLACE PROCEDURE legkeresettebbSzakmak(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT SZAKMA.megnevezes ,COUNT(*)AS darab 
+    FROM SZAKMA, ALLAS
+    WHERE SZAKMA.ID=ALLAS.SZAKMA_ID AND ROWNUM<11
+    GROUP BY szakma.megnevezes
+    ORDER BY darab DESC;
+END;
+/
 --nem trivialis
 CREATE OR REPLACE PROCEDURE allaskeresoErtekeles(allaskid IN allaskereso.id%TYPE,allasid IN allas.id%TYPE,ert IN allaskeresoert.ertekeles%TYPE,datump IN allaskeresoert.datum%TYPE, ret OUT SYS_REFCURSOR)
 IS
@@ -4738,9 +4756,29 @@ BEGIN
     INSERT INTO JELENTKEZES VALUES(allaskid,allasid,3,datump);
 END;
 /
-
-
---TRIGGEREK!!!
+CREATE OR REPLACE PROCEDURE allasErtekeles(allaskid IN allasert.id%TYPE,allasid IN allasert.id%TYPE,szovegp IN allasert.szoveg%TYPE,
+ertekp IN allasert.ertek%TYPE,datump IN allasert.datum%TYPE)
+IS
+    max_id NUMBER:=0;
+BEGIN
+    SELECT MAX(id) into max_id from allasert;
+    max_id:=max_id+1;
+    INSERT INTO allasert VALUES(max_id,allaskid,allasid,szovegp,ertekp,datump);
+END;
+/
+CREATE OR REPLACE PROCEDURE deleteAllasertekeles(idp IN allasert.id%TYPE)
+IS
+BEGIN
+    DELETE FROM allasert where allasert.id=idp;
+END;
+/
+CREATE OR REPLACE PROCEDURE deleteAllaskeresoert(allaskeresoidp IN allaskeresoert.allaskereso_id%TYPE, 
+allasidp IN allaskeresoert.allas_id%TYPE)
+IS
+BEGIN
+    DELETE FROM allaskeresoert where allaskereso_id=allaskeresoidp and allas_id=allasidp;
+END;
+/
 CREATE OR REPLACE TRIGGER belepes
 AFTER UPDATE OF UTOLSO_BELEPES ON ALLASKERESO
 FOR EACH ROW

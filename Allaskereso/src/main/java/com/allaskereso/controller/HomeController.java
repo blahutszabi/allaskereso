@@ -389,6 +389,7 @@ public class HomeController {
 		//allasokki = dao.listAllasok(manager);
 		model.addAttribute("allasok", allasokki);
 		model.addAttribute("allasid",new AllasId());
+		model.addAttribute("ertkm", new AllaskeresoErtekeles());
 		
 		return "allaslista";
 
@@ -908,6 +909,123 @@ public class HomeController {
 		
 		
 		return "succjel";
+	}
+	
+	@PostMapping("/allaskertekelesm")
+	public String Allaskeresoertekel(@ModelAttribute AllaskeresoErtekeles ertekeles, Model model, HttpServletRequest request) {
+		
+		String res = "";
+		
+		
+		
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("felhnev");
+		
+		
+		List<Allas> allasok = new ArrayList<>();
+		List<Allas> allasokki = new ArrayList<>();
+		Allaskereso kereso = dao.listAllaskeresokByFnev(manager,felhasznalo);
+		List<Allaskeresoszakma> szakmaidk = kereso.getAllaskeresoszakmak();
+		
+		
+		
+		for(Allaskeresoszakma i : szakmaidk) {
+			 allasok.addAll(dao.listAllasBySzakmaID(manager,i.getSzakma().getId()));
+		}
+		
+		for(Allas a: allasok) {
+			Timestamp first = new Timestamp(System.currentTimeMillis());
+			Timestamp second = a.getFeladas_datuma();
+			
+			
+			long milliseconds = first.getTime() - second.getTime();
+
+			long seconds =  milliseconds / 1000;
+			
+			
+			long hours = seconds / 3600;
+			long days = hours / 24;
+			
+			int c_days = (int) days;
+			
+			if(c_days <= 30) {
+				allasokki.add(a);
+			}
+			
+		}
+		
+		List<Long> idk = new ArrayList<>();
+		
+		for(Allas a: allasokki) {
+			idk.add(a.getId());
+			
+		}
+		
+		
+		
+		model.addAttribute("ertkm", ertekeles);
+		
+		Long allaskid = kereso.getId();
+		Long allasid = ertekeles.getAllasid();
+		String szoveg = ertekeles.getSzovegp();
+		Integer ertek = ertekeles.getErtekp();
+		
+		boolean match = false;
+		
+		for(Long i: idk) {
+			if(allasid.equals(i)) {
+				match = true;
+			}
+			
+		}
+		
+		if(!match) {
+			return "alertfakeid";
+		}
+		
+		
+		dao.AllaskAllastErtekel(manager,allaskid,allasid,szoveg,ertek,new Timestamp(System.currentTimeMillis()));
+		
+		
+		
+		
+		return "succallaskeresoertekel";
+	}
+	
+	@PostMapping("/cegertekelem")
+	public String CegertekelAllaskt(@ModelAttribute AllaskeresoErtekeles ertekeles, Model model, HttpServletRequest request) {
+		
+		String res = "";
+		
+		
+		
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("cegfelhnev");
+		
+		
+		
+		
+		
+		
+		return "succcegertekelt";
+	}
+	
+	@PostMapping("/cegstatuszm")
+	public String CegStatuszModosit(@ModelAttribute AllaskeresoErtekeles ertekeles, Model model, HttpServletRequest request) {
+		
+		String res = "";
+		
+		
+		
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("cegfelhnev");
+		
+		
+		
+		
+		
+		
+		return "succallaskeresoertekel";
 	}
 
 }

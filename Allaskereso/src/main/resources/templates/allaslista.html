@@ -52,11 +52,23 @@
       width: 100%;
       height: 100%;
 	  background-color: white;
-	  font-size: 250%;
+	  font-size: 200%;
 	  text-align: center;
 	  
 	}
 	input[type=text]:focus {
+ 		 border: 3px solid #1478a0;
+	}
+	
+	input[type=number] {
+      width: 100%;
+      height: 100%;
+	  background-color: white;
+	  font-size: 200%;
+	  text-align: center;
+	  
+	}
+	input[type=number]:focus {
  		 border: 3px solid #1478a0;
 	}
 	#idrow{
@@ -87,6 +99,16 @@
     #valami{
     	color:black;
     }
+    
+    #ertekeles{
+    	margin-top: 2%;
+    }
+    
+     #title{
+     	text-align: center;
+     	font-size: 200%;
+     	margin-top: 2%;
+     }
     
 
 </style>
@@ -206,6 +228,10 @@
     </div>     
 </article>
 
+<div class="row" id="title">
+<div class="col-md-12"><h1>Jelentkezés állásra</h1></div>
+</div>
+
 <form th:action="@{/jelentkezes}" th:object="${allasid}" method="POST"> 
 <div class="row" id="idrow">
 	<div class="col-md-4"></div>
@@ -217,10 +243,31 @@
 	<div class="col-md-4"><button id="button" type="submit">Jelentkezés</button></div>
 	<div class="col-md-4"></div>
 </div>
-
-
 </form>
-   
+
+<div class="row" id="title">
+<div class="col-md-12"><h1>Állás értékelése</h1></div>
+</div>
+
+<form th:action="@{/allaskertekelesm}" th:object="${ertkm}" method="POST">
+<div class="row" id="ertekeles">
+<div class="col-md-3"></div>
+<div class="col-md-3"><input type="text" th:field="*{allasid}" required="required" placeholder="Állás id"></div>
+<div class="col-md-3"><input type="text" th:field="*{szovegp}" required="required" placeholder="Értékelés"></div>
+<div class="col-md-3"></div>
+</div>
+<div class="row" id="buttonrow">
+	<div class="col-md-5"></div>
+	<div class="col-md-2"><input type="number" th:field="*{ertekp}" required="required" min="0" max="5" placeholder="Érték"></div>
+	<div class="col-md-5"></div>
+</div>
+<div class="row" id="buttonrow">
+	<div class="col-md-4"></div>
+	<div class="col-md-4"><button id="button"  type="submit">Értékelés</button></div>
+	<div class="col-md-4"></div>
+</div>
+</form>
+
         
 </body>
 </html>
