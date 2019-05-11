@@ -19,7 +19,7 @@ public class Allapot {
 	@OneToMany(mappedBy = "allapot")
 	private List<Jelentkezes> jelentkezesek;
 	
-	private Allapot() {}
+	public Allapot() {}
 
 	public Long getId() {
 		return id;

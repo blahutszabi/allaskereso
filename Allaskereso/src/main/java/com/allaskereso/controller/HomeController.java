@@ -38,13 +38,10 @@ public class HomeController {
 
 	@PersistenceContext
 	private EntityManager manager;
-	
-	
-	
 
 	@RequestMapping("/")
 	public String HomePage(HttpServletRequest request) throws IOException {
-		
+
 		HttpSession session = request.getSession();
 		session.invalidate();
 		return "index";
@@ -53,16 +50,15 @@ public class HomeController {
 
 	@RequestMapping("/index")
 	public String HomePageIndex(HttpServletRequest request) throws IOException {
-		
-		
+
 		HttpSession session = request.getSession();
 		String valami = (String) session.getAttribute("felhnev");
-		
-		if(!valami.equals("null")) {
+
+		if (!valami.equals("null")) {
 
 			return "loggedindex";
 		}
-		
+
 		return "index";
 
 	}
@@ -127,6 +123,7 @@ public class HomeController {
 		return "moderatorlogin";
 
 	}
+
 	@RequestMapping("/company.html")
 	public String Allceg(Model model) throws IOException {
 
@@ -135,7 +132,7 @@ public class HomeController {
 		return "company";
 
 	}
-	
+
 	@RequestMapping("/allaskert.html")
 	public String AllaskeresokertC(Model model) throws IOException {
 
@@ -144,20 +141,18 @@ public class HomeController {
 		return "allaskert";
 
 	}
-	
+
 	@RequestMapping("/allaslistam")
 	public String MyAllasaim(Model model, HttpServletRequest request) throws IOException {
 
-		
-		
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("felhnev");
-		
+
 		List<Allas30> allasok = new ArrayList<>();
-		allasok = dao.listAllas30(manager,felhasznalo);
-		
+		allasok = dao.listAllas30(manager, felhasznalo);
+
 		model.addAttribute("allasok", allasok);
-		
+
 		return "allaslistam";
 
 	}
@@ -173,99 +168,88 @@ public class HomeController {
 		return "jobs";
 
 	}
+
 	@RequestMapping("/adatmodositasak.html")
 	public String AllaskAdatok(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("felhnev");
 
-		//atkuldes
-		Allaskereso kereso = dao.listAllaskeresokByFnev(manager,felhasznalo);
+		// atkuldes
+		Allaskereso kereso = dao.listAllaskeresokByFnev(manager, felhasznalo);
 		model.addAttribute("allaskereso", kereso);
-		
-		
-		model.addAttribute("adataim",new AllaskadatMod());
-		
+
+		model.addAttribute("adataim", new AllaskadatMod());
+
 		return "adatmodositasak";
 
 	}
-	
+
 	@RequestMapping("/loggedindex.html")
 	public String LoggedAk(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
 		String felhasznalo = "";
-		
+
 		try {
-			
+
 			felhasznalo = (String) session.getAttribute("felhnev");
-			
-			//System.out.println(felhasznalo);
-			
-			if(felhasznalo.equals("null")) {
-				
-				//ceg lehet hogy be van lépve, de önéletrajzot ő nem igen ad fel
+
+			// System.out.println(felhasznalo);
+
+			if (felhasznalo.equals("null")) {
+
+				// ceg lehet hogy be van lépve, de önéletrajzot ő nem igen ad fel
 				session.invalidate();
-				
+
 				return "alertloginplease";
 			}
-			
-			
-			
-		}catch(NullPointerException e) {
-		
-			
+
+		} catch (NullPointerException e) {
+
 			return "alertloginplease";
-			
+
 		}
-		
-		
-		
+
 		return "loggedindex";
 
 	}
-	
+
 	@RequestMapping("/loggedindexcompany.html")
 	public String LoggedCompany(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
 		String felhasznalo = "";
-		
+
 		try {
-			
+
 			felhasznalo = (String) session.getAttribute("cegfelhnev");
-			
-			//System.out.println(felhasznalo);
-			
-			if(felhasznalo.equals("null")) {
-				
-				
+
+			// System.out.println(felhasznalo);
+
+			if (felhasznalo.equals("null")) {
+
 				session.invalidate();
-				
+
 				return "alertloginpleasecompany";
 			}
-			
-			
-			
-		}catch(NullPointerException e) {
-		
-			
+
+		} catch (NullPointerException e) {
+
 			return "alertloginpleasecompany";
-			
+
 		}
-		
-		
-		
+
 		return "loggedindexcompany";
 
 	}
-	
+
 	@RequestMapping("/alertsucclogout.html")
 	public String LogoutAk(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
 		session.invalidate();
-		
+
 		return "alertsucclogout";
 
 	}
@@ -276,30 +260,25 @@ public class HomeController {
 		model.addAttribute("obj", new SzakmaOneletrajzUp());
 
 		HttpSession session = request.getSession();
-		
+
 		try {
 			String felhasznalo = (String) session.getAttribute("felhnev");
-			
-			//System.out.println(felhasznalo);
-			
-			if(felhasznalo.equals("null")) {
-				
-				//ceg lehet hogy be van lépve, de önéletrajzot ő nem igen ad fel
+
+			// System.out.println(felhasznalo);
+
+			if (felhasznalo.equals("null")) {
+
+				// ceg lehet hogy be van lépve, de önéletrajzot ő nem igen ad fel
 				session.invalidate();
-				
+
 				return "alertloginplease";
 			}
-		}catch(NullPointerException e) {
-			
+		} catch (NullPointerException e) {
+
 			return "alertloginplease";
-			
+
 		}
-		
-		
-		
-		
-		
-		
+
 		return "upload";
 
 	}
@@ -311,7 +290,7 @@ public class HomeController {
 		return "moderatorlogin";
 
 	}
-	
+
 	@RequestMapping("/cegadatmodositas.html")
 	public String CegadatModositas(Model model) throws IOException {
 
@@ -319,124 +298,136 @@ public class HomeController {
 		return "cegadatmodositas";
 
 	}
-	
+
 	@RequestMapping("/allasfeladas.html")
 	public String AllasFeladas(Model model, HttpServletRequest request) throws IOException {
-		
+
 		HttpSession session = request.getSession();
 		model.addAttribute("obj", new AllasUp());
-		
+
 		try {
 			String felhasznalo = (String) session.getAttribute("cegfelhnev");
-			
-			//System.out.println(felhasznalo);
-			
-			if(felhasznalo.equals("null")) {
-				
-				//álláskereső nem ad fel állást
+
+			// System.out.println(felhasznalo);
+
+			if (felhasznalo.equals("null")) {
+
+				// álláskereső nem ad fel állást
 				session.invalidate();
-				
+
 				return "alertlogincompanyplease";
 			}
-		}catch(NullPointerException e) {
-			
+		} catch (NullPointerException e) {
+
 			return "alertlogincompanyplease";
-			
+
 		}
-		
-		
+
 		return "allasfeladas";
 
 	}
-	@RequestMapping("/allaslista.html")
-	public String MyAllas( Model model, HttpServletRequest request) throws IOException {
 
-		
-		
+	@RequestMapping("/allaslista.html")
+	public String MyAllas(Model model, HttpServletRequest request) throws IOException {
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("felhnev");
 		List<Allas> allasok = new ArrayList<>();
 		List<Allas> allasokki = new ArrayList<>();
-		Allaskereso kereso = dao.listAllaskeresokByFnev(manager,felhasznalo);
+		Allaskereso kereso = dao.listAllaskeresokByFnev(manager, felhasznalo);
 		List<Allaskeresoszakma> szakmaidk = kereso.getAllaskeresoszakmak();
-		
-		
-		
-		for(Allaskeresoszakma i : szakmaidk) {
-			 allasok.addAll(dao.listAllasBySzakmaID(manager,i.getSzakma().getId()));
+
+		for (Allaskeresoszakma i : szakmaidk) {
+			allasok.addAll(dao.listAllasBySzakmaID(manager, i.getSzakma().getId()));
 		}
-		
-		for(Allas a: allasok) {
+
+		for (Allas a : allasok) {
 			Timestamp first = new Timestamp(System.currentTimeMillis());
 			Timestamp second = a.getFeladas_datuma();
-			
-			
+
 			long milliseconds = first.getTime() - second.getTime();
 
-			long seconds =  milliseconds / 1000;
-			
-			
+			long seconds = milliseconds / 1000;
+
 			long hours = seconds / 3600;
 			long days = hours / 24;
-			
+
 			int c_days = (int) days;
-			
-			if(c_days <= 30) {
+
+			if (c_days <= 30) {
 				allasokki.add(a);
 			}
-			
+
 		}
-		//allasokki = dao.listAllasok(manager);
+		// allasokki = dao.listAllasok(manager);
 		model.addAttribute("allasok", allasokki);
-		model.addAttribute("allasid",new AllasId());
+		model.addAttribute("allasid", new AllasId());
 		model.addAttribute("ertkm", new AllaskeresoErtekeles());
-		
+
 		return "allaslista";
 
 	}
-	
-	@RequestMapping("/allasokertekel.html")
-	public String Allasokertekelesre( Model model, HttpServletRequest request) throws IOException {
 
-		
-		
+	@RequestMapping("/allasokertekel.html")
+	public String Allasokertekelesre(Model model, HttpServletRequest request) throws IOException {
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("felhnev");
 		List<Allas> allasok = dao.listAllasok(manager);
-		
-		
-		
-	
+
 		model.addAttribute("allasok", allasok);
-		
-		
+
 		return "allasokertekel";
 
 	}
-	
-	@RequestMapping("/jelentkezettek.html")
-	public String JelentkezettekList( Model model, HttpServletRequest request) throws IOException {
 
-		
-		
+	@RequestMapping("/jelentkezettek.html")
+	public String JelentkezettekList(Model model, HttpServletRequest request) throws IOException {
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("cegfelhnev");
 		List<Jelentkezes> jelentkezesek = dao.listJelentkezesek(manager);
-		
+
 		List<Jelentkezes> jel = new ArrayList<>();
-		
-		for(Jelentkezes j : jelentkezesek) {
-			
+
+		for (Jelentkezes j : jelentkezesek) {
+
 			String ceg1 = j.getAllas().getCeg().getFelh_nev();
-			if(ceg1.equals(felhasznalo)) {
+			if (ceg1.equals(felhasznalo)) {
 				jel.add(j);
-			};
+			}
+			;
 		}
-	
+
 		model.addAttribute("jelentkezettek", jel);
-		
-		
+		model.addAttribute("allapot", new StatuszModCeg());
+		model.addAttribute("ertek", new CegaltalErtekelt());
+
 		return "jelentkezettek";
+
+	}
+
+	@RequestMapping("/alljelentkezeseim.html")
+	public String JelentkezesekAllasok(Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("felhnev");
+		List<Jelentkezes> jelentkezesek = dao.listJelentkezesek(manager);
+
+		List<Jelentkezes> jel = new ArrayList<>();
+
+		for (Jelentkezes j : jelentkezesek) {
+
+			String ember = j.getAllaskereso().getFelh_nev();
+			if (ember.equals(felhasznalo)) {
+				jel.add(j);
+			}
+			;
+		}
+
+		model.addAttribute("jelentkezettek", jel);
+
+		return "alljelentkezeseim";
 
 	}
 
@@ -543,10 +534,10 @@ public class HomeController {
 
 				HttpSession session = request.getSession();
 				session.setAttribute("felhnev", allaskereso.getFelh_nev());
-				
+
 				String felhasznalo = (String) session.getAttribute("felhnev");
-				
-				dao.AllaskBelepLog(manager, felhasznalo,new Timestamp(System.currentTimeMillis()));
+
+				dao.AllaskBelepLog(manager, felhasznalo, new Timestamp(System.currentTimeMillis()));
 
 				return "loggedindex";
 			} else {
@@ -567,7 +558,7 @@ public class HomeController {
 			model.addAttribute("ceg", ceg);
 			CegLogin login = dao.cegLogin(manager, ceg.getFelh_nev());
 			if (login.getFelh_nev().equals(ceg.getFelh_nev()) && login.getJelszo().equals(ceg.getJelszo())) {
-				
+
 				HttpSession session = request.getSession();
 				session.setAttribute("cegfelhnev", ceg.getFelh_nev());
 
@@ -626,13 +617,9 @@ public class HomeController {
 			try {
 				byte[] array = dao.convertFileContentToBlob(obj.getOneletrajz());
 				succ = dao.insertOneletrajz(manager, kereso.getId(), array);
-			}
-			catch(FileNotFoundException e) {
+			} catch (FileNotFoundException e) {
 				return "alertnotfound";
 			}
-			
-
-			
 
 		}
 		if (!obj.getMegnevezes().equals("")) {
@@ -656,376 +643,445 @@ public class HomeController {
 		return res;
 
 	}
-	
+
 	@PostMapping("/allasfelad")
 	public String AllasFelad(@ModelAttribute AllasUp allasup, Model model, HttpServletRequest request) {
-		
+
 		String res = "";
 		VarosIDSearch varosom;
 		SzakmaSearch szakma;
-		
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("cegfelhnev");
-		
-		//System.out.println(felhasznalo);
-		
+
+		// System.out.println(felhasznalo);
+
 		model.addAttribute("obj", allasup);
-		
+
 		CegIDSearchByFNev ceg = dao.cegIdByFNev(manager, felhasznalo);
-		
+
 		try {
 			varosom = dao.varosIdByName(manager, allasup.getVaros());
-		}
-		catch (javax.persistence.NoResultException ex) {
+		} catch (javax.persistence.NoResultException ex) {
 
 			return "alertuserreginvalidtown";
 		}
-		
+
 		try {
 			szakma = dao.szakmaIdByName(manager, allasup.getSzakma());
 		} catch (javax.persistence.NoResultException ex) {
 			dao.insertSzakma(manager, allasup.getSzakma());
 			szakma = dao.szakmaIdByName(manager, allasup.getSzakma());
 		}
-		
-		//EntityManager manager, Long ceg_idp, Long varos_idp, Long szakma_idp, String munkakorp,
-		//String leirasp, Integer berp, Timestamp feladas_datumap
-		try {
-			dao.insertAllas(manager,ceg.getId(),varosom.getId(),szakma.getId(),allasup.getMunkakor(),allasup.getLeiras(),
-					allasup.getBer(), new Timestamp(System.currentTimeMillis()));
-			res = "alertallasfeladva";
-		}
-		catch(Exception e){
-			
-		};
 
-		
+		// EntityManager manager, Long ceg_idp, Long varos_idp, Long szakma_idp, String
+		// munkakorp,
+		// String leirasp, Integer berp, Timestamp feladas_datumap
+		try {
+			dao.insertAllas(manager, ceg.getId(), varosom.getId(), szakma.getId(), allasup.getMunkakor(),
+					allasup.getLeiras(), allasup.getBer(), new Timestamp(System.currentTimeMillis()));
+			res = "alertallasfeladva";
+		} catch (Exception e) {
+
+		}
+		;
+
 		return res;
 	}
-	
+
 	@PostMapping("/adatmodositas")
-	public String Adatmodosit(@ModelAttribute AllaskadatMod adataim, Model model,HttpServletRequest request ) {
+	public String Adatmodosit(@ModelAttribute AllaskadatMod adataim, Model model, HttpServletRequest request) {
 
 		String res = "";
 		VarosIDSearch varosom;
 		Statusz statuszkeres;
 		boolean succ = false;
-		
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("felhnev");
 
-		
-		Allaskereso kereso = dao.listAllaskeresokByFnev(manager,felhasznalo);
-		
+		Allaskereso kereso = dao.listAllaskeresokByFnev(manager, felhasznalo);
+
 		model.addAttribute("adataim", adataim);
-		
+
 		String email = adataim.getEmail();
 		String jelszo = adataim.getJelszo();
-		String varos= adataim.getVaros();
+		String varos = adataim.getVaros();
 		String utca = adataim.getUtca();
 		String hazszam = adataim.getHazszam();
 		String statusz = adataim.getStatusz();
-		
-		
-		if(jelszo.equals("")) {
+
+		if (jelszo.equals("")) {
 			jelszo = kereso.getJelszo();
 		}
-		
-		if(varos.equals("")) {
+
+		if (varos.equals("")) {
 			varos = kereso.getVaros().getNev();
 		}
-		
-		if(utca.equals("")) {
+
+		if (utca.equals("")) {
 			utca = kereso.getUtca();
 		}
-		
-		if(hazszam.equals("")) {
+
+		if (hazszam.equals("")) {
 			hazszam = kereso.getHazszam();
 		}
-		
-		if(statusz.equals("")) {
+
+		if (statusz.equals("")) {
 			statusz = kereso.getStatusz().getMegnevezes();
 		}
-		
+
 		try {
 			varosom = dao.varosIdByName(manager, varos);
-		}
-		catch (javax.persistence.NoResultException ex) {
+		} catch (javax.persistence.NoResultException ex) {
 
 			return "alertuserreginvalidtown";
 		}
-		
+
 		try {
-			
+
 			AllaskeresoIDSearchByEmail unique_email = dao.allaskeresoIdByEmail(manager, email);
-			
+
 		} catch (javax.persistence.NoResultException ex) {
 			succ = true;
-			
+
 		}
-		if(!succ) {
+		if (!succ) {
 			return "alertuserregnotuniqueemail";
 		}
-		
-		if(email.equals("")) {
+
+		if (email.equals("")) {
 			email = kereso.getEmail();
 		}
-		
-		
+
 		try {
-			statuszkeres = dao.statuszIdBynev(manager,statusz);
-			
+			statuszkeres = dao.statuszIdBynev(manager, statusz);
+
 		} catch (javax.persistence.NoResultException ex) {
-			
+
 			return "alertnotuniquestatusz";
 		}
-		
-		
-			dao.AllaskeresoAdatmodositas(manager,felhasznalo,email,jelszo,varosom.getId(),utca,hazszam,statuszkeres.getId());
-		
-		
-		
-		
+
+		dao.AllaskeresoAdatmodositas(manager, felhasznalo, email, jelszo, varosom.getId(), utca, hazszam,
+				statuszkeres.getId());
+
 		return "alertsuccadatmod";
 	}
-	
+
 	@PostMapping("/cegadatmodositas")
-	public String AdatmodositCegP(@ModelAttribute CegModosit adataim, Model model,HttpServletRequest request ) {
+	public String AdatmodositCegP(@ModelAttribute CegModosit adataim, Model model, HttpServletRequest request) {
 
 		String res = "";
 		VarosIDSearch varosom;
-		
+
 		boolean succ = false;
-		
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("cegfelhnev");
 
-		
-		Ceg kereso = dao.listCegByFnev(manager,felhasznalo);
-		
+		Ceg kereso = dao.listCegByFnev(manager, felhasznalo);
+
 		model.addAttribute("ceg", adataim);
-		
-		
+
 		String jelszo = adataim.getJelszo();
-		String varos= adataim.getVaros();
+		String varos = adataim.getVaros();
 		String utca = adataim.getUtca();
 		String hazszam = adataim.getHazszam();
 		String kapcs_email = adataim.getKapcs_email();
 		String nev = adataim.getNev();
 		String kapcs_nev = adataim.getKapcs_nev();
 		String kapcs_tel = adataim.getKapcs_tel();
-	
-		
-		
-		if(jelszo.equals("")) {
+
+		if (jelszo.equals("")) {
 			jelszo = kereso.getJelszo();
 		}
-		
-		if(varos.equals("")) {
+
+		if (varos.equals("")) {
 			varos = kereso.getVaros().getNev();
 		}
-		
-		if(utca.equals("")) {
+
+		if (utca.equals("")) {
 			utca = kereso.getUtca();
 		}
-		
-		if(hazszam.equals("")) {
+
+		if (hazszam.equals("")) {
 			hazszam = kereso.getHazszam();
 		}
-		
-		
-		
-		if(nev.equals("")) {
+
+		if (nev.equals("")) {
 			nev = kereso.getNev();
 		}
-		
-		if(kapcs_nev.equals("")) {
+
+		if (kapcs_nev.equals("")) {
 			kapcs_nev = kereso.getKapcsolattarto().getNev();
 		}
-		
-		if(kapcs_tel.equals("")) {
+
+		if (kapcs_tel.equals("")) {
 			kapcs_tel = kereso.getKapcsolattarto().getTelefonszam();
 		}
-		
+
 		try {
 			varosom = dao.varosIdByName(manager, varos);
-		}
-		catch (javax.persistence.NoResultException ex) {
+		} catch (javax.persistence.NoResultException ex) {
 
 			return "alertuserreginvalidtown";
 		}
-		
+
 		try {
-			
+
 			KapcsolattartoIDSearchByEmail unique_email = dao.kapcsolattartoIdByEmail(manager, kapcs_email);
-			
+
 		} catch (javax.persistence.NoResultException ex) {
 			succ = true;
-			
+
 		}
-		if(kapcs_email.equals("")) {
+		if (kapcs_email.equals("")) {
 			kapcs_email = kereso.getKapcsolattarto().getEmail();
 		}
-		if(!succ) {
+		if (!succ) {
 			return "alertcegregnotuniqueemail";
 		}
-		
-		
-		dao.CegemAdatmodositas(manager,felhasznalo,kereso.getKapcsolattarto().getId(),nev,jelszo,varosom.getId(),utca,hazszam,
-				kapcs_nev,kapcs_email,kapcs_tel);
-		
-		
-		
-		
+
+		dao.CegemAdatmodositas(manager, felhasznalo, kereso.getKapcsolattarto().getId(), nev, jelszo, varosom.getId(),
+				utca, hazszam, kapcs_nev, kapcs_email, kapcs_tel);
+
 		return "alertsuccadatmodceg";
 	}
-	
+
 	@PostMapping("/jelentkezes")
 	public String AllasJelentkezes(@ModelAttribute AllasId allasid, Model model, HttpServletRequest request) {
-		
+
 		String res = "";
-		
-		
-		
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("felhnev");
-		
-		Allaskereso kereso = dao.listAllaskeresokByFnev(manager,felhasznalo);
-		
+
+		Allaskereso kereso = dao.listAllaskeresokByFnev(manager, felhasznalo);
+
 		model.addAttribute("allasid", allasid);
-		
-		
-		
+
 		Long felhid = kereso.getId();
-		
+
 		try {
-			dao.AllasJelentkezesem(manager,felhid,allasid.getId(),new Timestamp(System.currentTimeMillis()));
-		}
-		catch(Exception e) {
+			dao.AllasJelentkezesem(manager, felhid, allasid.getId(), new Timestamp(System.currentTimeMillis()));
+		} catch (Exception e) {
 			return "alertjelentkeztelmar";
 		}
-		
-		
-		
-		
+
 		return "succjel";
 	}
-	
+
 	@PostMapping("/allaskertekelesm")
-	public String Allaskeresoertekel(@ModelAttribute AllaskeresoErtekeles ertekeles, Model model, HttpServletRequest request) {
-		
+	public String Allaskeresoertekel(@ModelAttribute AllaskeresoErtekeles ertekeles, Model model,
+			HttpServletRequest request) {
+
 		String res = "";
-		
-		
-		
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("felhnev");
-		
-		
+
 		List<Allas> allasok = new ArrayList<>();
 		List<Allas> allasokki = new ArrayList<>();
-		Allaskereso kereso = dao.listAllaskeresokByFnev(manager,felhasznalo);
+		Allaskereso kereso = dao.listAllaskeresokByFnev(manager, felhasznalo);
 		List<Allaskeresoszakma> szakmaidk = kereso.getAllaskeresoszakmak();
-		
-		
-		
-		for(Allaskeresoszakma i : szakmaidk) {
-			 allasok.addAll(dao.listAllasBySzakmaID(manager,i.getSzakma().getId()));
+
+		for (Allaskeresoszakma i : szakmaidk) {
+			allasok.addAll(dao.listAllasBySzakmaID(manager, i.getSzakma().getId()));
 		}
-		
-		for(Allas a: allasok) {
+
+		for (Allas a : allasok) {
 			Timestamp first = new Timestamp(System.currentTimeMillis());
 			Timestamp second = a.getFeladas_datuma();
-			
-			
+
 			long milliseconds = first.getTime() - second.getTime();
 
-			long seconds =  milliseconds / 1000;
-			
-			
+			long seconds = milliseconds / 1000;
+
 			long hours = seconds / 3600;
 			long days = hours / 24;
-			
+
 			int c_days = (int) days;
-			
-			if(c_days <= 30) {
+
+			if (c_days <= 30) {
 				allasokki.add(a);
 			}
-			
+
 		}
-		
+
 		List<Long> idk = new ArrayList<>();
-		
-		for(Allas a: allasokki) {
+
+		for (Allas a : allasokki) {
 			idk.add(a.getId());
-			
+
 		}
-		
-		
-		
+
 		model.addAttribute("ertkm", ertekeles);
-		
+
 		Long allaskid = kereso.getId();
 		Long allasid = ertekeles.getAllasid();
 		String szoveg = ertekeles.getSzovegp();
 		Integer ertek = ertekeles.getErtekp();
-		
+
 		boolean match = false;
-		
-		for(Long i: idk) {
-			if(allasid.equals(i)) {
+
+		for (Long i : idk) {
+			if (allasid.equals(i)) {
 				match = true;
 			}
+
+		}
+
+		if (!match) {
+			return "alertfakeid";
+		}
+
+		dao.AllaskAllastErtekel(manager, allaskid, allasid, szoveg, ertek, new Timestamp(System.currentTimeMillis()));
+
+		return "succallaskeresoertekel";
+	}
+
+	@PostMapping("/cegertekelem")
+	public String CegertekelAllaskt(@ModelAttribute CegaltalErtekelt ertekeles, Model model,
+			HttpServletRequest request) {
+
+		String res = "";
+
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("cegfelhnev");
+
+		model.addAttribute("ertek", ertekeles);
+		
+		Long allaskid = ertekeles.getAllaskid();
+		Long allasid = ertekeles.getAllasid();
+		String ert = ertekeles.getErtekeles();
+		
+		List<Jelentkezes> jelentkezesek = dao.listJelentkezesek(manager);
+		List<Jelentkezes> jel = new ArrayList<>();
+
+		for (Jelentkezes j : jelentkezesek) {
+
+			String ceg1 = j.getAllas().getCeg().getFelh_nev();
+			if (ceg1.equals(felhasznalo)) {
+				jel.add(j);
+			}
+			;
+		}
+
+		List<Long> allasID = new ArrayList<>();
+		List<Long> allkerID = new ArrayList<>();
+
+		for (Jelentkezes j : jel) {
+
+			allasID.add(j.getAllas().getId());
+			allkerID.add(j.getAllaskereso().getId());
+		}
+		
+		boolean succAllasID = false;
+		boolean succAllkerID = false;
+		
+		for (Long j : allasID) {
+
+			if(j.equals(allasid)) {
+				succAllasID = true;
+			}
+			
+			
+		}
+		for (Long j : allkerID) {
+
+			if(j.equals(allaskid)) {
+				succAllkerID = true;
+			}
+			
 			
 		}
 		
-		if(!match) {
-			return "alertfakeid";
+		if(!succAllasID) {
+			return "alertfakeallasid";
+		}
+		if(!succAllkerID) {
+			return "alertfakeallkerid";
 		}
 		
-		
-		dao.AllaskAllastErtekel(manager,allaskid,allasid,szoveg,ertek,new Timestamp(System.currentTimeMillis()));
-		
-		
-		
-		
-		return "succallaskeresoertekel";
-	}
-	
-	@PostMapping("/cegertekelem")
-	public String CegertekelAllaskt(@ModelAttribute AllaskeresoErtekeles ertekeles, Model model, HttpServletRequest request) {
-		
-		String res = "";
-		
-		
-		
-		HttpSession session = request.getSession();
-		String felhasznalo = (String) session.getAttribute("cegfelhnev");
-		
-		
-		
-		
-		
+		dao.allasKeresoErtekeles(manager,allaskid,allasid,ert,new Timestamp(System.currentTimeMillis()));
 		
 		return "succcegertekelt";
 	}
-	
+
 	@PostMapping("/cegstatuszm")
-	public String CegStatuszModosit(@ModelAttribute AllaskeresoErtekeles ertekeles, Model model, HttpServletRequest request) {
-		
+	public String CegStatuszModosit(@ModelAttribute StatuszModCeg allapot, Model model, HttpServletRequest request) {
+
 		String res = "";
-		
-		
-		
+		Allapot all = new Allapot();
+
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("cegfelhnev");
+
+		model.addAttribute("allapot", allapot);
+
+		Long allaskid = allapot.getAllaskid();
+		Long allasid = allapot.getAllasid();
+		String allapotn = allapot.getAllapotn();
+
 		
+		List<Jelentkezes> jelentkezesek = dao.listJelentkezesek(manager);
+		List<Jelentkezes> jel = new ArrayList<>();
+
+		for (Jelentkezes j : jelentkezesek) {
+
+			String ceg1 = j.getAllas().getCeg().getFelh_nev();
+			if (ceg1.equals(felhasznalo)) {
+				jel.add(j);
+			}
+			;
+		}
+
+		List<Long> allasID = new ArrayList<>();
+		List<Long> allkerID = new ArrayList<>();
+
+		for (Jelentkezes j : jel) {
+
+			allasID.add(j.getAllas().getId());
+			allkerID.add(j.getAllaskereso().getId());
+		}
 		
+		boolean succAllasID = false;
+		boolean succAllkerID = false;
 		
+		for (Long j : allasID) {
+
+			if(j.equals(allasid)) {
+				succAllasID = true;
+			}
+			
+			
+		}
+		for (Long j : allkerID) {
+
+			if(j.equals(allaskid)) {
+				succAllkerID = true;
+			}
+			
+			
+		}
 		
+		if(!succAllasID) {
+			return "alertfakeallasid";
+		}
+		if(!succAllkerID) {
+			return "alertfakeallkerid";
+		}
 		
+
+		try {
+			all = dao.searchAllapotIdbyName(manager, allapotn);
+		} catch (Exception e) {
+			return "alertinvalidallapot";
+		}
 		
-		return "succallaskeresoertekel";
+		dao.updateJelentkezesAllapot(manager,allaskid,allasid,all.getId());
+
+		return "succstatuszmod";
 	}
 
 }

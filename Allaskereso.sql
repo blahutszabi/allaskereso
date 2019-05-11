@@ -4644,6 +4644,7 @@ BEGIN
 END;
 /
 --nem trivialis
+--1.
 CREATE OR REPLACE PROCEDURE listSzakmak30(username IN allaskereso.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
 IS
 BEGIN
@@ -4652,6 +4653,7 @@ BEGIN
     AND allas.szakma_id IN (SELECT allaskeresoszakma.szakma_id FROM ALLASKERESOSZAKMA WHERE allaskeresoszakma.allaskereso_id=(SELECT allaskereso.id FROM allaskereso where allaskereso.felh_nev=username));
 END;
 /
+--2.
 CREATE OR REPLACE PROCEDURE listAKErtByUserId(allaskid IN allaskereso.id%TYPE,ret OUT SYS_REFCURSOR)
 IS
 BEGIN
@@ -4661,7 +4663,8 @@ BEGIN
     AND allaskereso.felh_nev=(SELECT felh_nev from allaskereso WHERE id=allaskid);
 END;
 /
-CREATE OR REPLACE PROCEDURE listAllasErtByCegID(cegid IN ceg.id%TYPE,ret OUT SYS_REFCURSOR)
+--3.
+CREATE OR REPLACE PROCEDURE listAllasErtByCegId(cegid IN ceg.id%TYPE,ret OUT SYS_REFCURSOR)
 IS
 BEGIN
     OPEN RET FOR SELECT ALLASKERESO.NEV, CEG.NEV, SZAKMA.megnevezes, ALLASERT.szoveg, allasert.datum, allasert.ertek
@@ -4670,10 +4673,11 @@ BEGIN
     AND ceg.felh_nev=(SELECT felh_nev from ceg WHERE id=cegid);
 END;
 /
+--4.
 CREATE OR REPLACE PROCEDURE listJelentkezesekByCegId(cegid IN ceg.id%TYPE,ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-    OPEN RET FOR SELECT ALLASKERESO.NEV, szakma.megnevezes, ALLAPOT.MEGNEVEZES, JELENTKEZES.DATUM
+   OPEN RET FOR SELECT ALLASKERESO.NEV, szakma.megnevezes, ALLAPOT.MEGNEVEZES, JELENTKEZES.DATUM
     FROM ALLASKERESO, SZAKMA, JELENTKEZES, ALLAS, CEG, ALLAPOT
     WHERE jelentkezes.allaskereso_id=allaskereso.id
     AND SZAKMA.ID=allas.szakma_id AND JELENTKEZES.ALLAS_ID=ALLAS.ID
@@ -4681,6 +4685,8 @@ BEGIN
     AND ceg.felh_nev=(SELECT ceg.felh_nev FROM CEG WHERE CEG.ID=cegid);
 END;
 /
+
+--5.
 CREATE OR REPLACE PROCEDURE atlagFizetesSzakmankent(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
@@ -4689,6 +4695,8 @@ BEGIN
     GROUP BY SZAKMA.MEGNEVEZES;
 END;
 /
+
+--6.
 CREATE OR REPLACE PROCEDURE legkeresettebbSzakmak(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
@@ -4697,6 +4705,62 @@ BEGIN
     WHERE SZAKMA.ID=ALLAS.SZAKMA_ID AND ROWNUM<11
     GROUP BY szakma.megnevezes
     ORDER BY darab DESC;
+END;
+/
+
+--7.
+CREATE OR REPLACE PROCEDURE maxFizetesSzakmankent(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT MAX(ALLAS.BER),SZAKMA.MEGNEVEZES FROM ALLAS, SZAKMA
+    WHERE SZAKMA.ID=ALLAS.SZAKMA_ID
+    GROUP BY SZAKMA.MEGNEVEZES;
+END;
+/
+
+--8.
+CREATE OR REPLACE PROCEDURE allasokDarabszamOrszagonkent(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT COUNT(*) as DB, VAROS.nev FROM ALLAS, VAROS
+    WHERE VAROS.ID=allas.varos_id
+    GROUP BY VAROS.nev;
+END;
+/
+--9.
+CREATE OR REPLACE PROCEDURE allaskeresokDarabszamVarosonkent(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT COUNT(*) as DB, VAROS.nev FROM ALLASKERESO, VAROS
+    WHERE VAROS.ID=allaskereso.varos_id
+    GROUP BY VAROS.nev;
+END;
+/
+--10.
+CREATE OR REPLACE PROCEDURE cegekDarabszamVarosonkent(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT COUNT(*) as DB, VAROS.nev FROM CEG, VAROS
+    WHERE VAROS.ID=ceg.varos_id
+    GROUP BY VAROS.nev;
+END;
+/
+--11.
+CREATE OR REPLACE PROCEDURE allasjelentkezesekDarabszamAllapotokszerint(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT COUNT(*) as DB, allapot.megnevezes FROM JELENTKEZES, ALLAPOT
+    WHERE jelentkezes.allapot_id=allapot.id
+    GROUP BY allapot.megnevezes;
+END;
+/
+--12.
+CREATE OR REPLACE PROCEDURE allaskeresokDarabszamStatuszokszerint(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT COUNT(*) as DB, statusz.megnevezes FROM statusz, allaskereso
+    WHERE allaskereso.statusz_id=statusz.id
+    GROUP BY statusz.megnevezes;
 END;
 /
 --nem trivialis
@@ -4785,6 +4849,32 @@ FOR EACH ROW
 BEGIN
     DBMS_OUTPUT.PUT_LINE('Üdvözöllek, beléptél, mint ' || :OLD.NEV);
 	INSERT INTO LOGOLAS VALUES(:OLD.NEV ||' belépett.', SYSDATE);
+END;
+/
+CREATE OR REPLACE PROCEDURE allaskeresoErtekeles(allaskid IN allaskereso.id%TYPE,allasid IN allas.id%TYPE,ert IN allaskeresoert.ertekeles%TYPE,datump IN allaskeresoert.datum%TYPE, ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    INSERT INTO ALLASKERESOERT VALUES(allaskid,allasid,ert,datump);
+END;
+/
+
+CREATE OR REPLACE TRIGGER allaskeresoErtTrig
+BEFORE INSERT ON ALLASKERESOERT
+FOR EACH ROW
+DECLARE
+    cnt NUMBER:=0;
+    cegid NUMBER:=0;
+BEGIN
+    SELECT COUNT(*)INTO cnt FROM JELENTKEZES WHERE jelentkezes.allaskereso_id=:NEW.allaskereso_ID;
+    if cnt=0 THEN
+        RAISE_APPLICATION_ERROR(-20012,'NEM IS JELENTKEZETT AZ ALLASRA AZ ALLASKERESO');
+    end if;
+END;
+/
+CREATE OR REPLACE PROCEDURE searchAllapotIdbyName(allapotp IN allapot.megnevezes%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT id FROM allapot where megnevezes=allapotp;
 END;
 /
 
