@@ -38,12 +38,17 @@
 	         <li><a th:href="@{allasfeladas.html}" id="jobs">Állás feltöltés</a></li> 
 	    </ul>
 	    <ul class="buttonsul">
-	    <li> <h3 th:utext="${session.felhnev}">Név</h3> </li>
+	    <li> <h3 th:utext="${session.cegfelhnev}" onclick="window.location.href = 'http://www.google.com'">Név</h3> </li>
 	    
         <li><button class="button button2" type="button" onclick="location.href='alertsucclogout.html'">KIJELENTKEZÉS</button></li>
    		 </ul> 
     
   </nav>
+   <style>
+ 	h3{
+ 		color: white;
+ 	}
+ </style>
 
 </header>
 
