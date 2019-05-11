@@ -31,7 +31,7 @@ public class Ceg {
 	@OneToOne
 	private Kapcsolattarto kapcsolattarto;
 	
-	private Ceg() {}
+	public Ceg() {}
 
 	public Long getId() {
 		return id;

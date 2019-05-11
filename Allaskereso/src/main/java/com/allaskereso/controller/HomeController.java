@@ -127,6 +127,23 @@ public class HomeController {
 		return "moderatorlogin";
 
 	}
+	@RequestMapping("/company.html")
+	public String Allceg(Model model) throws IOException {
+
+		List<Ceg> cegek = dao.listCegek(manager);
+		model.addAttribute("cegek", cegek);
+		return "company";
+
+	}
+	
+	@RequestMapping("/allaskert.html")
+	public String AllaskeresokertC(Model model) throws IOException {
+
+		List<Allaskereso> allask = dao.listAllaskeresok(manager);
+		model.addAttribute("allaskeresok", allask);
+		return "allaskert";
+
+	}
 	
 	@RequestMapping("/allaslistam")
 	public String MyAllasaim(Model model, HttpServletRequest request) throws IOException {
@@ -369,11 +386,30 @@ public class HomeController {
 			}
 			
 		}
-		
+		//allasokki = dao.listAllasok(manager);
 		model.addAttribute("allasok", allasokki);
 		model.addAttribute("allasid",new AllasId());
 		
 		return "allaslista";
+
+	}
+	
+	@RequestMapping("/allasokertekel.html")
+	public String Allasokertekelesre( Model model, HttpServletRequest request) throws IOException {
+
+		
+		
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("felhnev");
+		List<Allas> allasok = dao.listAllasok(manager);
+		
+		
+		
+	
+		model.addAttribute("allasok", allasok);
+		
+		
+		return "allasokertekel";
 
 	}
 

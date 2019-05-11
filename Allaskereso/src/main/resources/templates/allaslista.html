@@ -40,7 +40,7 @@
         border-top: none;
     }
     #row{
-    	margin-top: 10%;
+    	margin-top: 3%;
     	
     }
     
@@ -59,9 +59,35 @@
 	input[type=text]:focus {
  		 border: 3px solid #1478a0;
 	}
-	#valami{
-		color:black;
+	#idrow{
+		margin-top: 2%;
 	}
+	
+	#button {
+          background-color: #1478a0;
+          border: none;
+          color: white;
+          padding: 10px 52px;
+          text-align: center;
+          font-size: 16px;
+          margin: 4px 2px;
+          opacity: 0.6;
+          transition: 0.3s;
+          display: inline-block;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+    #button:hover {opacity: 1}
+    
+    #buttonrow{
+    	text-align: center;
+    	margin-top: 1%;
+    }
+    #valami{
+    	color:black;
+    }
+    
 
 </style>
     
@@ -73,55 +99,52 @@
 	<div class="col-md-4"><input type="text" placeholder="Állás keresése.."></div>
 	<div class="col-md-4"></div>
 </div>
+<div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-4" id="buttonrow"><button id="button">Keresés</button></div>
+	<div class="col-md-4"></div>
+</div>
 <article th:each="allas :${allasok}" >
     
     <div class="row" id="row">
     <div class="col-md-4"></div>
         <div class="col-md-4" id="name">
-            <h3 id="valami" th:text="${allas.munkakor}">Kukás</h3>
+            <h3 id="valami" th:text="'Munkakör: ' + ${allas.munkakor}">Kukás</h3>
         </div>
     <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="description">
-            <p th:text="${allas.leiras}">szir szar munkakör<p>
+            <p th:text="'Leírás: ' + ${allas.leiras}">szir szar munkakör<p>
         </div>
      <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="description">
-            <p th:text="${allas.szakma.megnevezes}">leírom<p>
+            <p th:text="'Megnevezés: ' + ${allas.szakma.megnevezes}">leírom<p>
         </div>
       <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="${allas.ber}">90 000 Ft<p>
+            <p th:text="'Bér: ' + ${allas.ber}+' Ft'">90 000 Ft<p>
         </div>
      <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="${allas.ceg.nev}">Cégem<p>
-        </div>
-      <div class="col-md-4"></div>
-    </div> 
-    <div class="row">
-     <div class="col-md-4"></div>
-        <div class="col-md-4" id="payment">
-            <p th:text="${allas.varos.nev}">Bugyi<p>
+            <p th:text="'Cégnév: ' + ${allas.ceg.nev}">Cégem<p>
         </div>
       <div class="col-md-4"></div>
     </div> 
-    
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="${allas.feladas_datuma}">2019-05-10<p>
+            <p th:text="'Város: ' + ${allas.varos.nev}">Bugyi<p>
         </div>
       <div class="col-md-4"></div>
     </div> 
@@ -129,19 +152,76 @@
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="${allas.id}">Jelentkezes</p>
+            <p th:text="'Feladás dátuma: ' + ${allas.feladas_datuma}">2019-05-10<p>
+        </div>
+      <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p >Eddigi értékelések:<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div>
+    <article th:each="ert :${allas.allasertekelesek}">
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelő álláskereső: ' +${ert.allaskereso.nev}">Álláskereső<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelés: '+ ${ert.szoveg}">szöveg<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="${'Érték: ' + ert.ertek}">ért<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelés dátuma: '+ ${ert.datum}">dátum<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p ><p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    </article>
+    
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'ID: ' + ${allas.id}">Jelentkezes</p>
         </div>
       <div class="col-md-4"></div>
     </div>     
 </article>
 
 <form th:action="@{/jelentkezes}" th:object="${allasid}" method="POST"> 
-<div class="row" id="searchrow">
-	<div class="col-md-2"></div>
+<div class="row" id="idrow">
+	<div class="col-md-4"></div>
 	<div class="col-md-4"><input type="text" th:field="*{id}" placeholder="Állás id"></div>
-	<div class="col-md-4"><button type="submit">Jelentkezés</button></div>
-	<div class="col-md-2"></div>
+	<div class="col-md-4"></div>
 </div>
+<div class="row" id="buttonrow">
+	<div class="col-md-4"></div>
+	<div class="col-md-4"><button id="button" type="submit">Jelentkezés</button></div>
+	<div class="col-md-4"></div>
+</div>
+
 
 </form>
    

@@ -4643,7 +4643,7 @@ BEGIN
 	OPEN ret FOR SELECT * FROM ALLAS WHERE allas.szakma_id=szid;
 END;
 /
---listazza a 30 napnal nem regebbi allasajanlatokat, ha a bejelentkezett szemely szakmajaval azonos
+--nem trivialis
 CREATE OR REPLACE PROCEDURE listSzakmak30(username IN allaskereso.felh_nev%TYPE,ret OUT SYS_REFCURSOR)
 IS
 BEGIN
@@ -4652,6 +4652,16 @@ BEGIN
     AND allas.szakma_id IN (SELECT allaskeresoszakma.szakma_id FROM ALLASKERESOSZAKMA WHERE allaskeresoszakma.allaskereso_id=(SELECT allaskereso.id FROM allaskereso where allaskereso.felh_nev=username));
 END;
 /
+CREATE OR REPLACE PROCEDURE listAKErtByUserId(allaskid IN allaskereso.id%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN ret FOR SELECT ALLASKERESO.NEV, CEG.NEV, SZAKMA.megnevezes, ALLASKERESOERT.ertekeles, allaskeresoert.datum
+    FROM allaskereso, ceg, szakma, allaskeresoert, allas WHERE ALLASKERESO.id=allaskeresoert.allaskereso_id 
+    AND allaskeresoert.allas_id=ALLAS.ID and allas.szakma_id=szakma.id and ceg.id=allas.ceg_id
+    AND allaskereso.felh_nev=(SELECT felh_nev from allaskereso WHERE id=allaskid);
+END;
+/
+--nem trivialis
 CREATE OR REPLACE PROCEDURE allaskeresoAdatmodositas(fnev IN allaskereso.felh_nev%TYPE,emailp IN allaskereso.email%TYPE, jelszop IN allaskereso.jelszo%TYPE,
 varosp IN allaskereso.varos_id%TYPE, utcap IN allaskereso.utca%TYPE, hazszamp IN allaskereso.hazszam%TYPE, statuszp IN allaskereso.statusz_id%TYPE)
 IS
