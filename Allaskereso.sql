@@ -4661,7 +4661,36 @@ BEGIN
     AND allaskereso.felh_nev=(SELECT felh_nev from allaskereso WHERE id=allaskid);
 END;
 /
+CREATE OR REPLACE PROCEDURE listAllasErtByCegID(cegid IN ceg.id%TYPE,ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN RET FOR SELECT ALLASKERESO.NEV, CEG.NEV, SZAKMA.megnevezes, ALLASERT.szoveg, allasert.datum, allasert.ertek
+    FROM allaskereso, ceg, szakma, allasert, allas WHERE ALLASKERESO.id=allasert.allaskereso_id 
+    AND allasert.allas_id=ALLAS.ID and allas.szakma_id=szakma.id and ceg.id=allas.ceg_id
+    AND ceg.felh_nev=(SELECT felh_nev from ceg WHERE id=cegid);
+END;
+/
 --nem trivialis
+CREATE OR REPLACE PROCEDURE allaskeresoErtekeles(allaskid IN allaskereso.id%TYPE,allasid IN allas.id%TYPE,ert IN allaskeresoert.ertekeles%TYPE,datump IN allaskeresoert.datum%TYPE, ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+    INSERT INTO ALLASKERESOERT VALUES(allaskid,allasid,ert,datump);
+END;
+/
+
+CREATE OR REPLACE TRIGGER allaskeresoErtTrig
+BEFORE INSERT ON ALLASKERESOERT
+FOR EACH ROW
+DECLARE
+    cnt NUMBER:=0;
+    cegid NUMBER:=0;
+BEGIN
+    SELECT COUNT(*)INTO cnt FROM JELENTKEZES WHERE jelentkezes.allaskereso_id=:NEW.allaskereso_ID;
+    if cnt=0 THEN
+        RAISE_APPLICATION_ERROR(-20012,'NEM IS JELENTKEZETT AZ ALLASRA AZ ALLASKERESO');
+    end if;
+END;
+/
 CREATE OR REPLACE PROCEDURE allaskeresoAdatmodositas(fnev IN allaskereso.felh_nev%TYPE,emailp IN allaskereso.email%TYPE, jelszop IN allaskereso.jelszo%TYPE,
 varosp IN allaskereso.varos_id%TYPE, utcap IN allaskereso.utca%TYPE, hazszamp IN allaskereso.hazszam%TYPE, statuszp IN allaskereso.statusz_id%TYPE)
 IS
