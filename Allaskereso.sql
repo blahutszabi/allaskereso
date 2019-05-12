@@ -4690,7 +4690,7 @@ END;
 CREATE OR REPLACE PROCEDURE atlagFizetesSzakmankent(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT AVG(ALLAS.BER),SZAKMA.MEGNEVEZES FROM ALLAS, SZAKMA
+   OPEN RET FOR SELECT AVG(ALLAS.BER) as value,SZAKMA.MEGNEVEZES as megnevezes FROM ALLAS, SZAKMA
     WHERE SZAKMA.ID=ALLAS.SZAKMA_ID
     GROUP BY SZAKMA.MEGNEVEZES;
 END;
@@ -4700,11 +4700,11 @@ END;
 CREATE OR REPLACE PROCEDURE legkeresettebbSzakmak(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT SZAKMA.megnevezes ,COUNT(*)AS darab 
+   OPEN RET FOR SELECT SZAKMA.megnevezes as megnevezes,COUNT(*)AS value 
     FROM SZAKMA, ALLAS
     WHERE SZAKMA.ID=ALLAS.SZAKMA_ID AND ROWNUM<11
     GROUP BY szakma.megnevezes
-    ORDER BY darab DESC;
+    ORDER BY value DESC;
 END;
 /
 
@@ -4712,7 +4712,7 @@ END;
 CREATE OR REPLACE PROCEDURE maxFizetesSzakmankent(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT MAX(ALLAS.BER),SZAKMA.MEGNEVEZES FROM ALLAS, SZAKMA
+   OPEN RET FOR SELECT MAX(ALLAS.BER) as value,SZAKMA.MEGNEVEZES as megnevezes FROM ALLAS, SZAKMA
     WHERE SZAKMA.ID=ALLAS.SZAKMA_ID
     GROUP BY SZAKMA.MEGNEVEZES;
 END;
@@ -4722,7 +4722,7 @@ END;
 CREATE OR REPLACE PROCEDURE allasokDarabszamOrszagonkent(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT COUNT(*) as DB, VAROS.nev FROM ALLAS, VAROS
+   OPEN RET FOR SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM ALLAS, VAROS
     WHERE VAROS.ID=allas.varos_id
     GROUP BY VAROS.nev;
 END;
@@ -4731,7 +4731,7 @@ END;
 CREATE OR REPLACE PROCEDURE allaskeresokDarabszamVarosonkent(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT COUNT(*) as DB, VAROS.nev FROM ALLASKERESO, VAROS
+   OPEN RET FOR SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM ALLASKERESO, VAROS
     WHERE VAROS.ID=allaskereso.varos_id
     GROUP BY VAROS.nev;
 END;
@@ -4740,7 +4740,7 @@ END;
 CREATE OR REPLACE PROCEDURE cegekDarabszamVarosonkent(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT COUNT(*) as DB, VAROS.nev FROM CEG, VAROS
+   OPEN RET FOR SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM CEG, VAROS
     WHERE VAROS.ID=ceg.varos_id
     GROUP BY VAROS.nev;
 END;
@@ -4749,7 +4749,7 @@ END;
 CREATE OR REPLACE PROCEDURE allasjelentkezesekDarabszamAllapotokszerint(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT COUNT(*) as DB, allapot.megnevezes FROM JELENTKEZES, ALLAPOT
+   OPEN RET FOR SELECT COUNT(*) as value, allapot.megnevezes as megnevezes FROM JELENTKEZES, ALLAPOT
     WHERE jelentkezes.allapot_id=allapot.id
     GROUP BY allapot.megnevezes;
 END;
@@ -4758,7 +4758,7 @@ END;
 CREATE OR REPLACE PROCEDURE allaskeresokDarabszamStatuszokszerint(ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT COUNT(*) as DB, statusz.megnevezes FROM statusz, allaskereso
+   OPEN RET FOR SELECT COUNT(*) as value, statusz.megnevezes  as megnevezes FROM statusz, allaskereso
     WHERE allaskereso.statusz_id=statusz.id
     GROUP BY statusz.megnevezes;
 END;
@@ -4874,7 +4874,7 @@ END;
 CREATE OR REPLACE PROCEDURE searchAllapotIdbyName(allapotp IN allapot.megnevezes%TYPE,ret OUT SYS_REFCURSOR)
 IS
 BEGIN
-   OPEN RET FOR SELECT id FROM allapot where megnevezes=allapotp;
+   OPEN RET FOR SELECT * FROM allapot where megnevezes=allapotp;
 END;
 /
 

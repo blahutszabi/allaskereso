@@ -627,7 +627,6 @@ public class DAO {
 
 	public void updateJelentkezesAllapot(EntityManager manager, Long allaskid, Long allasid, Long allapotid) {
 
-		
 		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("updateJelentkezesAllapot");
 
 		procedureQuery.registerStoredProcedureParameter("allaskid", Long.class, ParameterMode.IN);
@@ -639,9 +638,8 @@ public class DAO {
 		procedureQuery.registerStoredProcedureParameter("allapotid", Long.class, ParameterMode.IN);
 		procedureQuery.setParameter("allapotid", allapotid);
 
-		
 		procedureQuery.execute();
-		
+
 	}
 
 	public void allasKeresoErtekeles(EntityManager manager, Long allaskid, Long allasid, String ert, Timestamp datump) {
@@ -666,7 +664,8 @@ public class DAO {
 
 	public Allapot searchAllapotIdbyName(EntityManager manager, String allapotp) {
 
-		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("searchAllapotIdbyName", Allapot.class);
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("searchAllapotIdbyName",
+				Allapot.class);
 
 		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
 
@@ -707,6 +706,129 @@ public class DAO {
 		Statusz firstrow = (Statusz) procedureQuery.getSingleResult();
 
 		return firstrow;
+	}
+
+	public List<Allaskeresoert> listAKErtByUserId(EntityManager manager, Long allaskid) {
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listAKErtByUserId",
+				Allaskeresoert.class);
+
+		procedureQuery.registerStoredProcedureParameter("allaskid", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("allaskid", allaskid);
+
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		procedureQuery.execute();
+
+		List<Allaskeresoert> alkert = procedureQuery.getResultList();
+		return alkert;
+	}
+
+	public List<Allasert> listAllasErtByCegId(EntityManager manager, Long cegid) {
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listAllasErtByCegId", Allasert.class);
+
+		procedureQuery.registerStoredProcedureParameter("cegid", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("cegid", cegid);
+
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		procedureQuery.execute();
+
+		List<Allasert> allasert = procedureQuery.getResultList();
+		return allasert;
+	}
+
+	public List<Jelentkezes> listJelentkezesekByCegId(EntityManager manager, Long cegid) {
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("listJelentkezesekByCegId",
+				Jelentkezes.class);
+
+		procedureQuery.registerStoredProcedureParameter("cegid", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("cegid", cegid);
+
+		procedureQuery.registerStoredProcedureParameter("ret", void.class, ParameterMode.REF_CURSOR);
+		procedureQuery.execute();
+
+		List<Jelentkezes> jel = procedureQuery.getResultList();
+		return jel;
+	}
+
+	public List<MrBean> atlagFizetesSzakmankent(EntityManager manager) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("atlagFizetesSzakmankent",
+				MrBean.class);
+
+		procedureQuery.execute();
+
+		List<MrBean> stat = procedureQuery.getResultList();
+		return stat;
+	}
+
+	public List<MrBean> legkeresettebbSzakmak(EntityManager manager) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("legkeresettebbSzakmak", MrBean.class);
+
+		procedureQuery.execute();
+
+		List<MrBean> stat = procedureQuery.getResultList();
+		return stat;
+	}
+	
+	public List<MrBean> maxFizetesSzakmankent(EntityManager manager) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("maxFizetesSzakmankent", MrBean.class);
+
+		procedureQuery.execute();
+
+		List<MrBean> stat = procedureQuery.getResultList();
+		return stat;
+	}
+	
+	//amugy ez város
+	public List<MrBean> allasokDarabszamOrszagonkent(EntityManager manager) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allasokDarabszamOrszagonkent", MrBean.class);
+
+		procedureQuery.execute();
+
+		List<MrBean> stat = procedureQuery.getResultList();
+		return stat;
+	}
+	
+	public List<MrBean> allaskeresokDarabszamVarosonkent(EntityManager manager) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allaskeresokDarabszamVarosonkent", MrBean.class);
+
+		procedureQuery.execute();
+
+		List<MrBean> stat = procedureQuery.getResultList();
+		return stat;
+	}
+	
+	public List<MrBean> cegekDarabszamaVarosonkent(EntityManager manager) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allaskeresokDarabszamVarosonkent", MrBean.class);
+
+		procedureQuery.execute();
+
+		List<MrBean> stat = procedureQuery.getResultList();
+		return stat;
+	}
+	
+	public List<MrBean> allasjelentkezesekDarabszamAllapotokszerint(EntityManager manager) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allasjelentkezesekDarabszamAllapotokszerint", MrBean.class);
+
+		procedureQuery.execute();
+
+		List<MrBean> stat = procedureQuery.getResultList();
+		return stat;
+	}
+	
+	public List<MrBean> allaskeresokDarabszamStatuszokszerint(EntityManager manager) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("allaskeresokDarabszamStatuszokszerint", MrBean.class);
+
+		procedureQuery.execute();
+
+		List<MrBean> stat = procedureQuery.getResultList();
+		return stat;
 	}
 
 }

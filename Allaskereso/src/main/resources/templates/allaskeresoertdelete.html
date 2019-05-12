@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+<link rel="stylesheet" href="style/slider-def.css">  
+<link rel="stylesheet" href="front.css"> 
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
+<link rel="stylesheet" type="text/css" href="style.css">  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">          
+      
+</head>
+
+
+
+<style>
+
+    #name{
+        border-style: solid;
+        text-align: center;
+        
+        
+    }
+    #description{
+        border-style: solid;
+        text-align: center;
+        border-top: none;
+        
+    }
+    #payment{
+        border-style: solid;
+        text-align: center;
+        border-top: none;
+    }
+    #timestamp{
+        border-style: solid;
+        text-align: center;
+        border-top: none;
+    }
+    #row{
+    	margin-top: 10%;
+    	
+    }
+    
+     #searchrow{
+     	margin-top: 10%;
+     }
+    
+    input[type=text] {
+      width: 100%;
+      height: 100%;
+	  background-color: white;
+	  font-size: 250%;
+	  text-align: center;
+	  
+	}
+	input[type=text]:focus {
+ 		 border: 3px solid #1478a0;
+	}
+	#valami{
+		color:black;
+	}
+
+</style>
+    
+
+<body>
+
+
+<article th:each="ak :${allaskeresok}" >
+    
+    <div class="row" id="row">
+    <div class="col-md-4"></div>
+        <div class="col-md-4" id="name">
+            <h3 id="valami" th:text="${ak.nev}">Név</h3>
+        </div>
+    <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="description">
+            <p th:text="${ak.email}">Email<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="description">
+            <p th:text="${ak.szul_ido}">Szülidö<p>
+        </div>
+      <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'ID: ' + ${ak.id}">ID<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p >Eddigi értékelések:<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <article th:each="ert :${ak.allaskeresoertekelesek}">
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelő cég: ' +${ert.allas.ceg.nev}">Cég<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelt szakma: '+ ${ert.allas.szakma.megnevezes}">szakma<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="${ert.ertekeles}">ért<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelés dátuma: '+ ${ert.datum}">dátum<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p ><p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    </article>
+</article>
+
+          
+</body>
+</html>

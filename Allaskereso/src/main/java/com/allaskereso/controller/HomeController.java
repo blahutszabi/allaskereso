@@ -56,6 +56,9 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		String valami = (String) session.getAttribute("felhnev");
 
+		
+		
+		
 		if (!valami.equals("null")) {
 
 			return "loggedindex";
@@ -68,6 +71,7 @@ public class HomeController {
 	@RequestMapping("/index.html")
 	public String HomePageIndexHtml() throws IOException {
 
+		
 		return "index";
 
 	}
@@ -143,6 +147,16 @@ public class HomeController {
 		return "allaskert";
 
 	}
+	
+	@RequestMapping("/allaskeresoertdelete.html")
+	public String Allaskeresodelete(Model model) throws IOException {
+
+		List<Allaskereso> allask = dao.listAllaskeresok(manager);
+		model.addAttribute("allaskeresok", allask);
+		
+		return "allaskeresoertdelete";
+
+	}
 
 	@RequestMapping("/allaslistam")
 	public String MyAllasaim(Model model, HttpServletRequest request) throws IOException {
@@ -156,6 +170,54 @@ public class HomeController {
 		model.addAttribute("allasok", allasok);
 
 		return "allaslistam";
+
+	}
+	@RequestMapping("/listakert")
+	public String ListAllaskert(Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("felhnev");
+
+		Allaskereso ak = dao.listAllaskeresokByFnev(manager,felhasznalo);
+		
+		List<Allaskeresoert> ert = new ArrayList<>();
+		ert = dao.listAKErtByUserId(manager, ak.getId());
+
+		model.addAttribute("ert", ert);
+
+		return "allaskert";
+
+	}
+	@RequestMapping("/listallert")
+	public String ListAllert(Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("cegfelhnev");
+
+		Ceg ak = dao.listCegByFnev(manager,felhasznalo);
+		
+		List<Allasert> ert = new ArrayList<>();
+		ert = dao.listAllasErtByCegId(manager, ak.getId());
+
+		model.addAttribute("ert", ert);
+
+		return "allasokertekel";
+
+	}
+	@RequestMapping("/lisjel")
+	public String listJel(Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		String felhasznalo = (String) session.getAttribute("cegfelhnev");
+
+		Ceg ak = dao.listCegByFnev(manager,felhasznalo);
+		
+		List<Jelentkezes> jel = new ArrayList<>();
+		jel = dao.listJelentkezesekByCegId(manager, ak.getId());
+
+		model.addAttribute("jel", jel);
+
+		return "jel";
 
 	}
 
@@ -432,6 +494,34 @@ public class HomeController {
 		return "alljelentkezeseim";
 
 	}
+	@RequestMapping("/moderatorindex.html")
+	public String Modindx(Model model, HttpServletRequest request) throws IOException {
+
+		HttpSession session = request.getSession();
+		
+		
+		try {
+			String felhasznalo = (String) session.getAttribute("modfelhnev");
+
+			
+
+			if (felhasznalo.equals("null")) {
+
+				
+				session.invalidate();
+
+				return "alerttiltott";
+			}
+		} catch (NullPointerException e) {
+
+			return "alerttiltott";
+
+		}
+		
+
+		return "moderatorindex";
+
+	}
 
 	@PostMapping("/userreg")
 	public String AllaskeresoReg(@ModelAttribute Allaskeresoreg allaskereso, Model model, BindingResult bindingResult) {
@@ -575,16 +665,19 @@ public class HomeController {
 		}
 	}
 
-	@PostMapping("/moderatorlogin")
-	public String ModeratorLogin(@ModelAttribute ModeratorLogin moderator, Model model) {
+	@PostMapping("/moderatorlogin1")
+	public String ModeratorLogin(@ModelAttribute ModeratorLogin moderator, Model model, HttpServletRequest request) {
 
 		try {
 			model.addAttribute("moderator", moderator);
 			ModeratorLogin login = dao.moderatorLogin(manager, moderator.getFelh_nev());
 			if (login.getFelh_nev().equals(moderator.getFelh_nev())
 					&& login.getJelszo().equals(moderator.getJelszo())) {
+				
+					HttpSession session = request.getSession();
+					session.setAttribute("modfelhnev", moderator.getFelh_nev());
 
-				return "index";
+				return "moderatorindex";
 			} else {
 
 				return "alertmoderatorlogin";
