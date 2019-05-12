@@ -40,7 +40,7 @@
         border-top: none;
     }
     #row{
-    	margin-top: 10%;
+    	margin-top: 3%;
     	
     }
     
@@ -59,78 +59,93 @@
 	input[type=text]:focus {
  		 border: 3px solid #1478a0;
 	}
-	#valami{
-		color:black;
+	#idrow{
+		margin-top: 2%;
 	}
 	
-	#buttonrow {
-	text-align: center;
-	margin-top: 1%;
-	}
+	#button {
+          background-color: #1478a0;
+          border: none;
+          color: white;
+          padding: 10px 52px;
+          text-align: center;
+          font-size: 16px;
+          margin: 4px 2px;
+          opacity: 0.6;
+          transition: 0.3s;
+          display: inline-block;
+          text-decoration: none;
+          cursor: pointer;
+        }
 
-	#ertekeles{
-    	margin-top: 2%;
-	}	
-	#title{
-     	text-align: center;
-     	font-size: 200%;
-     	margin-top: 2%;
+    #button:hover {opacity: 1}
+    
+    #buttonrow{
+    	text-align: center;
+    	margin-top: 1%;
     }
-    #button {
-	background-color: #1478a0;
-	border: none;
-	color: white;
-	padding: 10px 52px;
-	text-align: center;
-	font-size: 16px;
-	margin: 4px 2px;
-	opacity: 0.6;
-	transition: 0.3s;
-	display: inline-block;
-	text-decoration: none;
-	cursor: pointer;
-	}
-
-	#button:hover {
-	opacity: 1
-	}
+    #valami{
+    	color:black;
+    }
+    
 
 </style>
     
-<header lang="en" th:include="loggedheadermoderator"> </header>  
-
-<body>
 
 
-<article th:each="ak :${allaskeresok}" >
+
+
+<article th:each="allas :${allasok}" >
     
     <div class="row" id="row">
     <div class="col-md-4"></div>
         <div class="col-md-4" id="name">
-            <h3 id="valami" th:text="${ak.nev}">Név</h3>
+            <h3 id="valami" th:text="'Munkakör: ' + ${allas.munkakor}">Kukás</h3>
         </div>
     <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="description">
-            <p th:text="${ak.email}">Email<p>
+            <p th:text="'Leírás: ' + ${allas.leiras}">szir szar munkakör<p>
         </div>
      <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="description">
-            <p th:text="${ak.szul_ido}">Szülidö<p>
+            <p th:text="'Megnevezés: ' + ${allas.szakma.megnevezes}">leírom<p>
         </div>
       <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="'ID: ' + ${ak.id}">ID<p>
+            <p th:text="'Bér: ' + ${allas.ber}+' Ft'">90 000 Ft<p>
         </div>
      <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Cégnév: ' + ${allas.ceg.nev}">Cégem<p>
+        </div>
+      <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Város: ' + ${allas.varos.nev}">Bugyi<p>
+        </div>
+      <div class="col-md-4"></div>
+    </div> 
+    
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Feladás dátuma: ' + ${allas.feladas_datuma}">2019-05-10<p>
+        </div>
+      <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
@@ -138,26 +153,33 @@
             <p >Eddigi értékelések:<p>
         </div>
      <div class="col-md-4"></div>
-    </div> 
-    <article th:each="ert :${ak.allaskeresoertekelesek}">
+    </div>
+    <article th:each="ert :${allas.allasertekelesek}">
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="'Értékelő cég: ' +${ert.allas.ceg.nev}">Cég<p>
+            <p th:text="'Értékelő álláskereső: ' +${ert.allaskereso.nev}">Álláskereső<p>
         </div>
      <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="'Értékelt szakma: '+ ${ert.allas.szakma.megnevezes}">szakma<p>
+            <p th:text="'Értékelő ID-ja: ' +${ert.allaskereso.id}">Álláskereső<p>
         </div>
      <div class="col-md-4"></div>
     </div> 
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="${ert.ertekeles}">ért<p>
+            <p th:text="'Értékelés: '+ ${ert.szoveg}">szöveg<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="${'Érték: ' + ert.ertek}">ért<p>
         </div>
      <div class="col-md-4"></div>
     </div>
@@ -176,24 +198,18 @@
      <div class="col-md-4"></div>
     </div> 
     </article>
+    
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Állás ID: ' + ${allas.id}">Jelentkezes</p>
+        </div>
+      <div class="col-md-4"></div>
+    </div>     
 </article>
 
-	<div class="row" id="title">
-	<div class="col-md-12"><h1>Álláskereső értékelés törlése</h1></div>
-	</div>
-	
-	<form>
-	<div class="row" id="ertekeles">
-	<div class="col-md-3"></div>
-	<div class="col-md-3"><input type="text"  required="required" placeholder="Álláskereső id"></div>
-	<div class="col-md-3"><input type="text"  required="required" placeholder="Állás id"></div>
-	<div class="col-md-3"></div>
-	</div>
-	<div class="row" id="buttonrow">
-	<div class="col-md-4"></div>
-	<div class="col-md-4"><button id="button"  type="submit">Törlés</button></div>
-	<div class="col-md-4"></div>
-	</div>
-    </form>    
+
+   
+        
 </body>
 </html>

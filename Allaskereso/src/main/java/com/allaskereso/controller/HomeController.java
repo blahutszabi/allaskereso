@@ -157,6 +157,15 @@ public class HomeController {
 		return "allaskeresoertdelete";
 
 	}
+	@RequestMapping("/allasertdeletem.html")
+	public String Allasertdelete(Model model) throws IOException {
+
+		List<Allas> allasok = dao.listAllasok(manager);
+		model.addAttribute("allasok", allasok);
+		
+		return "allasertdeletem";
+
+	}
 
 	@RequestMapping("/allaslistam")
 	public String MyAllasaim(Model model, HttpServletRequest request) throws IOException {
