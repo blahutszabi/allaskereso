@@ -4,32 +4,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
+
 public class MrBean {
 	
-	@GeneratedValue
-	@Id
-	private Long id;
 
-	private Long value;
-	private String megnvezes;
+	private int value;
+	private String megnevezes;
 	
 	public MrBean() {}
 
-	public Long getValue() {
+	public int getValue() {
 		return value;
 	}
 
-	public void setValue(Long value) {
+	public void setValue(int value) {
 		this.value = value;
 	}
 
-	public String getMegnvezes() {
-		return megnvezes;
+	public String getMegnevezes() {
+		return megnevezes;
 	}
 
-	public void setMegnvezes(String megnvezes) {
-		this.megnvezes = megnvezes;
+	public void setMegnevezes(String megnvezes) {
+		this.megnevezes = megnvezes;
 	}
 	
 	

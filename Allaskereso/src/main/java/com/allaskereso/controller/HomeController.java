@@ -3,6 +3,7 @@ package com.allaskereso.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Blob;
+import java.sql.*;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -46,6 +47,38 @@ public class HomeController {
 
 		HttpSession session = request.getSession();
 		session.invalidate();
+
+		
+		//90 napnal regebben belepettek statusza automatikusan inaktiv
+		List<Allaskereso> keresok = dao.listAllaskeresok(manager);
+		List<Long> modositani = new ArrayList<>();
+		
+		Timestamp current = new Timestamp(System.currentTimeMillis());
+
+		for (Allaskereso ker : keresok) {
+			
+			Timestamp second = ker.getUtolso_belepes();
+			
+			long diffmill = current.getTime()-second.getTime();
+
+
+			long seconds = diffmill / 1000;
+
+			long hours = seconds / 3600;
+			long days = hours / 24;
+
+			int c_days = (int) days;
+
+			if (c_days >= 90) {
+				modositani.add(ker.getId());
+			}
+
+		}
+		
+		for(Long l : modositani) {
+			dao.updateStatusz(manager,l);
+		}
+
 		return "index";
 
 	}
@@ -56,9 +89,6 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		String valami = (String) session.getAttribute("felhnev");
 
-		
-		
-		
 		if (!valami.equals("null")) {
 
 			return "loggedindex";
@@ -67,11 +97,229 @@ public class HomeController {
 		return "index";
 
 	}
+	
+	@RequestMapping("/stat.html")
+	public String Statics(Model model, HttpServletRequest request) throws IOException {
+
+		List<MrBean> atlagfizszakm = new ArrayList<>();
+		List<MrBean> legkerszakma = new ArrayList<>();
+		List<MrBean> maxfizszakma = new ArrayList<>();
+		List<MrBean> allasdbvarosonkent = new ArrayList<>();
+		List<MrBean> allaskeresokvaronkentdb = new ArrayList<>();
+		List<MrBean> cegekdarabszv = new ArrayList<>();
+		List<MrBean> allasjallapotsz = new ArrayList<>();
+		List<MrBean> allaskeresokdbstatuszonkent = new ArrayList<>();
+		List<MrBean> atlagfizvarosonkent = new ArrayList<>();
+		
+		String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";  
+		   String DB_URL = "jdbc:oracle:thin:@localhost:32118:xe";
+		   String USER = "SYSTEM";
+		    String PASS = "Oracle18";
+		   Connection conn = null;
+		   Statement stmt = null;
+		   try{
+		      Class.forName("oracle.jdbc.driver.OracleDriver");
+
+		      conn = DriverManager.getConnection(DB_URL, USER, PASS);
+		      stmt = conn.createStatement();
+		      String sql;
+		      ResultSet rs;
+		      
+		      //Atlagfizetes szakmankent
+		      sql = "SELECT MAX(ALLAS.BER) as value,SZAKMA.MEGNEVEZES as megnevezes FROM ALLAS, SZAKMA WHERE SZAKMA.ID=ALLAS.SZAKMA_ID GROUP BY megnevezes";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         atlagfizszakm.add(beanem);
+		      }
+		      rs.close();
+		      
+		      //Legkeresettebb szakmak
+		      sql = "SELECT SZAKMA.megnevezes as megnevezes,COUNT(*) AS value FROM SZAKMA, ALLAS WHERE SZAKMA.ID=ALLAS.SZAKMA_ID AND rownum<11 GROUP BY szakma.megnevezes ORDER BY value DESC";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         legkerszakma.add(beanem);
+		      }
+		      rs.close();
+		      
+		      //MaxFiz szakmankent
+		      sql = "SELECT MAX(ALLAS.BER) as value,SZAKMA.MEGNEVEZES as megnevezes FROM ALLAS, SZAKMA\r\n" + 
+		      		"    WHERE SZAKMA.ID=ALLAS.SZAKMA_ID\r\n" + 
+		      		"    GROUP BY SZAKMA.MEGNEVEZES";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         maxfizszakma.add(beanem);
+		      }
+		      rs.close();
+		      
+		      //Allasok darabszama varosonkent
+		      sql = "SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM ALLAS, VAROS\r\n" + 
+		      		"    WHERE VAROS.ID=allas.varos_id\r\n" + 
+		      		"    GROUP BY VAROS.nev";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         allaskeresokvaronkentdb.add(beanem);
+		      }
+		      rs.close();
+		      
+		    //Allaskeresok darabszama varosonkent
+		      sql = "SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM ALLASKERESO, VAROS\r\n" + 
+		      		"    WHERE VAROS.ID=allaskereso.varos_id\r\n" + 
+		      		"    GROUP BY VAROS.nev";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         allasdbvarosonkent.add(beanem);
+		      }
+		      rs.close();
+		      
+		    //Cegekdarabszam varosonkent
+		      sql = "SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM CEG, VAROS\r\n" + 
+		      		"    WHERE VAROS.ID=ceg.varos_id\r\n" + 
+		      		"    GROUP BY VAROS.nev";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         cegekdarabszv.add(beanem);
+		      }
+		      rs.close();
+		      
+		    //Allasjelentkezesek darabszama allapotok szerint
+		      sql = "SELECT COUNT(*) as value, allapot.megnevezes as megnevezes FROM JELENTKEZES, ALLAPOT\r\n" + 
+		      		"    WHERE jelentkezes.allapot_id=allapot.id\r\n" + 
+		      		"    GROUP BY allapot.megnevezes";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         allaskeresokdbstatuszonkent.add(beanem);
+		      }
+		      rs.close();
+		      
+		    //Allaskeresok darabszama statuszok szerint
+		      sql = "SELECT COUNT(*) as value, statusz.megnevezes  as megnevezes FROM statusz, allaskereso\r\n" + 
+		      		"    WHERE allaskereso.statusz_id=statusz.id\r\n" + 
+		      		"    GROUP BY statusz.megnevezes";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         allasjallapotsz.add(beanem);
+		      }
+		      rs.close();
+		      
+		    //Atlagfizetes varosonkent
+		      sql = "SELECT AVG(allas.ber) as value, varos.nev  as megnevezes FROM varos, allas\r\n" + 
+		      		"    WHERE allas.varos_id=varos.id\r\n" + 
+		      		"    GROUP BY varos.nev";
+		      rs = stmt.executeQuery(sql);
+		      while(rs.next()){
+		    	  
+		    	 MrBean beanem = new MrBean();
+		         int value  = rs.getInt("value");
+		         String megnevezes = rs.getString("megnevezes");
+		         
+		         beanem.setValue(value);
+		         beanem.setMegnevezes(megnevezes);
+		         
+		         atlagfizvarosonkent.add(beanem);
+		      }
+		      rs.close();
+		      
+		      
+		   }catch(SQLException se){
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      e.printStackTrace();
+		   }finally{
+		      try{
+		         if(stmt!=null)
+		            conn.close();
+		      }catch(SQLException se){
+		      }
+		      try{
+		         if(conn!=null)
+		            conn.close();
+		      }catch(SQLException se){
+		         se.printStackTrace();
+		      }
+		   }
+		   
+		   model.addAttribute("model1", atlagfizszakm);
+		   model.addAttribute("model2", legkerszakma);
+		   model.addAttribute("model3", maxfizszakma);
+		   model.addAttribute("model4", allasdbvarosonkent);
+		   model.addAttribute("model5", allaskeresokvaronkentdb);
+		   model.addAttribute("model6", cegekdarabszv);
+		   model.addAttribute("model7", allasjallapotsz);
+		   model.addAttribute("model8", allaskeresokdbstatuszonkent);
+		   model.addAttribute("model9", atlagfizvarosonkent);
+		   
+
+		return "stat";
+
+	}
 
 	@RequestMapping("/index.html")
 	public String HomePageIndexHtml() throws IOException {
 
-		
 		return "index";
 
 	}
@@ -147,22 +395,25 @@ public class HomeController {
 		return "allaskert";
 
 	}
-	
+
 	@RequestMapping("/allaskeresoertdelete.html")
 	public String Allaskeresodelete(Model model) throws IOException {
 
 		List<Allaskereso> allask = dao.listAllaskeresok(manager);
 		model.addAttribute("allaskeresok", allask);
-		
+		model.addAttribute("allasd", new AllasIdDelete());
+
 		return "allaskeresoertdelete";
 
 	}
+
 	@RequestMapping("/allasertdeletem.html")
 	public String Allasertdelete(Model model) throws IOException {
 
 		List<Allas> allasok = dao.listAllasok(manager);
 		model.addAttribute("allasok", allasok);
-		
+		model.addAttribute("aid", new AllasId());
+
 		return "allasertdeletem";
 
 	}
@@ -181,14 +432,15 @@ public class HomeController {
 		return "allaslistam";
 
 	}
+
 	@RequestMapping("/listakert")
 	public String ListAllaskert(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("felhnev");
 
-		Allaskereso ak = dao.listAllaskeresokByFnev(manager,felhasznalo);
-		
+		Allaskereso ak = dao.listAllaskeresokByFnev(manager, felhasznalo);
+
 		List<Allaskeresoert> ert = new ArrayList<>();
 		ert = dao.listAKErtByUserId(manager, ak.getId());
 
@@ -197,14 +449,15 @@ public class HomeController {
 		return "allaskert";
 
 	}
+
 	@RequestMapping("/listallert")
 	public String ListAllert(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("cegfelhnev");
 
-		Ceg ak = dao.listCegByFnev(manager,felhasznalo);
-		
+		Ceg ak = dao.listCegByFnev(manager, felhasznalo);
+
 		List<Allasert> ert = new ArrayList<>();
 		ert = dao.listAllasErtByCegId(manager, ak.getId());
 
@@ -213,14 +466,15 @@ public class HomeController {
 		return "allasokertekel";
 
 	}
+
 	@RequestMapping("/lisjel")
 	public String listJel(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
 		String felhasznalo = (String) session.getAttribute("cegfelhnev");
 
-		Ceg ak = dao.listCegByFnev(manager,felhasznalo);
-		
+		Ceg ak = dao.listCegByFnev(manager, felhasznalo);
+
 		List<Jelentkezes> jel = new ArrayList<>();
 		jel = dao.listJelentkezesekByCegId(manager, ak.getId());
 
@@ -503,20 +757,17 @@ public class HomeController {
 		return "alljelentkezeseim";
 
 	}
+
 	@RequestMapping("/moderatorindex.html")
 	public String Modindx(Model model, HttpServletRequest request) throws IOException {
 
 		HttpSession session = request.getSession();
-		
-		
+
 		try {
 			String felhasznalo = (String) session.getAttribute("modfelhnev");
 
-			
-
 			if (felhasznalo.equals("null")) {
 
-				
 				session.invalidate();
 
 				return "alerttiltott";
@@ -526,7 +777,6 @@ public class HomeController {
 			return "alerttiltott";
 
 		}
-		
 
 		return "moderatorindex";
 
@@ -682,9 +932,9 @@ public class HomeController {
 			ModeratorLogin login = dao.moderatorLogin(manager, moderator.getFelh_nev());
 			if (login.getFelh_nev().equals(moderator.getFelh_nev())
 					&& login.getJelszo().equals(moderator.getJelszo())) {
-				
-					HttpSession session = request.getSession();
-					session.setAttribute("modfelhnev", moderator.getFelh_nev());
+
+				HttpSession session = request.getSession();
+				session.setAttribute("modfelhnev", moderator.getFelh_nev());
 
 				return "moderatorindex";
 			} else {
@@ -1054,11 +1304,11 @@ public class HomeController {
 		String felhasznalo = (String) session.getAttribute("cegfelhnev");
 
 		model.addAttribute("ertek", ertekeles);
-		
+
 		Long allaskid = ertekeles.getAllaskid();
 		Long allasid = ertekeles.getAllasid();
 		String ert = ertekeles.getErtekeles();
-		
+
 		List<Jelentkezes> jelentkezesek = dao.listJelentkezesek(manager);
 		List<Jelentkezes> jel = new ArrayList<>();
 
@@ -1079,43 +1329,40 @@ public class HomeController {
 			allasID.add(j.getAllas().getId());
 			allkerID.add(j.getAllaskereso().getId());
 		}
-		
+
 		boolean succAllasID = false;
 		boolean succAllkerID = false;
-		
+
 		for (Long j : allasID) {
 
-			if(j.equals(allasid)) {
+			if (j.equals(allasid)) {
 				succAllasID = true;
 			}
-			
-			
+
 		}
 		for (Long j : allkerID) {
 
-			if(j.equals(allaskid)) {
+			if (j.equals(allaskid)) {
 				succAllkerID = true;
 			}
-			
-			
+
 		}
-		
-		if(!succAllasID) {
+
+		if (!succAllasID) {
 			return "alertfakeallasid";
 		}
-		if(!succAllkerID) {
+		if (!succAllkerID) {
 			return "alertfakeallkerid";
 		}
-		
+
 		try {
-			dao.allasKeresoErtekeles(manager,allaskid,allasid,ert,new Timestamp(System.currentTimeMillis()));
+			dao.allasKeresoErtekeles(manager, allaskid, allasid, ert, new Timestamp(System.currentTimeMillis()));
+		} catch (Exception e) {
+
+			return "alertmarertekelt";
+
 		}
-		catch(Exception e){
-			
-				return "alertmarertekelt";
-			
-		}
-		
+
 		return "succcegertekelt";
 	}
 
@@ -1134,7 +1381,6 @@ public class HomeController {
 		Long allasid = allapot.getAllasid();
 		String allapotn = allapot.getAllapotn();
 
-		
 		List<Jelentkezes> jelentkezesek = dao.listJelentkezesek(manager);
 		List<Jelentkezes> jel = new ArrayList<>();
 
@@ -1155,49 +1401,89 @@ public class HomeController {
 			allasID.add(j.getAllas().getId());
 			allkerID.add(j.getAllaskereso().getId());
 		}
-		
+
 		boolean succAllasID = false;
 		boolean succAllkerID = false;
-		
+
 		for (Long j : allasID) {
 
-			if(j.equals(allasid)) {
+			if (j.equals(allasid)) {
 				succAllasID = true;
 			}
-			
-			
+
 		}
 		for (Long j : allkerID) {
 
-			if(j.equals(allaskid)) {
+			if (j.equals(allaskid)) {
 				succAllkerID = true;
 			}
-			
-			
+
 		}
-		
-		if(!succAllasID) {
+
+		if (!succAllasID) {
 			return "alertfakeallasid";
 		}
-		if(!succAllkerID) {
+		if (!succAllkerID) {
 			return "alertfakeallkerid";
 		}
-		
 
 		try {
 			all = dao.searchAllapotIdbyName(manager, allapotn);
 		} catch (Exception e) {
 			return "alertinvalidallapot";
 		}
-		
-		
-		dao.updateJelentkezesAllapot(manager,allaskid,allasid,all.getId());
-		
-		
-			
-		
-		
+
+		dao.updateJelentkezesAllapot(manager, allaskid, allasid, all.getId());
+
 		return "succstatuszmod";
+	}
+
+	@PostMapping("/allaskdelete")
+	public String EDelete(@ModelAttribute AllasIdDelete del, Model model, HttpServletRequest request) {
+
+		model.addAttribute("allasd", del);
+
+		Long allaskid = del.getAllaskid();
+		Long allasid = del.getAllasid();
+
+		List<Allaskereso> allask = dao.listAllaskeresok(manager);
+
+		dao.deleteAllaskeresoert(manager, allaskid, allasid);
+
+		return "succdelete1";
+	}
+
+	@PostMapping("/aedelete")
+	public String AeDelete(@ModelAttribute AllasId aid, Model model, HttpServletRequest request) {
+
+		model.addAttribute("aid", aid);
+
+		Long id = aid.getId();
+
+		List<Allas> allasok = dao.listAllasok(manager);
+		List<Long> idk = new ArrayList<>();
+
+		for (Allas a : allasok) {
+
+			for (Allasert ert : a.getAllasertekelesek()) {
+				idk.add(ert.getId());
+			}
+		}
+
+		boolean succ = false;
+		for (Long l : idk) {
+			if (id == l) {
+				succ = true;
+			}
+		}
+
+		if (!succ) {
+			return "alertfakedelid";
+		}
+
+		dao.deleteAllasertekeles(manager, id);
+
+		return "succdelete1";
 	}
 
 }

@@ -128,7 +128,7 @@
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
-            <p th:text="'ID: ' + ${ak.id}">ID<p>
+            <p th:text="'Állás kereső ID: ' + ${ak.id}">ID<p>
         </div>
      <div class="col-md-4"></div>
     </div> 
@@ -171,6 +171,13 @@
     <div class="row">
      <div class="col-md-4"></div>
         <div class="col-md-4" id="payment">
+            <p th:text="'Állás ID: '+ ${ert.allas.id}">dátum<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
             <p ><p>
         </div>
      <div class="col-md-4"></div>
@@ -182,11 +189,11 @@
 	<div class="col-md-12"><h1>Álláskereső értékelés törlése</h1></div>
 	</div>
 	
-	<form>
+	<form th:action="@{/allaskdelete}" th:object="${allasd}" method="POST">
 	<div class="row" id="ertekeles">
 	<div class="col-md-3"></div>
-	<div class="col-md-3"><input type="text"  required="required" placeholder="Álláskereső id"></div>
-	<div class="col-md-3"><input type="text"  required="required" placeholder="Állás id"></div>
+	<div class="col-md-3"><input type="text" th:field="*{allaskid}" required="required" placeholder="Álláskereső id"></div>
+	<div class="col-md-3"><input type="text" th:field="*{allasid}" required="required" placeholder="Állás id"></div>
 	<div class="col-md-3"></div>
 	</div>
 	<div class="row" id="buttonrow">

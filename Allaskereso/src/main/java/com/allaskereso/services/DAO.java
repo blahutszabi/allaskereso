@@ -830,5 +830,45 @@ public class DAO {
 		List<MrBean> stat = procedureQuery.getResultList();
 		return stat;
 	}
+	
+	public void deleteAllaskeresoert(EntityManager manager, Long allaskid, Long allasid) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("deleteAllaskeresoert");
+
+		procedureQuery.registerStoredProcedureParameter("allaskeresoidp", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("allaskeresoidp", allaskid);
+
+		procedureQuery.registerStoredProcedureParameter("allasidp", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("allasidp", allasid);
+			
+		
+
+		procedureQuery.execute();
+		
+	}
+	
+	public void deleteAllasertekeles(EntityManager manager, Long idp) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("deleteAllasertekeles");
+
+		procedureQuery.registerStoredProcedureParameter("idp", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("idp", idp);
+			
+
+		procedureQuery.execute();
+		
+	}
+	
+	public void updateStatusz(EntityManager manager, Long allaskid) {
+
+		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("updateStatusz");
+
+		procedureQuery.registerStoredProcedureParameter("allaskid", Long.class, ParameterMode.IN);
+		procedureQuery.setParameter("allaskid", allaskid);
+			
+
+		procedureQuery.execute();
+		
+	}
 
 }

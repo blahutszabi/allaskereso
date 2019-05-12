@@ -4763,6 +4763,15 @@ BEGIN
     GROUP BY statusz.megnevezes;
 END;
 /
+--13.
+CREATE OR REPLACE PROCEDURE atlagFizetesVarosonkent(ret OUT SYS_REFCURSOR)
+IS
+BEGIN
+   OPEN RET FOR SELECT AVG(allas.ber) as value, varos.nev  as megnevezes FROM varos, allas
+    WHERE allas.varos_id=varos.id
+    GROUP BY varos.nev;
+END;
+/
 --nem trivialis
 CREATE OR REPLACE PROCEDURE allaskeresoErtekeles(allaskid IN allaskereso.id%TYPE,allasid IN allas.id%TYPE,ert IN allaskeresoert.ertekeles%TYPE,datump IN allaskeresoert.datum%TYPE, ret OUT SYS_REFCURSOR)
 IS
@@ -4875,6 +4884,12 @@ CREATE OR REPLACE PROCEDURE searchAllapotIdbyName(allapotp IN allapot.megnevezes
 IS
 BEGIN
    OPEN RET FOR SELECT * FROM allapot where megnevezes=allapotp;
+END;
+/
+CREATE OR REPLACE PROCEDURE updateStatusz(allaskid IN jelentkezes.allaskereso_id%TYPE)
+IS
+BEGIN
+    UPDATE allaskereso set allaskereso.statusz_id=3 WHERE allaskereso.id=allaskid;
 END;
 /
 
