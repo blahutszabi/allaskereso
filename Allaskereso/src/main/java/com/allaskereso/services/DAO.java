@@ -627,6 +627,7 @@ public class DAO {
 
 	public void updateJelentkezesAllapot(EntityManager manager, Long allaskid, Long allasid, Long allapotid) {
 
+		
 		StoredProcedureQuery procedureQuery = manager.createStoredProcedureQuery("updateJelentkezesAllapot");
 
 		procedureQuery.registerStoredProcedureParameter("allaskid", Long.class, ParameterMode.IN);
@@ -638,8 +639,9 @@ public class DAO {
 		procedureQuery.registerStoredProcedureParameter("allapotid", Long.class, ParameterMode.IN);
 		procedureQuery.setParameter("allapotid", allapotid);
 
+		
 		procedureQuery.execute();
-
+		
 	}
 
 	public void allasKeresoErtekeles(EntityManager manager, Long allaskid, Long allasid, String ert, Timestamp datump) {

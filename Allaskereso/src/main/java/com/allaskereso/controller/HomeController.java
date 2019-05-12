@@ -3,6 +3,7 @@ package com.allaskereso.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Blob;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -18,6 +19,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -117,7 +119,7 @@ public class HomeController {
 	}
 
 	@RequestMapping("/moderatorlogin.html")
-	public String ModeratorLoginHtml(Model model) throws IOException {
+	public String ModeratorLoginHtml(Model model, HttpServletRequest request) throws IOException {
 
 		model.addAttribute("moderator", new ModeratorLogin());
 		return "moderatorlogin";
@@ -1003,7 +1005,14 @@ public class HomeController {
 			return "alertfakeallkerid";
 		}
 		
-		dao.allasKeresoErtekeles(manager,allaskid,allasid,ert,new Timestamp(System.currentTimeMillis()));
+		try {
+			dao.allasKeresoErtekeles(manager,allaskid,allasid,ert,new Timestamp(System.currentTimeMillis()));
+		}
+		catch(Exception e){
+			
+				return "alertmarertekelt";
+			
+		}
 		
 		return "succcegertekelt";
 	}
@@ -1079,8 +1088,13 @@ public class HomeController {
 			return "alertinvalidallapot";
 		}
 		
+		
 		dao.updateJelentkezesAllapot(manager,allaskid,allasid,all.getId());
-
+		
+		
+			
+		
+		
 		return "succstatuszmod";
 	}
 
