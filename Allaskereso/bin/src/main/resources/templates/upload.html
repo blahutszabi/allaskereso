@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Feltöltés</title>
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" type="text/css" th:href="@{css/normalize.css}" href="normalize.css" />
+		
+		<link rel="stylesheet" type="text/css" th:href="@{css/component.css}" href="component.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">          
+       
+	</head>
+    
+    <style>
+    
+        #upload{
+            
+            text-align: center;
+            margin-top: 5%;
+            height: 3em;  
+            vertical-align:center;      
+        }
+        
+        #label{
+            
+            text-align: center;
+            margin-top: 5%;
+            height: 3em;  
+        }
+        #label1{
+            
+            text-align: center;
+            margin-top: 1%;
+            margin-bottom: 5%;
+            height: 3em;  
+        }
+        
+        #input{
+            
+            text-align: center;
+            margin-top: 0.7%;
+            border-color: darkgray;
+            height: 3em;  
+        }
+        
+        #border{
+           
+            border-style: solid;
+            border-color: darkgray;
+            margin-top: 15%;
+            
+        }
+        
+        #title{
+            text-align: center;
+            border-bottom: solid;
+            border-color: darkgray;
+        }
+        
+        #buttonid{
+    
+            margin-top: 10%;
+    
+        }
+
+        #button {
+          background-color: #1478a0;
+          border: none;
+          color: white;
+          padding: 10px 52px;
+          text-align: center;
+          font-size: 16px;
+          margin: 4px 2px;
+          opacity: 0.6;
+          transition: 0.3s;
+          display: inline-block;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        #button:hover {opacity: 1}
+        
+        #buttonrow{
+            
+            text-align: center;
+            margin-bottom: 1%;
+        }
+	   
+	   	input[type=text] {
+		  width: 70%;
+		  height: 100%;
+		  box-sizing: border-box;
+		  border: 3px solid #ccc;
+		  -webkit-transition: 0.5s;
+		  transition: 0.5s;
+		  outline: none;
+		  font-size: 150%;
+		}
+
+		input[type=text]:focus {
+ 		 border: 3px solid #1478a0;
+		}
+		
+		#subrow{
+			height: 25%;
+			margin-top: 1%;
+		}
+		
+    
+    </style>
+    
+    
+	<body>
+    <header lang="hu" th:include="loggedheader"> </header> 
+	
+				<form th:action="@{/fileupload}" th:object="${obj}" method="POST">
+	
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8" id="border">
+                        <div class="row">
+                        <div class="col-md-12" id="title"><h1>Önéletrajz feltöltése, szakma megadása</h1></div>
+                        </div>
+                        <div class="row" id="subrow">
+                        <div class="col-md-3"></div>    
+                        <div class="col-md-3" id="label"><h2>Önéletrajz kiválasztása:</h2></div>
+                        <div class="col-md-5" id="upload"><input th:field="*{oneletrajz}" name="onr" type="text"></div>        
+                        <div class="col-md-1"></div>
+                        </div>
+                        <div class="row" id="subrow">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3" id="label1"><h2>Szakma:</h2></div>
+                        <div class="col-md-5" id="input"><input  th:field="*{megnevezes}" name="first" type="text"></div>
+                        <div class="col-md-1"></div>    
+                        </div> 
+                        
+                        <div class="row">
+                        <div class="col-md-12" id="buttonrow">
+                        <button id="button" onclick="location.href='alertsuccupload.html'"> OK </button>
+                        </div>
+                        </div> 
+                        
+                    </div>
+               
+                    <div class="col-md-2"></div>
+				</div>	
+				</form> 
+
+	</body>
+</html>

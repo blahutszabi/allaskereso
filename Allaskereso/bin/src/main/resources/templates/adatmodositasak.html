@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Adatok módosítása</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">          
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+</head> 
+    
+<style>
+
+ input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+  input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+  input[type=submit]:hover {
+  background-color: #45a049;
+}
+    
+    #label{
+        text-align: right;
+        margin-right: 5%;
+    }
+    
+    #firstrow{
+        
+        margin-top: 9%;
+        margin-bottom: 5%;
+    }
+    #title{
+        text-align: center;
+    }
+    
+    input[type=text]:focus {
+ 		 border: 3px solid #1478a0;
+ 	}
+
+
+    
+    
+</style>
+ 
+    
+  
+<body>
+ <form th:action="@{/adatmodositas}" th:object="${adataim}" method="POST">   
+<div class="row" id="firstrow">
+<div class="col-md-4"></div> 
+<div class="col-md-4" id="title"><h2>Adatok módosítása</h2></div>
+<div class="col-md-4"></div>
+</div>
+    
+<div class="row">
+<div class="col-md-2"></div> 
+<div class="col-md-3" id="label"><h3 >E-mail:</h3></div>
+<div class="col-md-3"><input type="text" id="email" th:field="*{email}"></div>
+<div class="col-md-4"></div>
+</div>
+    
+<div class="row">
+<div class="col-md-2"></div> 
+<div class="col-md-3" id="label"><h3>Jelszó:</h3></div>
+<div class="col-md-3"><input type="text" id="password" th:field="*{jelszo}"></div>
+<div class="col-md-4"></div>
+</div>
+    
+<div class="row">
+<div class="col-md-2"></div> 
+<div class="col-md-3" id="label"><h3>Város:</h3></div>
+<div class="col-md-3"><input type="text" id="city" th:field="*{varos}"></div>
+<div class="col-md-4"></div>
+</div>
+    
+<div class="row">
+<div class="col-md-2"></div> 
+<div class="col-md-3" id="label"><h3>Utca:</h3></div>
+<div class="col-md-3"><input type="text" id="street" th:field="*{utca}"></div>
+<div class="col-md-4"></div>
+</div>
+
+<div class="row">
+<div class="col-md-2"></div> 
+<div class="col-md-3" id="label"><h3>Házszám:</h3></div>
+<div class="col-md-3"><input type="text" id="housenumber" th:field="*{hazszam}"></div>
+<div class="col-md-4"></div>
+</div>
+
+<div class="row">
+<div class="col-md-2"></div> 
+<div class="col-md-3" id="label"><h3>Státusz:</h3></div>
+<div class="col-md-3"><input type="text" id="status" th:field="*{statusz}"></div>
+<div class="col-md-4"></div>
+</div>
+    
+<div class="row"> 
+<div class="col-md-5"></div>
+<div class="col-md-2"><input type="submit"  id="send" value="Küldés" onclick="location.href='alertadatmodositva.html'"></div>
+<div class="col-md-5"></div>
+</div>
+
+</form>
+    
+</body>
+    
+    
+</html>

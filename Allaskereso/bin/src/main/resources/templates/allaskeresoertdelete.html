@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+<link rel="stylesheet" href="style/slider-def.css">  
+<link rel="stylesheet" href="front.css"> 
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
+<link rel="stylesheet" type="text/css" href="style.css">  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">          
+      
+</head>
+
+
+
+<style>
+
+    #name{
+        border-style: solid;
+        text-align: center;
+        
+        
+    }
+    #description{
+        border-style: solid;
+        text-align: center;
+        border-top: none;
+        
+    }
+    #payment{
+        border-style: solid;
+        text-align: center;
+        border-top: none;
+    }
+    #timestamp{
+        border-style: solid;
+        text-align: center;
+        border-top: none;
+    }
+    #row{
+    	margin-top: 10%;
+    	
+    }
+    
+     #searchrow{
+     	margin-top: 10%;
+     }
+    
+    input[type=text] {
+      width: 100%;
+      height: 100%;
+	  background-color: white;
+	  font-size: 250%;
+	  text-align: center;
+	  
+	}
+	input[type=text]:focus {
+ 		 border: 3px solid #1478a0;
+	}
+	#valami{
+		color:black;
+	}
+	
+	#buttonrow {
+	text-align: center;
+	margin-top: 1%;
+	}
+
+	#ertekeles{
+    	margin-top: 2%;
+	}	
+	#title{
+     	text-align: center;
+     	font-size: 200%;
+     	margin-top: 2%;
+    }
+    #button {
+	background-color: #1478a0;
+	border: none;
+	color: white;
+	padding: 10px 52px;
+	text-align: center;
+	font-size: 16px;
+	margin: 4px 2px;
+	opacity: 0.6;
+	transition: 0.3s;
+	display: inline-block;
+	text-decoration: none;
+	cursor: pointer;
+	}
+
+	#button:hover {
+	opacity: 1
+	}
+
+</style>
+    
+<header lang="en" th:include="loggedheadermoderator"> </header>  
+
+<body>
+
+
+<article th:each="ak :${allaskeresok}" >
+    
+    <div class="row" id="row">
+    <div class="col-md-4"></div>
+        <div class="col-md-4" id="name">
+            <h3 id="valami" th:text="${ak.nev}">Név</h3>
+        </div>
+    <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="description">
+            <p th:text="${ak.email}">Email<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="description">
+            <p th:text="${ak.szul_ido}">Szülidö<p>
+        </div>
+      <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Állás kereső ID: ' + ${ak.id}">ID<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p >Eddigi értékelések:<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <article th:each="ert :${ak.allaskeresoertekelesek}">
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelő cég: ' +${ert.allas.ceg.nev}">Cég<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelt szakma: '+ ${ert.allas.szakma.megnevezes}">szakma<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="${ert.ertekeles}">ért<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Értékelés dátuma: '+ ${ert.datum}">dátum<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p th:text="'Állás ID: '+ ${ert.allas.id}">dátum<p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    <div class="row">
+     <div class="col-md-4"></div>
+        <div class="col-md-4" id="payment">
+            <p ><p>
+        </div>
+     <div class="col-md-4"></div>
+    </div> 
+    </article>
+</article>
+
+	<div class="row" id="title">
+	<div class="col-md-12"><h1>Álláskereső értékelés törlése</h1></div>
+	</div>
+	
+	<form th:action="@{/allaskdelete}" th:object="${allasd}" method="POST">
+	<div class="row" id="ertekeles">
+	<div class="col-md-3"></div>
+	<div class="col-md-3"><input type="text" th:field="*{allaskid}" required="required" placeholder="Álláskereső id"></div>
+	<div class="col-md-3"><input type="text" th:field="*{allasid}" required="required" placeholder="Állás id"></div>
+	<div class="col-md-3"></div>
+	</div>
+	<div class="row" id="buttonrow">
+	<div class="col-md-4"></div>
+	<div class="col-md-4"><button id="button"  type="submit">Törlés</button></div>
+	<div class="col-md-4"></div>
+	</div>
+    </form>    
+</body>
+</html>

@@ -65,6 +65,14 @@ input[type=text]:focus {
 #valami {
 	color: black;
 }
+
+#table{
+	border-style: solid;	
+}
+
+
+
+
 </style>
 <header lang="en" th:include="loggedheadermoderator"> </header>
 <body>
@@ -76,35 +84,223 @@ input[type=text]:focus {
 		</div>
 		<div class="col-md-4"></div>
 	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Szakma neve</h4></div>
+		<div class="col-md-2" id="table"><h4>Átlag bér</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
 	<article th:each="a1 :${model1}">
-
-		<div class="row" id="row">
-			<div class="col-md-4"></div>
-			<div class="col-md-4" id="name">
-				<p id="s" th:text="'Szakma neve: ' + ${a1.megnevezes}">Név</p>
-			</div>
-			<div class="col-md-4"></div>
-		</div>
 		<div class="row">
 			<div class="col-md-4"></div>
-			<div class="col-md-4" id="description">
-				<p th:text="'Átlag fizetés: ' + ${a1.value}">Email
-				<p>
-			</div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value} + '  Ft'"></h5></div>
 			<div class="col-md-4"></div>
 		</div>
-
-		<div class="row">
-			<div class="col-md-4"></div>
-			<div class="col-md-4" id="payment">
-				<p>
-				<p>
-			</div>
-			<div class="col-md-4"></div>
-		</div>
+	
 	</article>
 
+<div class="row" id="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4" id="name">
+			<h3 id="valami">Átlagfizetés Városonként</h3>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Város neve</h4></div>
+		<div class="col-md-2" id="table"><h4>Átlag bér</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<article th:each="a1 :${model9}">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value} + '  Ft'"></h5></div>
+			<div class="col-md-4"></div>
+		</div>
+	
+	</article>
 
+	<div class="row" id="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4" id="name">
+			<h3 id="valami">10 Legkeresettebb szakma</h3>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Szakma neve</h4></div>
+		<div class="col-md-2" id="table"><h4>DB</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<article th:each="a1 :${model2}">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value} "></h5></div>
+			<div class="col-md-4"></div>
+		</div>
+	
+	</article>
+
+	<div class="row" id="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4" id="name">
+			<h3 id="valami">Maximum fizetés szakmánként</h3>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Szakma neve</h4></div>
+		<div class="col-md-2" id="table"><h4>Max bér</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<article th:each="a1 :${model3}">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value} + '  Ft'"></h5></div>
+			<div class="col-md-4"></div>
+		</div>
+	
+	</article>
+	
+		<div class="row" id="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4" id="name">
+			<h3 id="valami">Állások darabszáma városonként</h3>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Város neve</h4></div>
+		<div class="col-md-2" id="table"><h4>DB</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<article th:each="a1 :${model4}">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value}"></h5></div>
+			<div class="col-md-4"></div>
+		</div>
+	
+	</article>
+
+	<div class="row" id="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4" id="name">
+			<h3 id="valami">Álláskeresők darabszáma városonként</h3>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Város neve</h4></div>
+		<div class="col-md-2" id="table"><h4>DB</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<article th:each="a1 :${model5}">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value}"></h5></div>
+			<div class="col-md-4"></div>
+		</div>
+	
+	</article>
+	
+		<div class="row" id="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4" id="name">
+			<h3 id="valami">Cégek darabszáma városonként</h3>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Város neve</h4></div>
+		<div class="col-md-2" id="table"><h4>DB</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<article th:each="a1 :${model6}">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value}"></h5></div>
+			<div class="col-md-4"></div>
+		</div>
+	
+	</article>
+	
+		<div class="row" id="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4" id="name">
+			<h3 id="valami">Álláskeresők darabszáma státuszok szerint</h3>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Státusz neve</h4></div>
+		<div class="col-md-2" id="table"><h4>DB</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<article th:each="a1 :${model7}">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value}"></h5></div>
+			<div class="col-md-4"></div>
+		</div>
+	
+	</article>
+	
+		<div class="row" id="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4" id="name">
+			<h3 id="valami">Állásjelentkezések darabszáma állapotok szerint</h3>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-2" id="table"><h4>Állapot neve</h4></div>
+		<div class="col-md-2" id="table"><h4>DB</h4></div>
+		<div class="col-md-4"></div>
+	</div>
+	
+	<article th:each="a1 :${model8}">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.megnevezes}"></h5></div>
+			<div class="col-md-2" id="table"><h5 th:text="${a1.value}"></h5></div>
+			<div class="col-md-4"></div>
+		</div>
+	
+	</article>
 
 </body>
 </html>

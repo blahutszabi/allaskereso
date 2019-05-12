@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html th:fragment="mainheader" lang="hu"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<link th:href="@{css/style.css}" rel="stylesheet">
+<link th:href="@{css/login.css}" rel="stylesheet">
+<link rel="icon" type="image/png" th:href="@{modal/images/icons/favicon.ico}"/>
+<link rel="stylesheet" type="text/css" href="modal/vendor/bootstrap/css/bootstrap.min.css">
+
+
+
+
+<nav>
+      
+	    <div class="toggle">
+	        <i class="fa fa-bars menu" aria-hidden="true"></i>
+	           
+	    </div>
+	    
+	    <div class="logo">
+	         <img src="images/joblogo.png" width="30" height="30" alt=""/>
+	    </div>  
+      
+	    <ul>
+	         <li><a th:href="@{loggedindex.html}" id="main" class="active">Kezdőlap</a></li> 
+	         <li><a th:href="@{allaslista.html}" id="jobs">Állások nekem</a></li>  
+	         <li><a th:href="@{company.html}" id="companies">Cégek</a></li> 
+	         <li><a th:href="@{upload.html}" id="cv">Feltölt</a></li> 
+	         <li><a th:href="@{allasokertekel.html}" id="ert">Minden állás</a></li> 
+	         <li><a th:href="@{alljelentkezeseim.html}" id="ert">Jelentkezéseim</a></li> 
+	    </ul>
+	    <ul class="buttonsul">
+	    <li> <h3 id="h3" th:utext="${session.felhnev}" onclick="window.location.href = 'adatmodositasak.html'">Név</h3> </li>
+	    
+        <li><button class="button button2" type="button" onclick="location.href='alertsucclogout.html'">KIJELENTKEZÉS</button></li>
+   		 </ul> 
+    
+  </nav>
+  
+ <style>
+ 	h3{
+ 		color: white;
+ 	}
+ </style>
+
+</header>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.menu').click(function(){
+                $('ul').toggleClass('active');
+            })
+        })
+    
+    
+    </script>
+    
+    <!--Akt?v men?pont-->
+    <script type="text/javascript"> 
+    
+            var url = window.location.pathname;
+            var filename = url.substring(url.lastIndexOf('/')+1);
+             
+            if( filename === 'allaslista.html'){
+            $("#jobs").addClass("active");
+            $("#main").removeClass("active"); 
+            $("#companies").removeClass("active");  
+            $("#cv").removeClass("active"); 
+            }
+            
+            if( filename === 'upload.html'){
+            $("#cv").addClass("active");
+            $("#main").removeClass("active"); 
+            $("#jobs").removeClass("active"); 
+            $("#companies").removeClass("active");    
+            } 
+              
+            if( filename === 'companies.html'){
+            $("#companies").addClass("active");
+            $("#main").removeClass("active"); 
+            $("#jobs").removeClass("active"); 
+            $("#cv").removeClass("active");    
+            }  
+            
+          
+    </script>
+    
+</html>

@@ -4860,7 +4860,7 @@ BEGIN
 	INSERT INTO LOGOLAS VALUES(:OLD.NEV ||' belépett.', SYSDATE);
 END;
 /
-CREATE OR REPLACE PROCEDURE allaskeresoErtekeles(allaskid IN allaskereso.id%TYPE,allasid IN allas.id%TYPE,ert IN allaskeresoert.ertekeles%TYPE,datump IN allaskeresoert.datum%TYPE, ret OUT SYS_REFCURSOR)
+CREATE OR REPLACE PROCEDURE allaskeresoErtekeles(allaskid IN allaskereso.id%TYPE,allasid IN allas.id%TYPE,ert IN allaskeresoert.ertekeles%TYPE,datump IN allaskeresoert.datum%TYPE)
 IS
 BEGIN
     INSERT INTO ALLASKERESOERT VALUES(allaskid,allasid,ert,datump);

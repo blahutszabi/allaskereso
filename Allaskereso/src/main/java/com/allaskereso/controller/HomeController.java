@@ -112,9 +112,9 @@ public class HomeController {
 		List<MrBean> atlagfizvarosonkent = new ArrayList<>();
 		
 		String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";  
-		   String DB_URL = "jdbc:oracle:thin:@localhost:32118:xe";
+		   String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
 		   String USER = "SYSTEM";
-		    String PASS = "Oracle18";
+		    String PASS = "asd123";
 		   Connection conn = null;
 		   Statement stmt = null;
 		   try{
@@ -126,7 +126,7 @@ public class HomeController {
 		      ResultSet rs;
 		      
 		      //Atlagfizetes szakmankent
-		      sql = "SELECT MAX(ALLAS.BER) as value,SZAKMA.MEGNEVEZES as megnevezes FROM ALLAS, SZAKMA WHERE SZAKMA.ID=ALLAS.SZAKMA_ID GROUP BY megnevezes";
+		      sql = "SELECT AVG(ALLAS.BER) as value,SZAKMA.MEGNEVEZES as megnevezes FROM ALLAS, SZAKMA WHERE SZAKMA.ID=ALLAS.SZAKMA_ID GROUP BY megnevezes ORDER BY value DESC";
 		      rs = stmt.executeQuery(sql);
 		      while(rs.next()){
 		    	  
@@ -160,7 +160,7 @@ public class HomeController {
 		      //MaxFiz szakmankent
 		      sql = "SELECT MAX(ALLAS.BER) as value,SZAKMA.MEGNEVEZES as megnevezes FROM ALLAS, SZAKMA\r\n" + 
 		      		"    WHERE SZAKMA.ID=ALLAS.SZAKMA_ID\r\n" + 
-		      		"    GROUP BY SZAKMA.MEGNEVEZES";
+		      		"    GROUP BY SZAKMA.MEGNEVEZES ORDER BY value DESC";
 		      rs = stmt.executeQuery(sql);
 		      while(rs.next()){
 		    	  
@@ -178,7 +178,7 @@ public class HomeController {
 		      //Allasok darabszama varosonkent
 		      sql = "SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM ALLAS, VAROS\r\n" + 
 		      		"    WHERE VAROS.ID=allas.varos_id\r\n" + 
-		      		"    GROUP BY VAROS.nev";
+		      		"    GROUP BY VAROS.nev ORDER BY value DESC";
 		      rs = stmt.executeQuery(sql);
 		      while(rs.next()){
 		    	  
@@ -196,7 +196,7 @@ public class HomeController {
 		    //Allaskeresok darabszama varosonkent
 		      sql = "SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM ALLASKERESO, VAROS\r\n" + 
 		      		"    WHERE VAROS.ID=allaskereso.varos_id\r\n" + 
-		      		"    GROUP BY VAROS.nev";
+		      		"    GROUP BY VAROS.nev ORDER BY value DESC";
 		      rs = stmt.executeQuery(sql);
 		      while(rs.next()){
 		    	  
@@ -214,7 +214,7 @@ public class HomeController {
 		    //Cegekdarabszam varosonkent
 		      sql = "SELECT COUNT(*) as value, VAROS.nev as megnevezes FROM CEG, VAROS\r\n" + 
 		      		"    WHERE VAROS.ID=ceg.varos_id\r\n" + 
-		      		"    GROUP BY VAROS.nev";
+		      		"    GROUP BY VAROS.nev ORDER BY value DESC";
 		      rs = stmt.executeQuery(sql);
 		      while(rs.next()){
 		    	  
@@ -232,7 +232,7 @@ public class HomeController {
 		    //Allasjelentkezesek darabszama allapotok szerint
 		      sql = "SELECT COUNT(*) as value, allapot.megnevezes as megnevezes FROM JELENTKEZES, ALLAPOT\r\n" + 
 		      		"    WHERE jelentkezes.allapot_id=allapot.id\r\n" + 
-		      		"    GROUP BY allapot.megnevezes";
+		      		"    GROUP BY allapot.megnevezes ORDER BY value DESC";
 		      rs = stmt.executeQuery(sql);
 		      while(rs.next()){
 		    	  
@@ -250,7 +250,7 @@ public class HomeController {
 		    //Allaskeresok darabszama statuszok szerint
 		      sql = "SELECT COUNT(*) as value, statusz.megnevezes  as megnevezes FROM statusz, allaskereso\r\n" + 
 		      		"    WHERE allaskereso.statusz_id=statusz.id\r\n" + 
-		      		"    GROUP BY statusz.megnevezes";
+		      		"    GROUP BY statusz.megnevezes ORDER BY value DESC";
 		      rs = stmt.executeQuery(sql);
 		      while(rs.next()){
 		    	  
@@ -268,7 +268,7 @@ public class HomeController {
 		    //Atlagfizetes varosonkent
 		      sql = "SELECT AVG(allas.ber) as value, varos.nev  as megnevezes FROM varos, allas\r\n" + 
 		      		"    WHERE allas.varos_id=varos.id\r\n" + 
-		      		"    GROUP BY varos.nev";
+		      		"    GROUP BY varos.nev ORDER BY value DESC";
 		      rs = stmt.executeQuery(sql);
 		      while(rs.next()){
 		    	  

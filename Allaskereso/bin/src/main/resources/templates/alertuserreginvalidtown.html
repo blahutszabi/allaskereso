@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="modal/vendor/bootstrap/css/bootstrap.min.css">
+</head>
+
+    <body>
+        <header lang="en" th:include="mainheader"> </header> 
+        
+        <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:700');
+@import url('https://fonts.googleapis.com/css?family=Lato');
+@import "bourbon";
+
+
+body{
+    background-color: #353231;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+#windowheader{
+    
+    background-color: #db4441;
+    margin-top: 15%;
+    padding-bottom: 2%;
+    border-style: solid;
+}
+
+#windowmain{
+    background-color: whitesmoke;
+    padding-bottom: 4%;
+    border-style: solid;
+    text-align: center;
+}
+
+h3{
+    margin-top: 20%;
+}
+
+#buttonid{
+    
+ margin-top: 10%;
+    
+}
+
+#button {
+  background-color: red;;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#button:hover {opacity: 1}
+        
+        
+        
+        </style>
+        
+        
+        <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4" id="windowheader"></div>
+        <div class="col-md-4"></div>  
+        </div>
+        
+        <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4" id="windowmain"><h3>Nincs ilyen nevű város!</h3>
+            <div class="row">
+            <div class="col-md-3"></div>
+         
+            <div class="col-md-6" id="buttonid" onclick="goBack()"><button id="button">OK</button></div>
+            <script>
+				function goBack() {
+					 window.history.back();
+				}
+			</script>
+            <div class="col-md-3"></div>    
+            </div></div>
+        <div class="col-md-4"></div>
+            
+        </div>
+        
+        
+        
+
+    </body>
+
+</html>

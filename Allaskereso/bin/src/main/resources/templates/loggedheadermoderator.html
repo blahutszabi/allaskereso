@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html th:fragment="mainheader" lang="hu"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<link th:href="@{css/style.css}" rel="stylesheet">
+<link th:href="@{css/login.css}" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="modal/vendor/bootstrap/css/bootstrap.min.css">
+
+
+
+<style>
+	.buttonsul{
+		margin-top: -0.2%;
+	}
+
+</style>
+
+<header>
+
+<nav>
+      
+	    <div class="toggle">
+	        <i class="fa fa-bars menu" aria-hidden="true"></i>
+	           
+	    </div>
+	    
+	    <div class="logo">
+	         <img src="images/joblogo.png" width="30" height="30" alt=""/>
+	    </div>  
+      
+	    <ul>
+	         <li><a th:href="@{moderatorindex.html}" id="main" class="active">Kezdőlap</a></li> 
+	         <li><a th:href="@{stat.html}" id="stat">Statisztika</a></li> 
+	         <li><a th:href="@{allasertdeletem.html}" id="del1">Állás értékelés törlése</a></li>
+	         <li><a th:href="@{allaskeresoertdelete.html}" id="del2">Álláskereső értékelés törlése</a></li> 
+	    </ul>
+	    <ul class="buttonsul">
+	    <li> <h3 th:utext="${session.modfelhnev}" >Név</h3> </li>
+	    
+        <li><button class="button button2" type="button" onclick="location.href='alertsucclogout.html'">KIJELENTKEZÉS</button></li>
+   		 </ul> 
+    
+  </nav>
+   <style>
+ 	h3{
+ 		color: white;
+ 	}
+ </style>
+
+</header>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.menu').click(function(){
+                $('ul').toggleClass('active');
+            })
+        })
+    
+    
+    </script>
+    
+    <!--Akt?v men?pont-->
+    <script> 
+          $(function() {
+              
+            var url = window.location.pathname;
+            var filename = url.substring(url.lastIndexOf('/')+1);
+             
+            if( filename === 'allaslista.html'){
+            $("#jobs").addClass("active");
+            $("#main").removeClass("active"); 
+            $("#companies").removeClass("active");    
+            }
+              
+            if( filename === 'companies.html'){
+            $("#companies").addClass("active");
+            $("#main").removeClass("active"); 
+            $("#jobs").removeClass("active");    
+            }  
+              
+              
+        });
+    </script>
+    
+</html>
